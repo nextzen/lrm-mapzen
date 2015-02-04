@@ -1,5 +1,5 @@
-Leaflet Routing Machine / Mapbox
-================================
+Leaflet Routing Machine / GraphHopper
+=====================================
 
 Extends [Leaflet Routing Machine](https://github.com/perliedman/leaflet-routing-machine) with support for [GraphHopper](https://graphhopper.com/).
 
