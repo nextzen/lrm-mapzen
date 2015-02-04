@@ -4,6 +4,7 @@
   "description": "Support for GraphHopper in Leaflet Routing Machine",
   "main": "src/L.Routing.GraphHopper.js",
   "scripts": {
+    "prepublish": "browserify src/L.Routing.GraphHopper.js >dist/lrm-graphhopper.js",
     "test": "echo \"Error: no test specified\" && exit 1"
   },
   "keywords": [
