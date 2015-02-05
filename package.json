@@ -4,14 +4,13 @@
   "description": "Support for GraphHopper in Leaflet Routing Machine",
   "main": "src/L.Routing.GraphHopper.js",
   "scripts": {
-    "prepublish": "browserify src/L.Routing.GraphHopper.js >dist/lrm-graphhopper.js",
+    "prepublish": "mkdir -p dist && browserify src/L.Routing.GraphHopper.js >dist/lrm-graphhopper.js",
     "test": "echo \"Error: no test specified\" && exit 1"
   },
   "keywords": [
     "leaflet",
     "routing",
-    "mapbox",
-    "directions API"
+    "graphhopper"
   ],
   "author": "Per Liedman <per@liedman.net>",
   "license": "ISC",
