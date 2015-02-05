@@ -1,6 +1,6 @@
 {
   "name": "lrm-graphhopper",
-  "version": "1.0.0",
+  "version": "1.0.1",
   "description": "Support for GraphHopper in Leaflet Routing Machine",
   "main": "src/L.Routing.GraphHopper.js",
   "scripts": {
@@ -14,6 +14,12 @@
   ],
   "author": "Per Liedman <per@liedman.net>",
   "license": "ISC",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/perliedman/lrm-graphhopper.git"
+  },
+  "homepage": "https://github.com/perliedman/lrm-graphhopper",
+  "bugs": "https://github.com/perliedman/lrm-graphhopper/issues",
   "dependencies": {
     "corslite": "0.0.6",
     "leaflet": "^0.7.3",
