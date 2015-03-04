@@ -161,7 +161,8 @@
 					2: 'Right',
 					3: 'SharpRight',
 					4: 'DestinationReached',
-					5: 'WaypointReached'
+					5: 'WaypointReached',
+					6: 'Roundabout'
 				},
 				result = [],
 			    i,
@@ -174,7 +175,8 @@
 					text: instr.text,
 					distance: instr.distance,
 					time: instr.time / 1000,
-					index: instr.interval[0]
+					index: instr.interval[0],
+					exit: instr.exit_number
 				});
 			}
 
