@@ -216,8 +216,8 @@
 		}
 	});
 
-	L.Routing.graphHopper = function(options) {
-		return new L.Routing.GraphHopper(options);
+	L.Routing.graphHopper = function(apiKey, options) {
+		return new L.Routing.GraphHopper(apiKey, options);
 	};
 
 	module.exports = L.Routing.GraphHopper;
