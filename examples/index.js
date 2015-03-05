@@ -10,6 +10,6 @@ L.Routing.control({
 		L.latLng(57.6792, 11.949)
 	],
 	geocoder: L.Control.Geocoder.nominatim(),
-	router: new L.Routing.GraphHopper('your-api-key'),
+	router: L.Routing.graphHopper('your-api-key'),
 	routeWhileDragging: false
 }).addTo(map);
