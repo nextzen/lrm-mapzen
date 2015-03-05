@@ -1,6 +1,6 @@
 {
   "name": "lrm-graphhopper",
-  "version": "1.0.2",
+  "version": "1.0.3",
   "description": "Support for GraphHopper in Leaflet Routing Machine",
   "main": "src/L.Routing.GraphHopper.js",
   "scripts": {
