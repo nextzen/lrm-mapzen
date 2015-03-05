@@ -5,6 +5,7 @@
   "main": "src/L.Routing.GraphHopper.js",
   "scripts": {
     "dist": "./scripts/dist.sh",
+    "publish": "./scripts/publish.sh",
     "test": "echo \"Error: no test specified\" && exit 1"
   },
   "keywords": [
