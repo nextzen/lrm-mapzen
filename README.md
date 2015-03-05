@@ -5,9 +5,9 @@ Leaflet Routing Machine / GraphHopper
 
 Extends [Leaflet Routing Machine](https://github.com/perliedman/leaflet-routing-machine) with support for [GraphHopper](https://graphhopper.com/).
 
-_Note_: This lib is under active development. Beware that this might be more unstable than the usual ad hoc OSS you pick up. Feedback, issues or pull requests are of course very welcome.
-
 ## Installing
+
+Go to the [download page](http://www.liedman.net/lrm-graphhopper/download/) to get the script to include in your page. Put the script after Leaflet and Leaflet Routing Machine has been loaded.
 
 To use with for example Browserify:
 
