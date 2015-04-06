@@ -138,8 +138,10 @@
 			var computeInstructions =
 				!(options && options.geometryOnly),
 				locs = [],
+				vehicle = this._vehicleTypes(this.options.vehicle),
+				locale = this.options.locale || 'en',
 				i;
-
+			
 			for (i = 0; i < waypoints.length; i++) {
 				locs.push('point=' + waypoints[i].latLng.lat + ',' + waypoints[i].latLng.lng);
 			}
@@ -147,8 +149,15 @@
 			return this.options.serviceUrl + '?' +
 				locs.join('&') +
 				'&instructions=' + computeInstructions +
+				'&locale=' + locale +
+				'&vehicle=' + vehicle +
 				'&type=json' +
 				'&key=' + this._apiKey;
+		},
+		
+		_vehicleTypes: function(vehicle) {
+			var _types = ['car', 'foot', 'bike'];
+			return (_types.indexOf(vehicle) == -1 ? 'car' : vehicle);
 		},
 
 		_convertInstructions: function(instructions) {
