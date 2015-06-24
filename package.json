@@ -1,8 +1,8 @@
 {
-  "name": "lrm-graphhopper",
-  "version": "1.1.0",
-  "description": "Support for GraphHopper in Leaflet Routing Machine",
-  "main": "src/L.Routing.GraphHopper.js",
+  "name": "lrm-valhalla",
+  "version": "0.0.1",
+  "description": "Support for Valhalla by Mapzen in Leaflet Machine",
+  "main": "src/L.Routing.Valhalla.js",
   "scripts": {
     "dist": "./scripts/dist.sh",
     "publish": "./scripts/publish.sh",
@@ -13,14 +13,14 @@
     "routing",
     "graphhopper"
   ],
-  "author": "Per Liedman <per@liedman.net>",
+  "author": " Hanbyul Jo <hanbyul@mapzen.com>",
   "license": "ISC",
   "repository": {
     "type": "git",
-    "url": "https://github.com/perliedman/lrm-graphhopper.git"
+    "url": "https://github.com/perliedman/lrm-valhalla.git"
   },
-  "homepage": "https://github.com/perliedman/lrm-graphhopper",
-  "bugs": "https://github.com/perliedman/lrm-graphhopper/issues",
+  "homepage": "https://github.com/valhalla/lrm-valhalla",
+  "bugs": "https://github.com/perliedman/lrm-valhalla/issues",
   "dependencies": {
     "corslite": "0.0.6",
     "leaflet": "^0.7.3",
