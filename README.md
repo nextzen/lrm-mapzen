@@ -18,8 +18,7 @@ Extends [Leaflet Routing Machine](https://github.com/perliedman/leaflet-routing-
 
 ## Installing
 
-Go to the [download page](http://www.liedman.net/lrm-graphhopper/download/) to get the script to include in your page. Put the script after Leaflet and Leaflet Routing Machine has been loaded.
-
+Work in progress, coming soon!
 
 ## Using
 
