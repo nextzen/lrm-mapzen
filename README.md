@@ -1,34 +1,37 @@
-Leaflet Routing Machine / GraphHopper
+Leaflet Routing Machine / Valhalla by Mapzen
 =====================================
 
-[![npm version](https://img.shields.io/npm/v/lrm-graphhopper.svg)](https://www.npmjs.com/package/lrm-graphhopper)
 
-Extends [Leaflet Routing Machine](https://github.com/perliedman/leaflet-routing-machine) with support for [GraphHopper](https://graphhopper.com/).
+     ██▒   █▓ ▄▄▄       ██▓     ██░ ██  ▄▄▄       ██▓     ██▓    ▄▄▄      
+    ▓██░   █▒▒████▄    ▓██▒    ▓██░ ██▒▒████▄    ▓██▒    ▓██▒   ▒████▄    
+     ▓██  █▒░▒██  ▀█▄  ▒██░    ▒██▀▀██░▒██  ▀█▄  ▒██░    ▒██░   ▒██  ▀█▄  
+      ▒██ █░░░██▄▄▄▄██ ▒██░    ░▓█ ░██ ░██▄▄▄▄██ ▒██░    ▒██░   ░██▄▄▄▄██ 
+       ▒▀█░   ▓█   ▓██▒░██████▒░▓█▒░██▓ ▓█   ▓██▒░██████▒░██████▒▓█   ▓██▒
+       ░ ▐░   ▒▒   ▓▒█░░ ▒░▓  ░ ▒ ░░▒░▒ ▒▒   ▓▒█░░ ▒░▓  ░░ ▒░▓  ░▒▒   ▓▒█░
+       ░ ░░    ▒   ▒▒ ░░ ░ ▒  ░ ▒ ░▒░ ░  ▒   ▒▒ ░░ ░ ▒  ░░ ░ ▒  ░ ▒   ▒▒ ░
+         ░░    ░   ▒     ░ ░    ░  ░░ ░  ░   ▒     ░ ░     ░ ░    ░   ▒   
+          ░        ░  ░    ░  ░ ░  ░  ░      ░  ░    ░  ░    ░  ░     ░  ░
+         ░                                                                    
 
-_Note_: This lib is under active development. Beware that this might be more unstable than the usual ad hoc OSS you pick up. Feedback, issues or pull requests are of course very welcome.
+
+Extends [Leaflet Routing Machine](https://github.com/perliedman/leaflet-routing-machine) with support for [Valhalla](https://mapzen.com/projects/valhalla).
 
 ## Installing
 
-To use with for example Browserify:
-
-```sh
-npm install --save lrm-graphhopper
-```
-
-There's not pre-built files yet, but I will get to it.
+Work in progress, coming soon!
 
 ## Using
 
-There's a single class exported by this module, `L.Routing.GraphHopper`. It implements the [`IRouter`](http://www.liedman.net/leaflet-routing-machine/api/#irouter) interface. Use it to replace Leaflet Routing Machine's default OSRM router implementation:
+You can use Valhalla routing machine with Leaflet Routing Machine plugin by replacing Router and Formatter instance. 
 
-```javascript
-var L = require('leaflet');
-require('leaflet-routing-machine');
-require('lrm-graphhopper'); // This will tack on the class to the L.Routing namespace
+    var rr = L.Routing.control({
+      // you can get api key from Mapzen developer (https://mapzen.com/developers)
+      router: L.Routing.valhalla('valhalla-nsDITYA','auto'),
+      formatter: new L.Routing.Valhalla.Formatter()
+    }).addTo(map);
 
-L.Routing.control({
-    router: new L.Routing.GraphHopper('your GraphHopper API key'),
-}).addTo(map);
-```
 
-Note that you will need to pass a valid GraphHopper API key to the constructor.
+You can change transitmode for routing later by passing the options.
+Currently (June 2015), Valhalla supports auto, bicycle, and pedestrian mode for routing.
+
+     rr.route({transitmode: 'auto'});
