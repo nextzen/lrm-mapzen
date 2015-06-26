@@ -13,14 +13,16 @@
     "routing",
     "graphhopper"
   ],
-  "author": " Hanbyul Jo <hanbyul@mapzen.com>",
-  "license": "ISC",
+  "author": "Hanbyul Jo <hanbyul@mapzen.com>",
+  "license": "MIT",
   "repository": {
     "type": "git",
     "url": "https://github.com/perliedman/lrm-valhalla.git"
   },
   "homepage": "https://github.com/valhalla/lrm-valhalla",
-  "bugs": "https://github.com/perliedman/lrm-valhalla/issues",
+  "bugs": {
+    "url": "https://github.com/perliedman/lrm-valhalla/issues"
+  },
   "dependencies": {
     "corslite": "0.0.6",
     "leaflet": "^0.7.3",
@@ -33,5 +35,8 @@
     "browserify": "^8.1.3",
     "browserify-shim": "^3.8.2",
     "uglify-js": "^2.4.16"
+  },
+  "directories": {
+    "example": "examples"
   }
 }
