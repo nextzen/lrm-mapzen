@@ -1,6 +1,6 @@
 {
   "name": "lrm-valhalla",
-  "version": "0.0.1",
+  "version": "0.0.2",
   "description": "Support for Valhalla by Mapzen in Leaflet Machine",
   "main": "src/L.Routing.Valhalla.js",
   "scripts": {
@@ -17,11 +17,11 @@
   "license": "MIT",
   "repository": {
     "type": "git",
-    "url": "https://github.com/perliedman/lrm-valhalla.git"
+    "url": "https://github.com/valhalla/lrm-valhalla.git"
   },
   "homepage": "https://github.com/valhalla/lrm-valhalla",
   "bugs": {
-    "url": "https://github.com/perliedman/lrm-valhalla/issues"
+    "url": "https://github.com/valhalla/lrm-valhalla/issues"
   },
   "dependencies": {
     "corslite": "0.0.6",
