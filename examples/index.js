@@ -19,7 +19,8 @@ L.Routing.control({
 		L.latLng(57.74, 11.94),
 		L.latLng(57.6792, 11.949)
 	],
-	router: L.Routing.valhalla('valhalla-3IMakjA','auto'),
+  // you can get valhalla api key from Mapzen developer (https://mapzen.com/developers)
+	router: L.Routing.valhalla('your-api-key','auto'),
   formatter: new L.Routing.Valhalla.Formatter(),
   summaryTemplate:'<div class="start">{name}</div><div class="info {transitmode}">{distance}, {time}</div>',
   routeWhileDragging: false
