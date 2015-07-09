@@ -11,7 +11,8 @@
   "keywords": [
     "leaflet",
     "routing",
-    "graphhopper"
+    "valhalla",
+    "mapzen"
   ],
   "author": "Hanbyul Jo <hanbyul@mapzen.com>",
   "license": "MIT",
