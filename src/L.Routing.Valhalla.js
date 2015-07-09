@@ -67,8 +67,8 @@
             this._routeDone(data, wps, callback, context);
           } else {
             callback.call(context || callback, {
-              status: -1,
-              message: 'HTTP request failed: ' + err
+              status: err.status,
+              message: err.responseText
             });
           }
         }
