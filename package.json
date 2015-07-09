@@ -1,6 +1,6 @@
 {
   "name": "lrm-valhalla",
-  "version": "0.0.3",
+  "version": "0.0.5",
   "description": "Support for Valhalla by Mapzen in Leaflet Machine",
   "main": "src/L.Routing.Valhalla.js",
   "scripts": {
@@ -11,7 +11,8 @@
   "keywords": [
     "leaflet",
     "routing",
-    "graphhopper"
+    "valhalla",
+    "mapzen"
   ],
   "author": "Hanbyul Jo <hanbyul@mapzen.com>",
   "license": "MIT",

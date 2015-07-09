@@ -116,8 +116,7 @@
 
 
       alts = [{
-        ////gotta change
-        name: this._trimLocationKey(inputWaypoints[0].latLng) + " </div><div class='dest'> " + this._trimLocationKey(inputWaypoints[1].latLng) ,
+        name: this._trimLocationKey(inputWaypoints[0].latLng) + " , " + this._trimLocationKey(inputWaypoints[1].latLng) ,
         unit: response.trip.units,
         transitmode: this._transitmode,
         coordinates: coordinates,
