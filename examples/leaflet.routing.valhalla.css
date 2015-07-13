@@ -90,17 +90,17 @@ html,body{
 .info::before{
     -webkit-background-size: 54px 18px;
     background-size: 54px 18px;
-    background-image:url('modes.icons.png');
+    background-image:url('modes.icons.svg');
     margin: 0;
     content: '';
     display: inline-block;
     vertical-align: top;
     background-repeat: no-repeat;
-    width:20px;
+    width:18px;
     height:18px;
 }
 
-.info.auto::before{ background-position: 0 0;}
+.info.auto::before{ background-position: 1px 0;}
 .info.bicycle::before{ background-position: -18px 0;}
 .info.pedestrian::before{ background-position: -36px 0;}
 
