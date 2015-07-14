@@ -40,8 +40,8 @@ You can use Valhalla routing machine with Leaflet Routing Machine plugin by repl
       formatter: new L.Routing.Valhalla.Formatter()
     }).addTo(map);
 
+For router, you need to pass in your API key from Mapzen, which you can create for free at [https://mapzen.com/developers](https://mapzen.com/developers), and also the type of routing to perform. Routing models include auto for vehicles, bicycle, and pedestrian; see the [Valhalla API documentation](https://github.com/valhalla/demos/blob/master/docs/valhalla_service.md) for more information. No options are needed for the formatter.
 
-You can change transitmode for routing later by passing the options.
-Currently (June 2015), Valhalla supports auto, bicycle, and pedestrian mode for routing.
+You can change transitmode by passing the transitmode option after initializing router. 
 
      rr.route({transitmode: 'auto'});
