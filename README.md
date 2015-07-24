@@ -27,7 +27,7 @@ As with the other LRM plug-ins, you can [download lrm-valhalla](https://mapzen.c
     <script src="lrm-valhalla.js"></script>
     [...]
 
-Insert your [Valhalla API key](https://mapzen.com/developers) and the routing mode ( auto, bicycle, or pedestrian); see the [Valhalla API documentation](https://github.com/valhalla/valhalla-docs/blob/gh-pages/api-reference.md) for more information.
+Insert your [Valhalla API key](https://mapzen.com/developers) and the routing mode (`auto`, `bicycle`, or `pedestrian`); see the [Valhalla API documentation](https://github.com/valhalla/valhalla-docs/blob/gh-pages/api-reference.md) for more information.
 
     L.Routing.control({
       [...]
@@ -53,7 +53,7 @@ Once the Valhalla plug-in is installed, update the router and formatter instance
       formatter: new L.Routing.Valhalla.Formatter()
     });
 
-For router, insert your [Valhalla API key](https://mapzen.com/developers) and the routing mode (such as `auto`, `bicycle`, or `pedestrian`); see the [Valhalla API documentation](https://github.com/valhalla/valhalla-docs/blob/gh-pages/api-reference.md) for more information. (Note that no options are needed for formatter.)
+For `router`, insert your [Valhalla API key](https://mapzen.com/developers) and the routing mode (such as `auto`, `bicycle`, or `pedestrian`); see the [Valhalla API documentation](https://github.com/valhalla/valhalla-docs/blob/gh-pages/api-reference.md) for more information. (Note that no options are needed for `formatter`.)
 
 You can also change the routing mode after the router is created. Say you had different transportation options on your map and wanted to change `transitmode` to `bicycle` when that button is clicked: 
 
