@@ -27,7 +27,7 @@ As with the other LRM plug-ins, you can [download lrm-valhalla](https://mapzen.c
     <script src="lrm-valhalla.js"></script>
     [...]
 
-Insert your [Valhalla API key](https://mapzen.com/developers) and the routing mode (`auto`, `bicycle`, or `pedestrian`); see the [Valhalla API documentation](https://github.com/valhalla/valhalla-docs/blob/gh-pages/api-reference.md) for more information.
+Insert your [Valhalla API key](https://mapzen.com/developers) and the routing mode (`auto`, `bicycle`, or `pedestrian`). (Note that no options are needed for `formatter`.)
 
     L.Routing.control({
       [...]
@@ -35,6 +35,7 @@ Insert your [Valhalla API key](https://mapzen.com/developers) and the routing mo
       formatter: new L.Routing.Valhalla.Formatter()
     })
 
+See the [Valhalla API documentation](https://github.com/valhalla/valhalla-docs/blob/gh-pages/api-reference.md) for more information.
 
 ## Using Valhalla with npm and Browserify
 
