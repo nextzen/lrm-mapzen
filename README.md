@@ -16,7 +16,7 @@ Leaflet Routing Machine / Valhalla by Mapzen
 
 Extends [Leaflet Routing Machine](https://github.com/perliedman/leaflet-routing-machine) with support for [Valhalla](https://mapzen.com/projects/valhalla).
 
-Valhalla is a free, open-source routing service with dynamic run-time costing that lets you integrate automobile, bicycle, and pedestrian navigation into a web or mobile application. To use Valhalla with the Leaflet Routing Machine, install the lrm-valhalla plug-in with npm and get your free API key from mapzen.com/developers.
+Valhalla is a free, open-source routing service with dynamic run-time costing that lets you integrate automobile, bicycle, and pedestrian navigation into a web or mobile application. To use Valhalla with the Leaflet Routing Machine, install the lrm-valhalla plug-in with npm and get your free API key from [mapzen.com/developers](http://mapzen.com/developers).
 
 ## How to use
 
@@ -53,9 +53,9 @@ Once the Valhalla plug-in is installed, update the router and formatter instance
       formatter: new L.Routing.Valhalla.Formatter()
     });
 
-For router, insert your [Valhalla API key](https://mapzen.com/developers) and the routing mode (such as auto, bicycle, or pedestrian); see the [Valhalla API documentation](https://github.com/valhalla/valhalla-docs/blob/gh-pages/api-reference.md) for more information. (Note that no options are needed for formatter.)
+For router, insert your [Valhalla API key](https://mapzen.com/developers) and the routing mode (such as `auto`, `bicycle`, or `pedestrian`); see the [Valhalla API documentation](https://github.com/valhalla/valhalla-docs/blob/gh-pages/api-reference.md) for more information. (Note that no options are needed for formatter.)
 
-You can also change the routing mode after the router is created. Say you had different transportation options on your map and wanted to change `transitmode` to bicycle when that button is clicked: 
+You can also change the routing mode after the router is created. Say you had different transportation options on your map and wanted to change `transitmode` to `bicycle` when that button is clicked: 
 
     var rr = L.Routing.valhalla('my-api-key', 'auto');
     [...]
@@ -63,13 +63,13 @@ You can also change the routing mode after the router is created. Say you had di
       rr.route({transitmode: "bicycle"});
     }
 
-## Running local example
+## Running a local example
 
 If you want to run your lrm-valhalla plug-in locally for test and development purposes:
 
 - Install lrm-valhalla through npm or [download the contents of the lrm-valhalla repo](https://github.com/valhalla/lrm-valhalla/archive/master.zip)
 - get your API key from [mapzen.com/developers](https://mapzen.com/developers)
-- paste it into the example's index.js and choose the transportation mode (auto, bicycle, or pedestrian)
+- paste it into the example's index.js and choose the transportation mode (`auto`, `bicycle`, or `pedestrian`)
 - start a local web server (such as python -m SimpleHTTPServer or the local server you prefer)
-- go to localhost:8000/examples in your browser (all assets to run Valhalla are in the /examples folder)
+- go to localhost:8000/examples in your browser (all assets needed to run Valhalla are in the /examples folder)
 
