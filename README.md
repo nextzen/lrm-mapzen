@@ -23,10 +23,16 @@ Valhalla is a free, open-source routing service with dynamic run-time costing th
 As with the other LRM plug-ins, you can [download lrm-valhalla](https://mapzen.com/resources/lrm-valhalla-0.0.9.zip) and insert the JavaScript file into your page right after the line where it loads Leaflet Routing Machine:
 
 ```html
-[...]
+/* ... */
 <script src="leaflet-routing-machine.js"></script>
 <script src="lrm-valhalla.js"></script>
-[...]
+/* ... */
+```
+
+Also, include the stylesheet. This can replace the default `leaflet-routing-machine.css` provided by LRM, since the Valhalla plugin includes its own styles and icons.
+
+```html
+<link rel="stylesheet" href="leaflet.routing.valhalla.css">
 ```
 
 Insert your [Valhalla API key](https://mapzen.com/developers) and the routing mode (`auto`, `bicycle`, or `pedestrian`). (Note that no options are needed for `formatter`.)
