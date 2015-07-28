@@ -18,9 +18,9 @@ L.Routing.control({
   waypoints: [
     L.latLng(57.74, 11.94),
     L.latLng(57.6792, 11.949)
-	],
+  ],
   // You can get your own Valhalla API key from the Mapzen developer portal (https://mapzen.com/developers/)
-	router: L.Routing.valhalla('<my api key>', 'auto'),
+  router: L.Routing.valhalla('<my api key>', 'auto'),
   formatter: new L.Routing.Valhalla.Formatter(),
   summaryTemplate:'<div class="start">{name}</div><div class="info {transitmode}">{distance}, {time}</div>',
   routeWhileDragging: false
