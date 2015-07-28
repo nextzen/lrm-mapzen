@@ -342,7 +342,7 @@ if (typeof module !== undefined) module.exports = polyline;
     }
   });
 
- // module.exports = L.Routing;
+  module.exports = L.Routing;
 })();
 }).call(this,typeof global !== "undefined" ? global : typeof self !== "undefined" ? self : typeof window !== "undefined" ? window : {})
 },{}],4:[function(require,module,exports){
