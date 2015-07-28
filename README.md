@@ -47,7 +47,7 @@ L.Routing.control({
 }).addTo(map);
 ```
 
-See the [Valhalla API documentation](https://github.com/valhalla/valhalla-docs/blob/gh-pages/api-reference.md) for more information.
+See the [Leaflet Routing Machine documentation](http://www.liedman.net/leaflet-routing-machine/tutorials/) and  [Valhalla API documentation](https://github.com/valhalla/valhalla-docs/blob/gh-pages/api-reference.md) for more information.
 
 ## Using Valhalla with npm and Browserify
 
