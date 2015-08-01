@@ -42,7 +42,7 @@ var map = L.map('map');
 
 L.Routing.control({
   // [...] See Valhalla API documentation for other options
-  router: L.Routing.valhalla('<my api key>', 'auto')
+  router: L.Routing.valhalla('<my api key>', 'auto'),
   formatter: new L.Routing.Valhalla.Formatter()
 }).addTo(map);
 ```
