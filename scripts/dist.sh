@@ -9,7 +9,7 @@ uglifyjs dist/lrm-valhalla.js > dist/lrm-valhalla.min.js
 
 cp css/leaflet.routing.valhalla.css dist/leaflet.routing.valhalla.css
 cp css/leaflet.routing.icons.png dist/leaflet.routing.icons.png
-cp css/leaflet.routing.icons.svg dist/leaflet.routing.icons.svg
 cp css/modes.icons.svg dist/modes.icons.svg
+cp css/modes.icons.png dist/modes.icons.png
 
 echo Done.
