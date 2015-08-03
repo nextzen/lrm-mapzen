@@ -26,7 +26,7 @@ You can use Valhalla routing machine with Leaflet Routing Machine plugin by repl
 
     var rr = L.Routing.control({
       // you can get api key from Mapzen developer (https://mapzen.com/developers)
-      router: L.Routing.valhalla('valhalla-nsDITYA','auto'),
+      router: L.Routing.valhalla('<my api key>','auto'),
       formatter: new L.Routing.Valhalla.Formatter()
     }).addTo(map);
 
