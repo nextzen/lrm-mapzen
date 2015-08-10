@@ -72,6 +72,20 @@ L.Routing.control({
 }).addTo(map);
 ```
 
+If you want to pass additional costing options, you can pass `costingOptions` object as one of router options. 
+
+```js
+L.Routing.control({
+  router: L.Routing.valhalla('<my api key>', 'auto'),
+  formatter: new L.Routing.Valhalla.Formatter(),
+  costingOptions: {
+    bicycle: {
+      bicycle_type: "Cross"
+    }
+  }
+}).addTo(map);
+```
+
 For `router`, insert your [Valhalla API key](https://mapzen.com/developers) and the routing mode (such as `auto`, `bicycle`, or `pedestrian`); see the [Valhalla API documentation](https://github.com/valhalla/valhalla-docs/blob/gh-pages/api-reference.md) for more information. (Note that no options are needed for `formatter`.)
 
 You can also change the routing mode after the router is created. Say you had different transportation options on your map and wanted to change `transitmode` to `bicycle` when that button is clicked: 
