@@ -72,7 +72,7 @@ L.Routing.control({
 }).addTo(map);
 ```
 
-If you want to pass additional costing options, you can pass `costingOptions` object as one of router options. You can check details about costing options at (Valhalla Documentation)[https://github.com/valhalla/demos/blob/master/docs/valhalla_service.md#costing-options].
+If you want to pass additional costing options, you can pass `costingOptions` object as one of router options. You can check details about costing options at [Valhalla Documentation](https://github.com/valhalla/demos/blob/master/docs/valhalla_service.md#costing-options).
 
 ```js
 L.Routing.control({
