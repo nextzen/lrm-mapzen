@@ -49,6 +49,21 @@ L.Routing.control({
 
 See the [Leaflet Routing Machine documentation](http://www.liedman.net/leaflet-routing-machine/tutorials/) and  [Valhalla API documentation](https://github.com/valhalla/valhalla-docs/blob/gh-pages/api-reference.md) for more information.
 
+
+If you want to include additional costing options to help define the the route and estimated time along the path, you can pass `costingOptions` object as one of router options. See the [Valhalla API documentation](https://github.com/valhalla/demos/blob/master/docs/valhalla_service.md#costing-options) for more information on the available options for each routing mode.
+
+```js
+L.Routing.control({
+  router: L.Routing.valhalla('<my api key>', 'auto'),
+  formatter: new L.Routing.Valhalla.Formatter(),
+  costingOptions: {
+    bicycle: {
+      bicycle_type: "Cross"
+    }
+  }
+}).addTo(map);
+```
+
 ## Using Valhalla with npm and Browserify
 
 Like other plug-ins, the Valhalla plug-in can be installed using npm instead of downloading the script manually:
@@ -71,6 +86,7 @@ L.Routing.control({
   formatter: new L.Routing.Valhalla.Formatter()
 }).addTo(map);
 ```
+
 
 For `router`, insert your [Valhalla API key](https://mapzen.com/developers) and the routing mode (such as `auto`, `bicycle`, or `pedestrian`); see the [Valhalla API documentation](https://github.com/valhalla/valhalla-docs/blob/gh-pages/api-reference.md) for more information. (Note that no options are needed for `formatter`.)
 

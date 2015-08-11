@@ -415,9 +415,10 @@ if (typeof module !== undefined) module.exports = polyline;
             data = JSON.parse(resp.responseText);
             this._routeDone(data, wps, callback, context);
           } else {
+            console.log("Error : " + err.response);
             callback.call(context || callback, {
               status: err.status,
-              message: err.responseText
+              message: err.response
             });
           }
         }
@@ -513,6 +514,7 @@ if (typeof module !== undefined) module.exports = polyline;
           hint;
       var transitM = options.transitmode || this._transitmode;
       var streetName = options.street;
+      var costingOptions = options.costing_options;
       this._transitmode = transitM;
 
       for (var i = 0; i < waypoints.length; i++) {
@@ -534,11 +536,12 @@ if (typeof module !== undefined) module.exports = polyline;
         locs.push(loc);
       }
 
-       var params = JSON.stringify({
-         locations: locs,
-         costing: transitM,
-         street: streetName
-       });
+      var params = JSON.stringify({
+        locations: locs,
+        costing: transitM,
+        street: streetName,
+        costing_options: costingOptions
+      });
 
       return this.options.serviceUrl + 'route?json=' +
               params + '&api_key=' + this._accessToken;
@@ -589,7 +592,6 @@ if (typeof module !== undefined) module.exports = polyline;
           });
         }
       }
-
       return result;
     },
 
