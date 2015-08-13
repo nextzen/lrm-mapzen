@@ -357,16 +357,17 @@ if (typeof module !== undefined) module.exports = polyline;
   L.Routing = L.Routing || {};
 
   L.Routing.Valhalla = L.Class.extend({
-    options: {
-      serviceUrl: '//valhalla.mapzen.com/',
-      timeout: 30 * 1000,
-      transitmode: 'auto'
-    },
 
-    initialize: function(accessToken, transitmode, options) {
-      L.Util.setOptions(this, options);
+
+    initialize: function(accessToken, transitmode, costingOptions, options) {
+      L.Util.setOptions(this, options || {
+        serviceUrl: '//valhalla.mapzen.com/',
+        timeout: 30 * 1000,
+        transitmode: 'auto'
+      });
       this._accessToken = accessToken;
       this._transitmode = transitmode;
+      this._costingOptions = costingOptions;
       this._hints = {
         locations: {}
       };
@@ -514,7 +515,7 @@ if (typeof module !== undefined) module.exports = polyline;
           hint;
       var transitM = options.transitmode || this._transitmode;
       var streetName = options.street;
-      var costingOptions = options.costing_options;
+      var costingOptions = this._costingOptions;
       this._transitmode = transitM;
 
       for (var i = 0; i < waypoints.length; i++) {

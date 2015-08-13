@@ -54,13 +54,14 @@ If you want to include additional costing options to help define the the route a
 
 ```js
 L.Routing.control({
-  router: L.Routing.valhalla('<my api key>', 'auto'),
+  router: L.Routing.valhalla('<my api key>', 'auto', {
+        bicycle: {
+        bicycle_type: "Road",
+        cycling_speed: 17,
+        use_roads: "0.1"
+      }
+    }),),
   formatter: new L.Routing.Valhalla.Formatter(),
-  costingOptions: {
-    bicycle: {
-      bicycle_type: "Cross"
-    }
-  }
 }).addTo(map);
 ```
 

@@ -165,7 +165,7 @@
           hint;
       var transitM = options.transitmode || this._transitmode;
       var streetName = options.street;
-      var costingOptions = options.costing_options;
+      var costingOptions = options.costingOptions;
       this._transitmode = transitM;
 
       for (var i = 0; i < waypoints.length; i++) {
