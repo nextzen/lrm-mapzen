@@ -50,11 +50,11 @@ L.Routing.control({
 See the [Leaflet Routing Machine documentation](http://www.liedman.net/leaflet-routing-machine/tutorials/) and  [Valhalla API documentation](https://github.com/valhalla/valhalla-docs/blob/gh-pages/api-reference.md) for more information.
 
 
-If you want to include additional costing options to help define the the route and estimated time along the path, you can pass `costingOptions` object as one of router options. See the [Valhalla API documentation](https://github.com/valhalla/demos/blob/master/docs/valhalla_service.md#costing-options) for more information on the available options for each routing mode.
+If you want to include additional costing options to help define the the route and estimated time along the path, you can pass costing optoin object as one of router parameter. See the [Valhalla API documentation](https://github.com/valhalla/demos/blob/master/docs/valhalla_service.md#costing-options) for more information on the available options for each routing mode.
 
 ```js
 L.Routing.control({
-  router: L.Routing.valhalla('<my api key>', 'bicycle', {
+  router: L.Routing.valhalla('<my api key>', 'bicycleg', {
         bicycle: {
         bicycle_type: "Road",
         cycling_speed: 17,
