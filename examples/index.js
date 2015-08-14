@@ -13,7 +13,6 @@ layer.addTo(map);
 //   attribution: '&copy; <a href="http://osm.org/copyright">OpenStreetMap</a> contributors'
 // }).addTo(map);
 
-
 L.Routing.control({
   waypoints: [
     L.latLng(36.4192141, -119.8706489),
