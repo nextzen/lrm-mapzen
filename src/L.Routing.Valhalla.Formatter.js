@@ -32,6 +32,8 @@
           v,
         data;
 
+        //valhalla returns distance in km 
+        d  = d * 1000;
       if (this.options.units === 'imperial') {
         d = d / 1.609344;
         if (d >= 1000) {
