@@ -219,8 +219,9 @@ if (typeof module !== undefined) module.exports = polyline;
       var un = this.options.unitNames,
           v,
         data;
-
       if (this.options.units === 'imperial') {
+        //valhalla returns distance in km 
+        d  = d * 1000;
         d = d / 1.609344;
         if (d >= 1000) {
           data = {
