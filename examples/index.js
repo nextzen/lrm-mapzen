@@ -16,10 +16,10 @@ layer.addTo(map);
 L.Routing.control({
   waypoints: [
     L.latLng(36.4192141, -119.8706489),
-    L.latLng(36.4156136, -119.849234)
+    L.latLng(36.4136136, -119.849234)
   ],
   // You can get your own Valhalla API key from the Mapzen developer portal (https://mapzen.com/developers/)
-  router: L.Routing.valhalla('<my api key>', 'auto'),
-  formatter: new L.Routing.Valhalla.Formatter(),
+  router: L.Routing.valhalla('<my-api-key>', 'auto'),
+  formatter: new L.Routing.Valhalla.Formatter({units:'imperial'}),
   summaryTemplate:'<div class="start">{name}</div><div class="info {transitmode}">{distance}, {time}</div>'
 }).addTo(map);
