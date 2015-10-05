@@ -47,10 +47,10 @@ L.Routing.control({
 }).addTo(map);
 ```
 
-See the [Leaflet Routing Machine documentation](http://www.liedman.net/leaflet-routing-machine/tutorials/) and  [Valhalla API documentation](https://github.com/valhalla/valhalla-docs/blob/gh-pages/api-reference.md) for more information.
+See the [Leaflet Routing Machine documentation](http://www.liedman.net/leaflet-routing-machine/tutorials/) and  [Valhalla API documentation](https://github.com/valhalla/valhalla-docs/blob/master/api-reference.md) for more information.
 
 
-If you want to include additional costing options to help define the the route and estimated time along the path, you can pass costing option object as one of router parameter. See the [Valhalla API documentation](https://github.com/valhalla/demos/blob/master/docs/valhalla_service.md#costing-options) for more information on the available options for each routing mode.
+If you want to include additional costing options to help define the the route and estimated time along the path, you can pass costing option object as one of router parameter. See the [Valhalla API documentation](https://github.com/valhalla/valhalla-docs/blob/master/api-reference.md) for more information on the available options for each routing mode.
 
 ```js
 L.Routing.control({
@@ -89,7 +89,7 @@ L.Routing.control({
 ```
 
 
-For `router`, insert your [Valhalla API key](https://mapzen.com/developers) and the routing mode (such as `auto`, `bicycle`, or `pedestrian`); see the [Valhalla API documentation](https://github.com/valhalla/valhalla-docs/blob/gh-pages/api-reference.md) for more information. (Note that no options are needed for `formatter`.)
+For `router`, insert your [Valhalla API key](https://mapzen.com/developers) and the routing mode (such as `auto`, `bicycle`, or `pedestrian`); see the [Valhalla API documentation](https://github.com/valhalla/valhalla-docs/blob/master/api-reference.md) for more information. (Note that no options are needed for `formatter`.)
 
 You can also change the routing mode after the router is created. Say you had different transportation options on your map and wanted to change `transitmode` to `bicycle` when that button is clicked: 
 
