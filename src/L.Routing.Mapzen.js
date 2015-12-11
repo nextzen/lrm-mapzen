@@ -7,7 +7,7 @@
 
   L.Routing = L.Routing || {};
 
-  L.Routing.Valhalla = L.Class.extend({
+  L.Routing.Mapzen = L.Class.extend({
 
 
     initialize: function(accessToken, transitmode, costingOptions, options) {
@@ -256,8 +256,8 @@
     }
   });
 
-  L.Routing.valhalla = function(accessToken, transitmode, options) {
-    return new L.Routing.Valhalla(accessToken, transitmode, options);
+  L.Routing.mapzen = function(accessToken, transitmode, options) {
+    return new L.Routing.Mapzen(accessToken, transitmode, options);
   };
 
   module.exports = L.Routing.Valhalla;

@@ -6,7 +6,7 @@
   L.Routing = L.Routing || {};
 
   //L.extend(L.Routing, require('./L.Routing.Localization'));  
-  L.Routing.Valhalla.Formatter = L.Class.extend({
+  L.Routing.Mapzen.Formatter = L.Class.extend({
     options: {
       units: 'metric',
       unitNames: {
