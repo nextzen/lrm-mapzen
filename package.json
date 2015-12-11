@@ -5,13 +5,13 @@
   "main": "src/L.Routing.Valhalla.js",
   "scripts": {
     "dist": "./scripts/dist.sh",
-    "publish": "./scripts/publish.sh",
     "test": "echo \"Error: no test specified\" && exit 1"
   },
   "keywords": [
     "leaflet",
     "routing",
     "valhalla",
+    "turn by turn",
     "mapzen"
   ],
   "author": "Hanbyul Jo <hanbyul@mapzen.com>",
