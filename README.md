@@ -1,113 +1,100 @@
-Leaflet Routing Machine / Valhalla by Mapzen
-============================================
+# Extend Leaflet Routing Machine with Mapzen Turn-by-Turn routing
 
+LRM-Mapzen extends [Leaflet Routing Machine](https://github.com/perliedman/leaflet-routing-machine) with support for the [Mapzen Turn-by-Turn](https://mapzen.com/projects/valhalla) routing service.
 
-     ██▒   █▓ ▄▄▄       ██▓     ██░ ██  ▄▄▄       ██▓     ██▓    ▄▄▄      
-    ▓██░   █▒▒████▄    ▓██▒    ▓██░ ██▒▒████▄    ▓██▒    ▓██▒   ▒████▄    
-     ▓██  █▒░▒██  ▀█▄  ▒██░    ▒██▀▀██░▒██  ▀█▄  ▒██░    ▒██░   ▒██  ▀█▄  
-      ▒██ █░░░██▄▄▄▄██ ▒██░    ░▓█ ░██ ░██▄▄▄▄██ ▒██░    ▒██░   ░██▄▄▄▄██ 
-       ▒▀█░   ▓█   ▓██▒░██████▒░▓█▒░██▓ ▓█   ▓██▒░██████▒░██████▒▓█   ▓██▒
-       ░ ▐░   ▒▒   ▓▒█░░ ▒░▓  ░ ▒ ░░▒░▒ ▒▒   ▓▒█░░ ▒░▓  ░░ ▒░▓  ░▒▒   ▓▒█░
-       ░ ░░    ▒   ▒▒ ░░ ░ ▒  ░ ▒ ░▒░ ░  ▒   ▒▒ ░░ ░ ▒  ░░ ░ ▒  ░ ▒   ▒▒ ░
-         ░░    ░   ▒     ░ ░    ░  ░░ ░  ░   ▒     ░ ░     ░ ░    ░   ▒   
-          ░        ░  ░    ░  ░ ░  ░  ░      ░  ░    ░  ░    ░  ░     ░  ░
-         ░                                                                    
+Mapzen Turn-by-Turn is an open-source routing service with dynamic run-time costing that lets you integrate automobile, bicycle, and pedestrian navigation into a web or mobile application. To use Mapzen Turn-by-Turn with the Leaflet Routing Machine, install the lrm-mapzen plug-in and obtain an API key from [mapzen.com/developers](http://mapzen.com/developers).
 
+Use this plug-in to create a map that has a route line between map locations (also known as waypoints), a text narrative of maneuvers to perform on the route, distances along your route and estimated travel times, and the ability to drag the route start and endpoints to get a different path. Mapzen Turn-by-Turn is substituted for the default routing service used in Leaflet Routing Machine.
 
-Extends [Leaflet Routing Machine](https://github.com/perliedman/leaflet-routing-machine) with support for [Valhalla](https://mapzen.com/projects/valhalla).
+## Get started with LRM-Mapzen
 
-Valhalla is a free, open-source routing service with dynamic run-time costing that lets you integrate automobile, bicycle, and pedestrian navigation into a web or mobile application. To use Valhalla with the Leaflet Routing Machine, install the lrm-valhalla plug-in with npm and get your free API key from [mapzen.com/developers](http://mapzen.com/developers).
+Follow along with [this tutorial](https://mapzen.com/documentation/turn-by-turn/add-routing-to-a-map/) to build a map with LRM-Mapzen.
 
-## How to use
-
-As with the other LRM plug-ins, you can [download lrm-valhalla](https://mapzen.com/resources/lrm-valhalla-0.0.9.zip) and insert the JavaScript file into your page right after the line where it loads Leaflet Routing Machine:
+[Download lrm-mapzen](https://mapzen.com/resources/lrm-valhalla-0.0.9.zip) and insert a reference to the JavaScript file into your page right after the line where it loads Leaflet Routing Machine:
 
 ```html
-/* ... */
+[...]
 <script src="leaflet-routing-machine.js"></script>
-<script src="lrm-valhalla.js"></script>
-/* ... */
+<script src="lrm-mapzen.js"></script>
+[...]
 ```
 
-Also, include the stylesheet. This can replace the default `leaflet-routing-machine.css` provided by LRM, since the Valhalla plugin includes its own styles and icons.
+Also, include the stylesheet. This can replace the default `leaflet-routing-machine.css` provided by LRM, since the Mapzen plugin includes its own styles and icons.
 
 ```html
-<link rel="stylesheet" href="leaflet.routing.valhalla.css">
+<link rel="stylesheet" href="leaflet.routing.mapzen.css">
 ```
 
-Insert your [Valhalla API key](https://mapzen.com/developers) and the routing mode (`auto`, `bicycle`, or `pedestrian`). (Note that no options are needed for `formatter`.)
+Insert your [Mapzen Turn-by-Turn API key](https://mapzen.com/developers) for the placeholder text (valhalla-xxxxxx) and the routing mode (`auto`, `bicycle`, or `pedestrian`). (Note that no options are needed for `formatter`.)
 
 ```js
 var map = L.map('map');
 
 L.Routing.control({
-  // [...] See Valhalla API documentation for other options
-  router: L.Routing.valhalla('<my api key>', 'auto'),
-  formatter: new L.Routing.Valhalla.Formatter()
+  // [...] See MapzenTurn-by-Turn API documentation for other options
+  router: L.Routing.mapzen('valhalla-xxxxxx', 'auto'),
+  formatter: new L.Routing.Mapzen.Formatter()
 }).addTo(map);
 ```
 
-See the [Leaflet Routing Machine documentation](http://www.liedman.net/leaflet-routing-machine/tutorials/) and  [Valhalla API documentation](https://github.com/valhalla/valhalla-docs/blob/master/api-reference.md) for more information.
-
-
-If you want to include additional costing options to help define the the route and estimated time along the path, you can pass costing option object as one of router parameter. See the [Valhalla API documentation](https://github.com/valhalla/valhalla-docs/blob/master/api-reference.md) for more information on the available options for each routing mode.
+If you want to include additional costing options to help define the the route and estimated time along the path, you can pass a costing option object as one of router parameters. See the [Mapzen Turn-by-Turn API documentation](https://mapzen.com/documentation/turn-by-turn/api-reference/) for more information on the available options for each routing mode.
 
 ```js
 L.Routing.control({
-  router: L.Routing.valhalla('<my api key>', 'bicycle', {
+  router: L.Routing.mapzen('valhalla-xxxxxx', 'bicycle', {
         bicycle: {
         bicycle_type: "Road",
         cycling_speed: 17,
         use_roads: "0.1"
       }
     }),
-  formatter: new L.Routing.Valhalla.Formatter(),
+  formatter: new L.Routing.Mapzen.Formatter(),
 }).addTo(map);
 ```
 
-## Using Valhalla with npm and Browserify
+See the [Leaflet Routing Machine documentation](http://www.liedman.net/leaflet-routing-machine/tutorials/) and [Mapzen Turn-by-Turn API documentation](https://mapzen.com/documentation/turn-by-turn/api-reference/) for more information.
 
-Like other plug-ins, the Valhalla plug-in can be installed using npm instead of downloading the script manually:
+## Use Mapzen Turn-by-Turn with npm and Browserify
+
+The Mapzen plug-in can be installed using npm instead of downloading the script manually:
 
 ```sh
-npm install --save lrm-valhalla
+npm install --save lrm-mapzen
 ```
 
-Once the Valhalla plug-in is installed, update the router and formatter instances to tell the Leaflet Routing Machine to use Valhalla’s engine. 
+Once the Mapzen plug-in is installed, update the router and formatter instances to tell the Leaflet Routing Machine to use Mapzen’s engine.
 
 ```js
 var L = require('leaflet');
 require('leaflet-routing-machine');
-require('lrm-valhalla');
+require('lrm-mapzen');
 
 var map = L.map('map');
 
 L.Routing.control({
-  router: L.Routing.valhalla('<my api key>', 'auto'),
-  formatter: new L.Routing.Valhalla.Formatter()
+  router: L.Routing.mapzen('valhalla-xxxxxx', 'auto'),
+  formatter: new L.Routing.Mapzen.Formatter()
 }).addTo(map);
 ```
 
+For `router`, insert your [Mapzen Turn-by-Turn API key](https://mapzen.com/developers) and the routing mode (such as `auto`, `bicycle`, or `pedestrian`); see the [Mapzen Turn-by-Turn API documentation](https://mapzen.com/documentation/turn-by-turn/api-reference/) for more information. (Note that no options are needed for `formatter`.)
 
-For `router`, insert your [Valhalla API key](https://mapzen.com/developers) and the routing mode (such as `auto`, `bicycle`, or `pedestrian`); see the [Valhalla API documentation](https://github.com/valhalla/valhalla-docs/blob/master/api-reference.md) for more information. (Note that no options are needed for `formatter`.)
-
-You can also change the routing mode after the router is created. Say you had different transportation options on your map and wanted to change `transitmode` to `bicycle` when that button is clicked: 
+You can also change the routing mode after the router is created. Say you had different transportation options on your map and wanted to change `transitmode` to `bicycle` when that button is clicked:
 
 ```js
-var rr = L.Routing.valhalla('<my api key>', 'auto');
+var rr = L.Routing.mapzen('valhalla-xxxxxx', 'auto');
 [...]
 bikeButton.onClick: function () {
   rr.route({transitmode: "bicycle"});
 }
 ```
 
-## Running a local example
+## Run a local example
 
-If you want to run your lrm-valhalla plug-in locally for test and development purposes:
+If you want to run your lrm-mapzen plug-in locally for testing and development purposes:
 
-- Install lrm-valhalla through npm or [download the contents of the lrm-valhalla repo](https://github.com/valhalla/lrm-valhalla/archive/master.zip)
-- get your API key from [mapzen.com/developers](https://mapzen.com/developers/)
-- paste it into the example's index.js and choose the transportation mode (`auto`, `bicycle`, or `pedestrian`)
-- start a local web server (such as `python -m SimpleHTTPServer` or the local server you prefer)
-- go to `http://localhost:8000/examples` in your browser (all assets needed to run Valhalla are in the `/examples` folder)
-
+- Install lrm-mapzen through npm or [download the contents of the lrm-mapzen repo](https://github.com/mapzen/lrm-mapzen/archive/master.zip)
+- Get your API key from [mapzen.com/developers](https://mapzen.com/developers/)
+- Paste it into the example's index.js and choose the transportation mode (`auto`, `bicycle`, or `pedestrian`)
+- Start a local web server (such as `python -m SimpleHTTPServer` or the local server you prefer)
+- Go to `http://localhost:8000/examples` in your browser (all assets needed to run Mapzen are in the `/examples` folder)

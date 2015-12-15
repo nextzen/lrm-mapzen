@@ -194,7 +194,7 @@ if (typeof module !== undefined) module.exports = polyline;
   L.Routing = L.Routing || {};
 
   //L.extend(L.Routing, require('./L.Routing.Localization'));  
-  L.Routing.Valhalla.Formatter = L.Class.extend({
+  L.Routing.Mapzen.Formatter = L.Class.extend({
     options: {
       units: 'metric',
       unitNames: {
@@ -357,7 +357,7 @@ if (typeof module !== undefined) module.exports = polyline;
 
   L.Routing = L.Routing || {};
 
-  L.Routing.Valhalla = L.Class.extend({
+  L.Routing.Mapzen = L.Class.extend({
 
 
     initialize: function(accessToken, transitmode, costingOptions, options) {
@@ -606,8 +606,8 @@ if (typeof module !== undefined) module.exports = polyline;
     }
   });
 
-  L.Routing.valhalla = function(accessToken, transitmode, options) {
-    return new L.Routing.Valhalla(accessToken, transitmode, options);
+  L.Routing.mapzen = function(accessToken, transitmode, options) {
+    return new L.Routing.Mapzen(accessToken, transitmode, options);
   };
 
   module.exports = L.Routing.Valhalla;

@@ -1,28 +1,28 @@
 {
-  "name": "lrm-valhalla",
-  "version": "0.1.1",
-  "description": "Support for Valhalla by Mapzen in Leaflet Machine",
-  "main": "src/L.Routing.Valhalla.js",
+  "name": "lrm-mapzen",
+  "version": "0.1.2",
+  "description": "Support for Turn By Turn by Mapzen in Leaflet Machine",
+  "main": "src/L.Routing.Mapzen.js",
   "scripts": {
     "dist": "./scripts/dist.sh",
-    "publish": "./scripts/publish.sh",
     "test": "echo \"Error: no test specified\" && exit 1"
   },
   "keywords": [
     "leaflet",
     "routing",
     "valhalla",
+    "turn by turn",
     "mapzen"
   ],
   "author": "Hanbyul Jo <hanbyul@mapzen.com>",
   "license": "MIT",
   "repository": {
     "type": "git",
-    "url": "https://github.com/valhalla/lrm-valhalla.git"
+    "url": "https://github.com/mapzen/lrm-mapzen.git"
   },
-  "homepage": "https://github.com/valhalla/lrm-valhalla",
+  "homepage": "https://github.com/mapzen/lrm-mapzen",
   "bugs": {
-    "url": "https://github.com/valhalla/lrm-valhalla/issues"
+    "url": "https://github.com/mapzen/lrm-mapzen/issues"
   },
   "dependencies": {
     "corslite": "0.0.6",
