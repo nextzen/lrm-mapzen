@@ -37,8 +37,6 @@ L.Routing.control({
 }).addTo(map);
 ```
 
-See the [Leaflet Routing Machine documentation](http://www.liedman.net/leaflet-routing-machine/tutorials/) and [Mapzen Turn-by-Turn API documentation](https://mapzen.com/documentation/turn-by-turn/api-reference/) for more information.
-
 If you want to include additional costing options to help define the the route and estimated time along the path, you can pass a costing option object as one of router parameters. See the [Mapzen Turn-by-Turn API documentation](https://mapzen.com/documentation/turn-by-turn/api-reference/) for more information on the available options for each routing mode.
 
 ```js
@@ -53,6 +51,8 @@ L.Routing.control({
   formatter: new L.Routing.Mapzen.Formatter(),
 }).addTo(map);
 ```
+
+See the [Leaflet Routing Machine documentation](http://www.liedman.net/leaflet-routing-machine/tutorials/) and [Mapzen Turn-by-Turn API documentation](https://mapzen.com/documentation/turn-by-turn/api-reference/) for more information.
 
 ## Use Mapzen Turn-by-Turn with npm and Browserify
 
