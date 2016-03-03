@@ -108,7 +108,7 @@ html,body{
     -webkit-background-size: 576 16px;
     background-size: 576px 16px;
     background-repeat: no-repeat;
-    background-image:url('leaflet.routing.icons.png');
+    background-image:url('leaflet.routing.icons.svg');
     margin: 0;
     content: '';
     display: inline-block;

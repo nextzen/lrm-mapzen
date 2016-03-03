@@ -360,15 +360,15 @@ if (typeof module !== undefined) module.exports = polyline;
   L.Routing.Mapzen = L.Class.extend({
 
 
-    initialize: function(accessToken, transitmode, costingOptions, options) {
+    initialize: function(accessToken, transitmode, costingOptions, otherOptions, options) {
       L.Util.setOptions(this, options || {
-        serviceUrl: '//valhalla.mapzen.com/',
-        timeout: 30 * 1000,
-        transitmode: 'auto'
+        timeout: 30 * 1000
       });
+
       this._accessToken = accessToken;
       this._transitmode = transitmode;
       this._costingOptions = costingOptions;
+
       this._hints = {
         locations: {}
       };
@@ -391,7 +391,7 @@ if (typeof module !== undefined) module.exports = polyline;
                 timedOut = true;
                 callback.call(context || callback, {
                   status: -1,
-                  message: 'OSRM request timed out.'
+                  message: 'Time out.'
                 });
               }, this.options.timeout);
 
@@ -511,13 +511,12 @@ if (typeof module !== undefined) module.exports = polyline;
     },
     ///mapzen example
     buildRouteUrl: function(waypoints, options) {
+      var servieUrl = 'https://valhalla.mapzen.com'
       var locs = [],
           locationKey,
           hint;
-      var transitM = options.transitmode || this._transitmode;
-      var streetName = options.street;
+
       var costingOptions = this._costingOptions;
-      this._transitmode = transitM;
 
       for (var i = 0; i < waypoints.length; i++) {
         var loc;
@@ -540,12 +539,11 @@ if (typeof module !== undefined) module.exports = polyline;
 
       var params = JSON.stringify({
         locations: locs,
-        costing: transitM,
-        street: streetName,
+        costing: this._transitmode,
         costing_options: costingOptions
       });
 
-      return this.options.serviceUrl + 'route?json=' +
+      return serviceUrl + 'route?json=' +
               params + '&api_key=' + this._accessToken;
     },
 
@@ -610,7 +608,7 @@ if (typeof module !== undefined) module.exports = polyline;
     return new L.Routing.Mapzen(accessToken, transitmode, options);
   };
 
-  module.exports = L.Routing.Valhalla;
+  module.exports = L.Routing.Mapzen;
 })();
 }).call(this,typeof global !== "undefined" ? global : typeof self !== "undefined" ? self : typeof window !== "undefined" ? window : {})
 },{"corslite":1,"polyline":2}]},{},[4,3]);

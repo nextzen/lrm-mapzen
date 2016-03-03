@@ -1,6 +1,6 @@
 {
   "name": "lrm-mapzen",
-  "version": "0.1.2",
+  "version": "0.1.6",
   "description": "Support for Turn By Turn by Mapzen in Leaflet Machine",
   "main": "src/L.Routing.Mapzen.js",
   "scripts": {
