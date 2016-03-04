@@ -161,7 +161,7 @@
     },
     ///mapzen example
     buildRouteUrl: function(waypoints, options) {
-      var servieUrl = 'https://valhalla.mapzen.com'
+      var serviceUrl = 'https://valhalla.mapzen.com'
       var locs = [],
           locationKey,
           hint;
@@ -193,7 +193,7 @@
         costing_options: costingOptions
       });
 
-      return serviceUrl + 'route?json=' +
+      return serviceUrl + '/route?json=' +
               params + '&api_key=' + this._accessToken;
     },
 

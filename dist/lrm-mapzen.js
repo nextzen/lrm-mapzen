@@ -511,7 +511,7 @@ if (typeof module !== undefined) module.exports = polyline;
     },
     ///mapzen example
     buildRouteUrl: function(waypoints, options) {
-      var servieUrl = 'https://valhalla.mapzen.com'
+      var serviceUrl = 'https://valhalla.mapzen.com'
       var locs = [],
           locationKey,
           hint;
@@ -543,7 +543,7 @@ if (typeof module !== undefined) module.exports = polyline;
         costing_options: costingOptions
       });
 
-      return serviceUrl + 'route?json=' +
+      return serviceUrl + '/route?json=' +
               params + '&api_key=' + this._accessToken;
     },
 
@@ -569,15 +569,16 @@ if (typeof module !== undefined) module.exports = polyline;
       };
     },
 
-    _convertInstructions: function(osrmInstructions) {
+    _convertInstructions: function(instructions) {
+      console.log('is this even necessary?');
       var result = [],
           i,
           instr,
           type,
           driveDir;
 
-      for (i = 0; i < osrmInstructions.length; i++) {
-        instr = osrmInstructions[i];
+      for (i = 0; i < instructions.length; i++) {
+        instr = instructions[i];
         type = this._drivingDirectionType(instr[0]);
         driveDir = instr[0].split('-');
         if (type) {
