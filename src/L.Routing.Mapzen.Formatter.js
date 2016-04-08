@@ -5,7 +5,7 @@
 
   L.Routing = L.Routing || {};
 
-  //L.extend(L.Routing, require('./L.Routing.Localization'));  
+  //L.extend(L.Routing, require('./L.Routing.Localization'));
   L.Routing.Mapzen.Formatter = L.Class.extend({
     options: {
       units: 'metric',
@@ -32,7 +32,7 @@
           v,
         data;
       if (this.options.units === 'imperial') {
-        //valhalla returns distance in km 
+        //valhalla returns distance in km
         d  = d * 1000;
         d = d / 1.609344;
         if (d >= 1000) {
@@ -89,6 +89,8 @@
     getIconName: function(instr, i) {
       // you can find all Valhalla's direction types at https://github.com/valhalla/odin/blob/master/proto/tripdirections.proto
       switch (instr.type) {
+        case 0:
+          return 'kNone';
         case 1:
           return 'kStart';
         case 2:
@@ -147,11 +149,23 @@
           return 'kFerryEnter';
         case 29:
           return 'kFerryExit';
+        case 30:
+        case 31: //'kTransitTransfer'
+        case 32: //'kTransitRemainOn'
+        case 33: //'kTransitConnectionStart'
+        case 34: //'kTransitConnectionTransfer'
+        case 35: //'kTransitConnectionDestination'
+        case 36: //'kTransitConnectionDestination'
+          if (instr.edited_travel_type) return 'kTransit' + this._getCapitalizedName(instr.edited_travel_type);
+          else return 'kTransit';
       }
     },
 
     _getInstructionTemplate: function(instr, i) {
       return instr.instruction + " " +instr.length;
+    },
+    _getCapitalizedName: function(name) {
+      return name.charAt(0).toUpperCase() + name.slice(1);
     }
   });
 

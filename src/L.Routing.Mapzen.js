@@ -18,7 +18,6 @@
       this._accessToken = accessToken;
       this._transitmode = transitmode;
       this._costingOptions = costingOptions;
-
       this._hints = {
         locations: {}
       };
@@ -57,7 +56,6 @@
         });
       }
 
-
       corslite(url, L.bind(function(err, resp) {
         var data;
 
@@ -80,6 +78,7 @@
     },
 
     _routeDone: function(response, inputWaypoints, callback, context) {
+
       var coordinates,
           alts,
           actualWaypoints,
@@ -111,17 +110,22 @@
           insts.push(res);
         }
 
+        if(this._transitmode === 'multimodal') insts = this._unifyTransitManeuver(insts);
+
         shapeIndex += response.trip.legs[i].maneuvers[response.trip.legs[i].maneuvers.length-1]["begin_shape_index"];
       }
 
       actualWaypoints = this._toWaypoints(inputWaypoints, response.trip.locations);
 
+      var subRoutes;
+      if(this._transitmode == 'multimodal') subRoutes = this._getSubRoutes(response.trip.legs)
 
       alts = [{
         name: this._trimLocationKey(inputWaypoints[0].latLng) + " , " + this._trimLocationKey(inputWaypoints[1].latLng) ,
         unit: response.trip.units,
         transitmode: this._transitmode,
         coordinates: coordinates,
+        subRoutes: subRoutes,
         instructions: insts,//response.route_instructions ? this._convertInstructions(response.route_instructions) : [],
         summary: response.trip.summary ? this._convertSummary(response.trip.summary) : [],
         inputWaypoints: inputWaypoints,
@@ -135,6 +139,94 @@
         }
       callback.call(context, null, alts);
     },
+
+    _unifyTransitManeuver: function(insts) {
+
+      var transitType;
+      var newInsts = insts;
+
+      for(var i = 0; i < newInsts.length; i++) {
+        if(newInsts[i].type == 30) {
+          transitType = newInsts[i].travel_type;
+          break;
+        }
+      }
+
+      for(var j = 0; j < newInsts.length; j++) {
+        if(newInsts[j].type > 29) newInsts[j].edited_travel_type = transitType;
+      }
+
+      return newInsts;
+
+    },
+
+    _getSubRoutes: function(legs) {
+
+      var subRoute = [];
+
+      for (var i = 0; i < legs.length; i++) {
+
+        var coord = polyline.decode(legs[i].shape, 6);
+
+        var lastTravelType;
+        var travelTypeChangingIncides = [];
+        for(var j = 0; j < legs[i].maneuvers.length; j++){
+
+          var res = legs[i].maneuvers[j];
+          var travelType = res.travel_type;
+
+          if(travelType !== lastTravelType && lastTravelType !== 'undefined' && travelType !=='undefined') {
+            if(res.begin_shape_index > 0) travelTypeChangingIncides.push(res.begin_shape_index);
+            if(res.transit_info) subRoute.push({ travle_type: travelType, styles: this._getTransitColor(res.transit_info.color) })
+            else subRoute.push({travle_type: travelType})
+          }
+          lastTravelType = travelType;
+        }
+
+        travelTypeChangingIncides.push(coord.length);
+
+        var y = 0;
+        for(var z = 0; z < travelTypeChangingIncides.length; z++) {
+          var subRouteArr = [];
+          var overwrapping = 0;
+          if(z !== travelTypeChangingIncides.length-1) overwrapping = 1;
+
+          for(var x = y; x < travelTypeChangingIncides[z]+overwrapping; x++) {
+            subRouteArr.push(coord[x]);
+          }
+
+          var sra = subRouteArr;
+          y = travelTypeChangingIncides[z];
+          subRoute[z].coordinates = sra;
+        }
+      }
+      return subRoute;
+    },
+
+    _getTransitColor: function(lineColor) {
+      var hexColor = (lineColor).toString(16);
+      if (hexColor.length !='6'){
+        if (hexColor.length=="5")
+          hexColor="0"+hexColor;
+        else if (hexColor.length=="4")
+          hexColor="00"+hexColor;
+        else if (hexColor.length=="3")
+          hexColor="000"+hexColor;
+        else if (hexColor.length=="2")
+          hexColor="0000"+hexColor;
+        else
+          //default color in case there is no transit color
+          hexColor="CCCCCC";
+      }
+      if (hexColor==0) //this is not converting to black so need to manually set it
+        hexColor='000000';
+      var transitColor =  [
+        {color: 'black', opacity: 0.15, weight: 9},
+        {color: 'white', opacity: 0.8, weight: 6},
+        {color: '#'+hexColor.toUpperCase(), opacity: 0.8, weight: 4}];
+      return transitColor;
+   },
+
 
     _saveHintData: function(hintData, waypoints) {
       var loc;
@@ -220,7 +312,6 @@
     },
 
     _convertInstructions: function(instructions) {
-      console.log('is this even necessary?');
       var result = [],
           i,
           instr,

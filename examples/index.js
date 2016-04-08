@@ -1,8 +1,8 @@
 var map = L.map('map');
 
-// Using Tangram 
+// Using Tangram
 var layer = Tangram.leafletLayer({
-  scene: 'scene.yaml',
+  scene: 'https://cdn.rawgit.com/tangrams/refill-style/gh-pages/refill-style.yaml',
   attribution: '<a href="https://mapzen.com/tangram" target="_blank">Tangram</a> | &copy; OSM contributors | <a href="https://mapzen.com/" target="_blank">Mapzen</a>'
 });
 layer.addTo(map);
@@ -13,13 +13,17 @@ layer.addTo(map);
 //   attribution: '&copy; <a href="http://osm.org/copyright">OpenStreetMap</a> contributors'
 // }).addTo(map);
 
-L.Routing.control({
+var control = L.Routing.control({
   waypoints: [
-    L.latLng(36.4192141, -119.8706489),
-    L.latLng(36.4136136, -119.849234)
+    L.latLng(37.752, -122.418),
+    L.latLng(37.779, -122.391)
   ],
+  geocoder: L.Control.Geocoder.mapzen('search-RH8pVLv'),
+  reverseWaypoints: true,
   // You can get your own Valhalla API key from the Mapzen developer portal (https://mapzen.com/developers/)
-  router: L.Routing.mapzen('<my-api-key>', 'auto'),
-  formatter: new L.Routing.Mapzen.Formatter({units:'imperial'}),
+  router: L.Routing.mapzen('valhalla-PVA4Y8g', 'multimodal'),
+  formatter: new L.Routing.Mapzen.Formatter(),
   summaryTemplate:'<div class="start">{name}</div><div class="info {transitmode}">{distance}, {time}</div>'
 }).addTo(map);
+
+L.Routing.errorControl(control).addTo(map);
