@@ -2394,27 +2394,31 @@ if (typeof module !== undefined) module.exports = polyline;
       return subRoute;
     },
 
-    _getTransitColor: function(lineColor) {
-      var hexColor = (lineColor).toString(16);
-      if (hexColor.length !='6'){
-        if (hexColor.length=="5")
-          hexColor="0"+hexColor;
-        else if (hexColor.length=="4")
-          hexColor="00"+hexColor;
-        else if (hexColor.length=="3")
-          hexColor="000"+hexColor;
-        else if (hexColor.length=="2")
-          hexColor="0000"+hexColor;
-        else
-          //default color in case there is no transit color
-          hexColor="CCCCCC";
-      }
-      if (hexColor==0) //this is not converting to black so need to manually set it
-        hexColor='000000';
-      var transitColor =  [
-        {color: 'black', opacity: 0.15, weight: 9},
-        {color: 'white', opacity: 0.8, weight: 6},
-        {color: '#'+hexColor.toUpperCase(), opacity: 0.8, weight: 4}];
+    _getTransitColor: function(intColor) {
+
+      // isolate red, green, and blue components
+      var red = (intColor >> 16) & 0xff,
+          green = (intColor >> 8) & 0xff,
+          blue = (intColor >> 0) & 0xff;
+
+      // calculate luminance in YUV colorspace based on
+      // https://en.wikipedia.org/wiki/YUV#Conversion_to.2Ffrom_RGB
+      var lum = 0.299 * red + 0.587 * green + 0.114 * blue,
+          is_light = (lum > 0xbb);
+
+      // generate a CSS color string like 'RRGGBB'
+      var paddedHex = 0x1000000 | (intColor & 0xffffff),
+          lineColor = paddedHex.toString(16).substring(1, 7);
+
+      var transitColor = [
+              // Color of outline depending on luminance against background.
+              (is_light ? {color: '#000', opacity: 0.4, weight: 10}
+                        : {color: '#fff', opacity: 0.8, weight: 10}),
+
+              // Color of this transit line.
+              {color: '#'+lineColor.toUpperCase(), opacity: 1, weight: 6}
+            ]
+
       return transitColor;
    },
 
