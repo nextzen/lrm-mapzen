@@ -1392,6 +1392,8 @@ if (typeof module !== undefined) module.exports = polyline;
 			L.setOptions(this, options);
 			L.LayerGroup.prototype.initialize.call(this, options);
 			this._route = route;
+			var all_markers = [];
+	                var lineBreakMarker = {radius: 5, color: 'white', fillColor: '#20345b', opacity: 1, fillOpacity: 1};
 
 			if (this.options.extendToWaypoints) {
 				this._extendToWaypoints();
@@ -1400,6 +1402,14 @@ if (typeof module !== undefined) module.exports = polyline;
 			if (route.subRoutes) {
 				for(var i = 0; i < route.subRoutes.length; i++) {
 					if(!route.subRoutes[i].styles) route.subRoutes[i].styles = this.options.styles;
+					if (route.subRoutes[i].travel_type=='foot') {
+					  for (var s = 0; s < route.subRoutes[i].styles.length; s++)
+					    route.subRoutes[i].styles[s].dashArray = '4,10';
+					}
+					if (route.subRoutes[i].travel_type=='metro') {
+					  all_markers.push(L.circleMarker (route.subRoutes[i].coordinates[0], lineBreakMarker));
+					  all_markers.push(L.circleMarker (route.subRoutes[i].coordinates[route.subRoutes[i].coordinates.length-1], lineBreakMarker));					  
+					}
 					this._addSegment(
 						route.subRoutes[i].coordinates,
 						route.subRoutes[i].styles,
@@ -1411,6 +1421,8 @@ if (typeof module !== undefined) module.exports = polyline;
 			 	this.options.styles,
 			 	this.options.addWaypoints);
 			}
+            for (var m=0; m < all_markers.length; m++)
+              this.addLayer(all_markers[m]);
 		},
 
 		addTo: function(map) {
@@ -2368,7 +2380,7 @@ if (typeof module !== undefined) module.exports = polyline;
 
           if(travelType !== lastTravelType && lastTravelType !== 'undefined' && travelType !=='undefined') {
             if(res.begin_shape_index > 0) travelTypeChangingIncides.push(res.begin_shape_index);
-            if(res.transit_info) subRoute.push({ travel_type: travelType, styles: this._getTransitColor(res.transit_info.color) })
+            if(res.transit_info) subRoute.push({ travel_type: travelType, styles: this._getPolylineColor(res.transit_info.color) })
             else subRoute.push({travel_type: travelType})
           }
           lastTravelType = travelType;
@@ -2394,7 +2406,7 @@ if (typeof module !== undefined) module.exports = polyline;
       return subRoute;
     },
 
-    _getTransitColor: function(intColor) {
+    _getPolylineColor: function(intColor) {
 
       // isolate red, green, and blue components
       var red = (intColor >> 16) & 0xff,
@@ -2410,16 +2422,16 @@ if (typeof module !== undefined) module.exports = polyline;
       var paddedHex = 0x1000000 | (intColor & 0xffffff),
           lineColor = paddedHex.toString(16).substring(1, 7);
 
-      var transitColor = [
+      var polylineColor = [
               // Color of outline depending on luminance against background.
               (is_light ? {color: '#000', opacity: 0.4, weight: 10}
                         : {color: '#fff', opacity: 0.8, weight: 10}),
 
-              // Color of this transit line.
+              // Color of the polyline subset.
               {color: '#'+lineColor.toUpperCase(), opacity: 1, weight: 6}
             ]
 
-      return transitColor;
+      return polylineColor;
    },
 
 
