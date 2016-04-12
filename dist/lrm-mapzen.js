@@ -1375,8 +1375,8 @@ if (typeof module !== undefined) module.exports = polyline;
 		options: {
 			styles: [
 				{color: 'black', opacity: 0.15, weight: 9},
-				{color: 'white', opacity: 0.8, weight: 6},
-				{color: 'red', opacity: 1, weight: 2}
+				{color: 'white', opacity: 0.8, weight: 10},
+				{color: '#3455db', opacity: 1, weight: 5}
 			],
 			missingRouteStyles: [
 				{color: 'black', opacity: 0.15, weight: 7},
@@ -2368,8 +2368,8 @@ if (typeof module !== undefined) module.exports = polyline;
 
           if(travelType !== lastTravelType && lastTravelType !== 'undefined' && travelType !=='undefined') {
             if(res.begin_shape_index > 0) travelTypeChangingIncides.push(res.begin_shape_index);
-            if(res.transit_info) subRoute.push({ travle_type: travelType, styles: this._getTransitColor(res.transit_info.color) })
-            else subRoute.push({travle_type: travelType})
+            if(res.transit_info) subRoute.push({ travel_type: travelType, styles: this._getTransitColor(res.transit_info.color) })
+            else subRoute.push({travel_type: travelType})
           }
           lastTravelType = travelType;
         }
