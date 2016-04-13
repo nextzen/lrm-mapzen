@@ -2363,44 +2363,51 @@ if (typeof module !== undefined) module.exports = polyline;
 
     },
 
+    //creates section of the polyline based on change of travel mode for multimodal
     _getSubRoutes: function(legs) {
 
       var subRoute = [];
 
       for (var i = 0; i < legs.length; i++) {
 
-        var coord = polyline.decode(legs[i].shape, 6);
+        var coords = polyline.decode(legs[i].shape, 6);
 
         var lastTravelType;
-        var travelTypeChangingIncides = [];
+        var transitIndices = [];
         for(var j = 0; j < legs[i].maneuvers.length; j++){
 
           var res = legs[i].maneuvers[j];
           var travelType = res.travel_type;
 
+          //transit_info only exists in the transit maneuvers
+          //loop thru maneuvers and populate indices array with begin shape index for transit portions
+          //also populate subRoute array with travel type & color associated with that polyline sub-section
+          //otherwise just populate with travel type and use fallback style
           if(travelType !== lastTravelType && lastTravelType !== 'undefined' && travelType !=='undefined') {
-            if(res.begin_shape_index > 0) travelTypeChangingIncides.push(res.begin_shape_index);
+            if(res.begin_shape_index > 0) transitIndices.push(res.begin_shape_index);
             if(res.transit_info) subRoute.push({ travel_type: travelType, styles: this._getPolylineColor(res.transit_info.color) })
             else subRoute.push({travel_type: travelType})
           }
           lastTravelType = travelType;
         }
 
-        travelTypeChangingIncides.push(coord.length);
+        //add coords length to indices array
+        transitIndices.push(coords.length);
 
-        var y = 0;
-        for(var z = 0; z < travelTypeChangingIncides.length; z++) {
+        //logic to create the subsets of the polyline by indexing into the shape
+        var index_marker = 0;
+        for(var index = 0; index < transitIndices.length; index++) {
           var subRouteArr = [];
           var overwrapping = 0;
-          if(z !== travelTypeChangingIncides.length-1) overwrapping = 1;
-
-          for(var x = y; x < travelTypeChangingIncides[z]+overwrapping; x++) {
-            subRouteArr.push(coord[x]);
+          //if index != the last indice, we want to overwrap (or add 1) so that routes connect
+          if(index !== transitIndices.length-1) overwrapping = 1;
+          for (var ti = index_marker; ti < transitIndices[index] + overwrapping; ti++){
+            subRouteArr.push(coords[ti]);
           }
 
-          var sra = subRouteArr;
-          y = travelTypeChangingIncides[z];
-          subRoute[z].coordinates = sra;
+          var temp_array = subRouteArr;
+          index_marker = transitIndices[index];
+          subRoute[index].coordinates = temp_array;
         }
       }
       return subRoute;
