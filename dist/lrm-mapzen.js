@@ -1400,13 +1400,14 @@ if (typeof module !== undefined) module.exports = polyline;
 			}
 
 			if (route.subRoutes) {
+	            var arrtransit = [ "tram", "metro", "rail", "bus", "ferry", "cable_car", "gondola", "funicular" ];
 				for(var i = 0; i < route.subRoutes.length; i++) {
 					if(!route.subRoutes[i].styles) route.subRoutes[i].styles = this.options.styles;
 					if (route.subRoutes[i].travel_type=='foot') {
 					  for (var s = 0; s < route.subRoutes[i].styles.length; s++)
 					    route.subRoutes[i].styles[s].dashArray = '4,10';
 					}
-					if (route.subRoutes[i].travel_type=='metro') {
+					if (arrtransit.indexOf(route.subRoutes[i].travel_type) > -1) {
 					  all_markers.push(L.circleMarker (route.subRoutes[i].coordinates[0], lineBreakMarker));
 					  all_markers.push(L.circleMarker (route.subRoutes[i].coordinates[route.subRoutes[i].coordinates.length-1], lineBreakMarker));					  
 					}
@@ -2382,11 +2383,9 @@ if (typeof module !== undefined) module.exports = polyline;
           //loop thru maneuvers and populate indices array with begin shape index
           //also populate subRoute array to contain the travel type & color associated with the transit polyline sub-section
           //otherwise just populate with travel type and use fallback style
-          for (var m = 0; m < res.length; m++) {
-            if(res.begin_shape_index > 0) transitIndices.push(res.begin_shape_index);
-            if(res.transit_info) subRoute.push({ travel_type: travelType, styles: this._getPolylineColor(res.transit_info.color) })
-            else subRoute.push({travel_type: travelType})
-          }
+          if(res.begin_shape_index > 0) transitIndices.push(res.begin_shape_index);
+          if(res.transit_info) subRoute.push({ travel_type: travelType, styles: this._getPolylineColor(res.transit_info.color) })
+          else subRoute.push({travel_type: travelType})
         }
 
         //add coords length to indices array
