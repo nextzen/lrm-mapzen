@@ -172,7 +172,6 @@
 
         var coords = polyline.decode(legs[i].shape, 6);
 
-        var lastTravelType;
         var transitIndices = [];
         for(var j = 0; j < legs[i].maneuvers.length; j++){
 
@@ -180,15 +179,14 @@
           var travelType = res.travel_type;
 
           //transit_info only exists in the transit maneuvers
-          //loop thru maneuvers and populate indices array with begin shape index for transit portions
-          //also populate subRoute array with travel type & color associated with that polyline sub-section
+          //loop thru maneuvers and populate indices array with begin shape index
+          //also populate subRoute array to contain the travel type & color associated with the transit polyline sub-section
           //otherwise just populate with travel type and use fallback style
-          if(travelType !== lastTravelType && lastTravelType !== 'undefined' && travelType !=='undefined') {
+          for (var m = 0; m < res.length; m++) {
             if(res.begin_shape_index > 0) transitIndices.push(res.begin_shape_index);
             if(res.transit_info) subRoute.push({ travel_type: travelType, styles: this._getPolylineColor(res.transit_info.color) })
             else subRoute.push({travel_type: travelType})
           }
-          lastTravelType = travelType;
         }
 
         //add coords length to indices array
