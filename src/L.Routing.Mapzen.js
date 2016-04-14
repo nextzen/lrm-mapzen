@@ -143,6 +143,9 @@
       callback.call(context, null, alts);
     },
 
+    // lrm mapzen is trying to unify manuver of subroutes,
+    // travle type number including transit routing is > 30 including entering the station, exiting the station
+    // look at the api docs for more info (docs link coming soon)
     _unifyTransitManeuver: function(insts) {
 
       var transitType;
@@ -172,19 +175,24 @@
 
         var coords = polyline.decode(legs[i].shape, 6);
 
+        var lastTravelType;
         var transitIndices = [];
         for(var j = 0; j < legs[i].maneuvers.length; j++){
 
           var res = legs[i].maneuvers[j];
           var travelType = res.travel_type;
 
-          //transit_info only exists in the transit maneuvers
-          //loop thru maneuvers and populate indices array with begin shape index
-          //also populate subRoute array to contain the travel type & color associated with the transit polyline sub-section
-          //otherwise just populate with travel type and use fallback style
-          if(res.begin_shape_index > 0) transitIndices.push(res.begin_shape_index);
-          if(res.transit_info) subRoute.push({ travel_type: travelType, styles: this._getPolylineColor(res.transit_info.color) })
-          else subRoute.push({travel_type: travelType})
+          if(travelType !== lastTravelType || res.type === 31 /*this is for transfer*/) {
+            //transit_info only exists in the transit maneuvers
+            //loop thru maneuvers and populate indices array with begin shape index
+            //also populate subRoute array to contain the travel type & color associated with the transit polyline sub-section
+            //otherwise just populate with travel type and use fallback style
+            if(res.begin_shape_index > 0) transitIndices.push(res.begin_shape_index);
+            if(res.transit_info) subRoute.push({ travel_type: travelType, styles: this._getPolylineColor(res.transit_info.color) })
+            else subRoute.push({travel_type: travelType})
+          }
+
+          lastTravelType = travelType;
         }
 
         //add coords length to indices array

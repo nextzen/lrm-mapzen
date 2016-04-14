@@ -1375,8 +1375,8 @@ if (typeof module !== undefined) module.exports = polyline;
 		options: {
 			styles: [
 				{color: 'black', opacity: 0.15, weight: 9},
-				{color: 'white', opacity: 0.8, weight: 10},
-				{color: '#3455db', opacity: 1, weight: 5}
+				{color: 'white', opacity: 0.8, weight: 6},
+				{color: 'red', opacity: 1, weight: 2}
 			],
 			missingRouteStyles: [
 				{color: 'black', opacity: 0.15, weight: 7},
@@ -1392,25 +1392,14 @@ if (typeof module !== undefined) module.exports = polyline;
 			L.setOptions(this, options);
 			L.LayerGroup.prototype.initialize.call(this, options);
 			this._route = route;
-			var all_markers = [];
-	                var lineBreakMarker = {radius: 5, color: 'white', fillColor: '#20345b', opacity: 1, fillOpacity: 1};
 
 			if (this.options.extendToWaypoints) {
 				this._extendToWaypoints();
 			}
 
 			if (route.subRoutes) {
-	            var arrtransit = [ "tram", "metro", "rail", "bus", "ferry", "cable_car", "gondola", "funicular" ];
 				for(var i = 0; i < route.subRoutes.length; i++) {
 					if(!route.subRoutes[i].styles) route.subRoutes[i].styles = this.options.styles;
-					if (route.subRoutes[i].travel_type=='foot') {
-					  for (var s = 0; s < route.subRoutes[i].styles.length; s++)
-					    route.subRoutes[i].styles[s].dashArray = '4,10';
-					}
-					if (arrtransit.indexOf(route.subRoutes[i].travel_type) > -1) {
-					  all_markers.push(L.circleMarker (route.subRoutes[i].coordinates[0], lineBreakMarker));
-					  all_markers.push(L.circleMarker (route.subRoutes[i].coordinates[route.subRoutes[i].coordinates.length-1], lineBreakMarker));					  
-					}
 					this._addSegment(
 						route.subRoutes[i].coordinates,
 						route.subRoutes[i].styles,
@@ -1422,8 +1411,6 @@ if (typeof module !== undefined) module.exports = polyline;
 			 	this.options.styles,
 			 	this.options.addWaypoints);
 			}
-            for (var m=0; m < all_markers.length; m++)
-              this.addLayer(all_markers[m]);
 		},
 
 		addTo: function(map) {
@@ -2214,7 +2201,7 @@ if (typeof module !== undefined) module.exports = polyline;
   L.Routing.Mapzen = L.Class.extend({
 
 
-    initialize: function(accessToken, transitmode, costingOptions, otherOptions, options) {
+    initialize: function(accessToken, transitmode, costingOptions, directionsOptions, dateTime, options) {
       L.Util.setOptions(this, options || {
         timeout: 30 * 1000
       });
@@ -2222,6 +2209,9 @@ if (typeof module !== undefined) module.exports = polyline;
       this._accessToken = accessToken;
       this._transitmode = transitmode;
       this._costingOptions = costingOptions;
+      this._directionsOptions = directionsOptions;
+      this._dateTime = dateTime;
+
       this._hints = {
         locations: {}
       };
@@ -2344,6 +2334,9 @@ if (typeof module !== undefined) module.exports = polyline;
       callback.call(context, null, alts);
     },
 
+    // lrm mapzen is trying to unify manuver of subroutes,
+    // travle type number including transit routing is > 30 including entering the station, exiting the station
+    // look at the api docs for more info (docs link coming soon)
     _unifyTransitManeuver: function(insts) {
 
       var transitType;
@@ -2373,19 +2366,24 @@ if (typeof module !== undefined) module.exports = polyline;
 
         var coords = polyline.decode(legs[i].shape, 6);
 
+        var lastTravelType;
         var transitIndices = [];
         for(var j = 0; j < legs[i].maneuvers.length; j++){
 
           var res = legs[i].maneuvers[j];
           var travelType = res.travel_type;
 
-          //transit_info only exists in the transit maneuvers
-          //loop thru maneuvers and populate indices array with begin shape index
-          //also populate subRoute array to contain the travel type & color associated with the transit polyline sub-section
-          //otherwise just populate with travel type and use fallback style
-          if(res.begin_shape_index > 0) transitIndices.push(res.begin_shape_index);
-          if(res.transit_info) subRoute.push({ travel_type: travelType, styles: this._getPolylineColor(res.transit_info.color) })
-          else subRoute.push({travel_type: travelType})
+          if(travelType !== lastTravelType || res.type === 31 /*this is for transfer*/) {
+            //transit_info only exists in the transit maneuvers
+            //loop thru maneuvers and populate indices array with begin shape index
+            //also populate subRoute array to contain the travel type & color associated with the transit polyline sub-section
+            //otherwise just populate with travel type and use fallback style
+            if(res.begin_shape_index > 0) transitIndices.push(res.begin_shape_index);
+            if(res.transit_info) subRoute.push({ travel_type: travelType, styles: this._getPolylineColor(res.transit_info.color) })
+            else subRoute.push({travel_type: travelType})
+          }
+
+          lastTravelType = travelType;
         }
 
         //add coords length to indices array
@@ -2469,7 +2467,9 @@ if (typeof module !== undefined) module.exports = polyline;
           locationKey,
           hint;
 
-      var costingOptions = this._costingOptions;
+      var costingOptions = options.costing_options;
+      var directionsOptions = options.directions_options;
+      var dateTime = options.date_time || this._dateTime;
 
       for (var i = 0; i < waypoints.length; i++) {
         var loc;
@@ -2493,7 +2493,9 @@ if (typeof module !== undefined) module.exports = polyline;
       var params = JSON.stringify({
         locations: locs,
         costing: this._transitmode,
-        costing_options: costingOptions
+        costing_options: costingOptions,
+        directions_options: directionsOptions,
+        date_time: dateTime
       });
 
       return serviceUrl + '/route?json=' +
