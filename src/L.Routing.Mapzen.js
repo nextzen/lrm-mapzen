@@ -8,19 +8,13 @@
   L.Routing = L.Routing || {};
 
   L.Routing.Mapzen = L.Class.extend({
+    options: {
+      timeout: 30 * 1000
+    },
 
-
-    initialize: function(accessToken, transitmode, costingOptions, directionsOptions, dateTime, options) {
-      L.Util.setOptions(this, options || {
-        timeout: 30 * 1000
-      });
-
+    initialize: function(accessToken, options) {
+      L.Util.setOptions(this, options);
       this._accessToken = accessToken;
-      this._transitmode = transitmode;
-      this._costingOptions = costingOptions;
-      this._directionsOptions = directionsOptions;
-      this._dateTime = dateTime;
-
       this._hints = {
         locations: {}
       };
@@ -29,15 +23,16 @@
     route: function(waypoints, callback, context, options) {
       var timedOut = false,
         wps = [],
+        routeOptions = {},
         url,
         timer,
         wp,
         i;
 
-      options = options || {};
+      routeOptions = this.options || {};
       //waypoints = options.waypoints || waypoints;
-      url = this.buildRouteUrl(waypoints, options);
 
+      url = this.buildRouteUrl(waypoints, routeOptions);
 
       timer = setTimeout(function() {
                 timedOut = true;
@@ -66,7 +61,7 @@
         if (!timedOut) {
           if (!err) {
             data = JSON.parse(resp.responseText);
-            this._routeDone(data, wps, callback, context);
+            this._routeDone(data, wps, routeOptions, callback, context);
           } else {
             console.log("Error : " + err.response);
             callback.call(context || callback, {
@@ -80,7 +75,7 @@
       return this;
     },
 
-    _routeDone: function(response, inputWaypoints, callback, context) {
+    _routeDone: function(response, inputWaypoints, routeOptions, callback, context) {
 
       var coordinates,
           alts,
@@ -113,7 +108,7 @@
           insts.push(res);
         }
 
-        if(this._transitmode === 'multimodal') insts = this._unifyTransitManeuver(insts);
+        if(routeOptions.costing === 'multimodal') insts = this._unifyTransitManeuver(insts);
 
         shapeIndex += response.trip.legs[i].maneuvers[response.trip.legs[i].maneuvers.length-1]["begin_shape_index"];
       }
@@ -121,12 +116,12 @@
       actualWaypoints = this._toWaypoints(inputWaypoints, response.trip.locations);
 
       var subRoutes;
-      if(this._transitmode == 'multimodal') subRoutes = this._getSubRoutes(response.trip.legs)
+      if(routeOptions.costing == 'multimodal') subRoutes = this._getSubRoutes(response.trip.legs)
 
       alts = [{
         name: this._trimLocationKey(inputWaypoints[0].latLng) + " , " + this._trimLocationKey(inputWaypoints[1].latLng) ,
         unit: response.trip.units,
-        transitmode: this._transitmode,
+        costing: routeOptions.costing,
         coordinates: coordinates,
         subRoutes: subRoutes,
         instructions: insts,//response.route_instructions ? this._convertInstructions(response.route_instructions) : [],
@@ -271,14 +266,15 @@
     },
     ///mapzen example
     buildRouteUrl: function(waypoints, options) {
-      var serviceUrl = 'https://valhalla.mapzen.com'
+      var serviceUrl = 'https://valhalla.mapzen.com';
       var locs = [],
           locationKey,
           hint;
 
+      var costing = options.costing;
       var costingOptions = options.costing_options;
       var directionsOptions = options.directions_options;
-      var dateTime = options.date_time || this._dateTime;
+      var dateTime = options.date_time;
 
       for (var i = 0; i < waypoints.length; i++) {
         var loc;
@@ -301,11 +297,11 @@
 
       var params = JSON.stringify({
         locations: locs,
-        costing: this._transitmode,
+        costing: costing,
         costing_options: costingOptions,
         directions_options: directionsOptions,
         date_time: dateTime
-      });
+     });
 
       return serviceUrl + '/route?json=' +
               params + '&api_key=' + this._accessToken;
@@ -368,8 +364,8 @@
     }
   });
 
-  L.Routing.mapzen = function(accessToken, transitmode, options) {
-    return new L.Routing.Mapzen(accessToken, transitmode, options);
+  L.Routing.mapzen = function(accessToken, options) {
+    return new L.Routing.Mapzen(accessToken, options);
   };
 
   module.exports = L.Routing.Mapzen;
