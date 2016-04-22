@@ -10,7 +10,7 @@ Use this plug-in to create a map that has a route line between map locations (al
 
 Follow along with [this tutorial](https://mapzen.com/documentation/turn-by-turn/add-routing-to-a-map/) to build a map with LRM-Mapzen.
 
-[Download lrm-mapzen](https://mapzen.com/resources/lrm-valhalla-0.0.9.zip) and insert a reference to the JavaScript file into your page right after the line where it loads Leaflet Routing Machine:
+[Download lrm-mapzen](http://mapzen.com/resources/lrm-mapzen-0.1.2.zip) and insert a reference to the JavaScript file into your page right after the line where it loads Leaflet Routing Machine:
 
 ```html
 [...]
