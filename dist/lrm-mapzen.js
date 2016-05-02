@@ -2229,7 +2229,7 @@ if (typeof module !== undefined) module.exports = polyline;
                 timedOut = true;
                 callback.call(context || callback, {
                   status: -1,
-                  message: 'Time out.'
+                  message: 'request timed out.'
                 });
               }, this.options.timeout);
 

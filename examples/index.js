@@ -7,6 +7,16 @@ var layer = Tangram.leafletLayer({
 });
 layer.addTo(map);
 
+var demo = [
+  {
+    index: 0,
+    costing: 'auto',
+    waypoints: [
+      L.latLng(37.752, -122.418),
+      L.latLng(37.779, -122.391)
+    ]
+  }
+]
 
 // You can also use normal OSM tiles instead of Tangram
 // L.tileLayer('http://{s}.tile.osm.org/{z}/{x}/{y}.png', {
@@ -14,16 +24,13 @@ layer.addTo(map);
 // }).addTo(map);
 
 var control = L.Routing.control({
-  waypoints: [
-    L.latLng(37.752, -122.418),
-    L.latLng(37.779, -122.391)
-  ],
+  waypoints: demo[0]['waypoints'],
   // You can get your own Mapzen turn-by-turn & search API key from the Mapzen developer portal (https://mapzen.com/developers/)
   geocoder: L.Control.Geocoder.mapzen('search-RH8pVLv'),
   reverseWaypoints: true,
-  router: L.Routing.mapzen('valhalla-PVA4Y8g', 'auto'),
+  router: L.Routing.mapzen('valhalla-PVA4Y8g', demo[0]),
   formatter: new L.Routing.Mapzen.Formatter(),
-  summaryTemplate:'<div class="start">{name}</div><div class="info {transitmode}">{distance}, {time}</div>'
+  summaryTemplate:'<div class="start">{name}</div><div class="info {costing}">{distance}, {time}</div>'
 }).addTo(map);
 
 L.Routing.errorControl(control).addTo(map);
