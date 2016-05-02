@@ -10,13 +10,33 @@ layer.addTo(map);
 var demo = [
   {
     index: 0,
-    costing: 'auto',
+    costing: 'multimodal',
     waypoints: [
       L.latLng(37.752, -122.418),
       L.latLng(37.779, -122.391)
-    ]
+    ],
+    date_time: {
+      type: 1, //depart at
+      value: getNextTuesday() + 'T08:00' // For demo we wanted to be consistent and always use Next Tuesday at 8am
+    }
   }
 ]
+
+/**
+ * Returns a string of next Tuesday's date based
+ * on the current day of the week.  If today is Tuesday,
+ * then we use the following Tuesday's date.
+ *
+ * @returns {string} in format of 'YYYY-MM-DD'
+ */
+function getNextTuesday () {
+  var today = new Date(), day, tuesday;
+  day = today.getDay();
+  tuesday = today.getDate() - day + (day === 0 ? -6 : 2);
+  tuesday += 7;
+  today.setDate(tuesday);
+  return today.toISOString().split('T')[0];
+}
 
 // You can also use normal OSM tiles instead of Tangram
 // L.tileLayer('http://{s}.tile.osm.org/{z}/{x}/{y}.png', {
