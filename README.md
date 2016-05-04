@@ -1,13 +1,14 @@
-# Extend Leaflet Routing Machine with Mapzen Turn-by-Turn Routing
+# Add support for Mapzen Turn-by-Turn routing in Leaflet Routing Machine
 
+Mapzen Turn-by-Turn is an open-source routing service with dynamic run-time costing that lets you integrate automobile, bicycle, pedestrian, or multimodal navigation into a web or mobile application. 
 
-Mapzen Turn-by-Turn is an open-source routing service with dynamic run-time costing that lets you integrate automobile, bicycle, pedestrian, or multimodal navigation into a web or mobile application. To use Mapzen Turn-by-Turn with the Leaflet Routing Machine, install the lrm-mapzen plug-in and obtain an API key from [mapzen.com/developers](http://mapzen.com/developers).
+Use this plug-in to create a Leaflet map that has a route line between map locations (also known as waypoints), a text narrative of maneuvers to perform on the route, distances along your route and estimated travel times, and the ability to drag the route start and endpoints to get a different path. 
 
-Use this plug-in to create a map that has a route line between map locations (also known as waypoints), a text narrative of maneuvers to perform on the route, distances along your route and estimated travel times, and the ability to drag the route start and endpoints to get a different path. Mapzen Turn-by-Turn is substituted for the default routing service used in Leaflet Routing Machine.
+With lrm-mapzen, Mapzen Turn-by-Turn is substituted for the default routing service used in Leaflet Routing Machine. You need to install the lrm-mapzen plug-in and obtain an API key from [mapzen.com/developers](http://mapzen.com/developers).
 
-## Get started with LRM-Mapzen
+## Get started with lrm-mapzen
 
-Follow along with [this tutorial](https://mapzen.com/documentation/turn-by-turn/add-routing-to-a-map/) to build a map with LRM-Mapzen.
+Follow along with [this tutorial](https://mapzen.com/documentation/turn-by-turn/add-routing-to-a-map/) to build a map with lrm-mapzen.
 
 [Download lrm-mapzen](https://mapzen.com/resources/lrm-valhalla-0.0.9.zip) and insert a reference to the JavaScript file into your page right after the line where it loads Leaflet Routing Machine:
 
@@ -18,13 +19,13 @@ Follow along with [this tutorial](https://mapzen.com/documentation/turn-by-turn/
 [...]
 ```
 
-Also, include the stylesheet. This can replace the default `leaflet-routing-machine.css` provided by LRM, since the Mapzen plugin includes its own styles and icons.
+Also, include the stylesheet. This can replace the default `leaflet-routing-machine.css` provided by LRM, since the Mapzen plug-in includes its own styles and icons.
 
 ```html
 <link rel="stylesheet" href="leaflet.routing.mapzen.css">
 ```
 
-Insert your [Mapzen Turn-by-Turn API key](https://mapzen.com/developers) for the placeholder text (valhalla-xxxxxx) and a routing options object to at least include the costing mode (`auto`, `bicycle`, `pedestrian`, or `multimodal`). (Note that no additional options are needed for `formatter`.)
+Insert your [Mapzen Turn-by-Turn API key](https://mapzen.com/developers) for the placeholder text (valhalla-xxxxxx) and a routing options object to at least include the costing mode (`auto`, `bicycle`, `pedestrian`, or `multimodal`). Note that no additional options are needed for `formatter`.
 
 ```js
 var map = L.map('map');
@@ -36,7 +37,7 @@ L.Routing.control({
 }).addTo(map);
 ```
 
-If you want to include additional costing options to help define the the route and estimated time along the path, you can pass a costing option object as one of router parameters. See the [Mapzen Turn-by-Turn API documentation](https://mapzen.com/documentation/turn-by-turn/api-reference/) for more information on the available options for each routing mode.
+If you want to include additional costing options to help define the the route and estimated time along the path, you can pass a costing option object as one of router parameters. See the [Mapzen Turn-by-Turn API documentation](https://mapzen.com/documentation/turn-by-turn/api-reference/) for more information on the available options.
 
 ```js
 L.Routing.control({
@@ -54,14 +55,14 @@ L.Routing.control({
 }).addTo(map);
 ```
 
-If you want to use the latest `multimodal` transportation/costing mode, it requires a date_time to be included. See the [Mapzen Turn-by-Turn API documentation](https://mapzen.com/documentation/turn-by-turn/api-reference/) for more information on the available options for each routing mode.
+With the`multimodal` costing mode, you can set costing options for preferences for taking buses or rail lines or having to make transfers. If you include a `date_time`, you can request a transit route departing at a certain time, for example. See the [Mapzen Turn-by-Turn API documentation](https://mapzen.com/documentation/turn-by-turn/api-reference/) for more information on the available options.
 
 ```js
 L.Routing.control({
   router: L.Routing.mapzen('valhalla-xxxxxx', {
     costing: "multimodal",
     date_time: {
-      type: 1,
+      type: 1, 
       value: "2016-05-10T08:00"
     }
   }),
@@ -71,7 +72,7 @@ L.Routing.control({
 
 See the [Leaflet Routing Machine documentation](http://www.liedman.net/leaflet-routing-machine/tutorials/) and [Mapzen Turn-by-Turn API documentation](https://mapzen.com/documentation/turn-by-turn/api-reference/) for more information.
 
-## Use Mapzen Turn-by-Turn with npm and Browserify
+## Use lrm-mapzen with npm and Browserify
 
 The Mapzen plug-in can be installed using npm instead of downloading the script manually:
 
