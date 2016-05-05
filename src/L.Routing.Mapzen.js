@@ -8,16 +8,13 @@
   L.Routing = L.Routing || {};
 
   L.Routing.Mapzen = L.Class.extend({
+    options: {
+      timeout: 30 * 1000
+    },
 
-
-    initialize: function(accessToken, transitmode, costingOptions, otherOptions, options) {
-      L.Util.setOptions(this, options || {
-        timeout: 30 * 1000
-      });
-
+    initialize: function(accessToken, options) {
+      L.Util.setOptions(this, options);
       this._accessToken = accessToken;
-      this._transitmode = transitmode;
-      this._costingOptions = costingOptions;
       this._hints = {
         locations: {}
       };
@@ -26,15 +23,16 @@
     route: function(waypoints, callback, context, options) {
       var timedOut = false,
         wps = [],
+        routeOptions = {},
         url,
         timer,
         wp,
         i;
 
-      options = options || {};
+      routeOptions = this.options || {};
       //waypoints = options.waypoints || waypoints;
-      url = this.buildRouteUrl(waypoints, options);
 
+      url = this.buildRouteUrl(waypoints, routeOptions);
 
       timer = setTimeout(function() {
                 timedOut = true;
@@ -63,7 +61,7 @@
         if (!timedOut) {
           if (!err) {
             data = JSON.parse(resp.responseText);
-            this._routeDone(data, wps, callback, context);
+            this._routeDone(data, wps, routeOptions, callback, context);
           } else {
             console.log("Error : " + err.response);
             callback.call(context || callback, {
@@ -77,7 +75,7 @@
       return this;
     },
 
-    _routeDone: function(response, inputWaypoints, callback, context) {
+    _routeDone: function(response, inputWaypoints, routeOptions, callback, context) {
 
       var coordinates,
           alts,
@@ -110,7 +108,7 @@
           insts.push(res);
         }
 
-        if(this._transitmode === 'multimodal') insts = this._unifyTransitManeuver(insts);
+        if(routeOptions.costing === 'multimodal') insts = this._unifyTransitManeuver(insts);
 
         shapeIndex += response.trip.legs[i].maneuvers[response.trip.legs[i].maneuvers.length-1]["begin_shape_index"];
       }
@@ -118,12 +116,12 @@
       actualWaypoints = this._toWaypoints(inputWaypoints, response.trip.locations);
 
       var subRoutes;
-      if(this._transitmode == 'multimodal') subRoutes = this._getSubRoutes(response.trip.legs)
+      if(routeOptions.costing == 'multimodal') subRoutes = this._getSubRoutes(response.trip.legs)
 
       alts = [{
         name: this._trimLocationKey(inputWaypoints[0].latLng) + " , " + this._trimLocationKey(inputWaypoints[1].latLng) ,
         unit: response.trip.units,
-        transitmode: this._transitmode,
+        costing: routeOptions.costing,
         coordinates: coordinates,
         subRoutes: subRoutes,
         instructions: insts,//response.route_instructions ? this._convertInstructions(response.route_instructions) : [],
@@ -140,6 +138,9 @@
       callback.call(context, null, alts);
     },
 
+    // lrm mapzen is trying to unify manuver of subroutes,
+    // travle type number including transit routing is > 30 including entering the station, exiting the station
+    // look at the api docs for more info (docs link coming soon)
     _unifyTransitManeuver: function(insts) {
 
       var transitType;
@@ -160,50 +161,58 @@
 
     },
 
+    //creates section of the polyline based on change of travel mode for multimodal
     _getSubRoutes: function(legs) {
 
       var subRoute = [];
 
       for (var i = 0; i < legs.length; i++) {
 
-        var coord = polyline.decode(legs[i].shape, 6);
+        var coords = polyline.decode(legs[i].shape, 6);
 
         var lastTravelType;
-        var travelTypeChangingIncides = [];
+        var transitIndices = [];
         for(var j = 0; j < legs[i].maneuvers.length; j++){
 
           var res = legs[i].maneuvers[j];
           var travelType = res.travel_type;
 
-          if(travelType !== lastTravelType && lastTravelType !== 'undefined' && travelType !=='undefined') {
-            if(res.begin_shape_index > 0) travelTypeChangingIncides.push(res.begin_shape_index);
-            if(res.transit_info) subRoute.push({ travle_type: travelType, styles: this._getTransitColor(res.transit_info.color) })
-            else subRoute.push({travle_type: travelType})
+          if(travelType !== lastTravelType || res.type === 31 /*this is for transfer*/) {
+            //transit_info only exists in the transit maneuvers
+            //loop thru maneuvers and populate indices array with begin shape index
+            //also populate subRoute array to contain the travel type & color associated with the transit polyline sub-section
+            //otherwise just populate with travel type and use fallback style
+            if(res.begin_shape_index > 0) transitIndices.push(res.begin_shape_index);
+            if(res.transit_info) subRoute.push({ travel_type: travelType, styles: this._getPolylineColor(res.transit_info.color) })
+            else subRoute.push({travel_type: travelType})
           }
+
           lastTravelType = travelType;
         }
 
-        travelTypeChangingIncides.push(coord.length);
+        //add coords length to indices array
+        transitIndices.push(coords.length);
 
-        var y = 0;
-        for(var z = 0; z < travelTypeChangingIncides.length; z++) {
+        //logic to create the subsets of the polyline by indexing into the shape
+        var index_marker = 0;
+        for(var index = 0; index < transitIndices.length; index++) {
           var subRouteArr = [];
           var overwrapping = 0;
-          if(z !== travelTypeChangingIncides.length-1) overwrapping = 1;
-
-          for(var x = y; x < travelTypeChangingIncides[z]+overwrapping; x++) {
-            subRouteArr.push(coord[x]);
+          //if index != the last indice, we want to overwrap (or add 1) so that routes connect
+          if(index !== transitIndices.length-1) overwrapping = 1;
+          for (var ti = index_marker; ti < transitIndices[index] + overwrapping; ti++){
+            subRouteArr.push(coords[ti]);
           }
 
-          var sra = subRouteArr;
-          y = travelTypeChangingIncides[z];
-          subRoute[z].coordinates = sra;
+          var temp_array = subRouteArr;
+          index_marker = transitIndices[index];
+          subRoute[index].coordinates = temp_array;
         }
       }
       return subRoute;
     },
 
-    _getTransitColor: function(intColor) {
+    _getPolylineColor: function(intColor) {
 
       // isolate red, green, and blue components
       var red = (intColor >> 16) & 0xff,
@@ -219,16 +228,16 @@
       var paddedHex = 0x1000000 | (intColor & 0xffffff),
           lineColor = paddedHex.toString(16).substring(1, 7);
 
-      var transitColor = [
+      var polylineColor = [
               // Color of outline depending on luminance against background.
               (is_light ? {color: '#000', opacity: 0.4, weight: 10}
                         : {color: '#fff', opacity: 0.8, weight: 10}),
 
-              // Color of this transit line.
+              // Color of the polyline subset.
               {color: '#'+lineColor.toUpperCase(), opacity: 1, weight: 6}
             ]
 
-      return transitColor;
+      return polylineColor;
    },
 
 
@@ -257,12 +266,15 @@
     },
     ///mapzen example
     buildRouteUrl: function(waypoints, options) {
-      var serviceUrl = 'https://valhalla.mapzen.com'
+      var serviceUrl = 'https://valhalla.mapzen.com';
       var locs = [],
           locationKey,
           hint;
 
-      var costingOptions = this._costingOptions;
+      var costing = options.costing;
+      var costingOptions = options.costing_options;
+      var directionsOptions = options.directions_options;
+      var dateTime = options.date_time;
 
       for (var i = 0; i < waypoints.length; i++) {
         var loc;
@@ -285,9 +297,11 @@
 
       var params = JSON.stringify({
         locations: locs,
-        costing: this._transitmode,
-        costing_options: costingOptions
-      });
+        costing: costing,
+        costing_options: costingOptions,
+        directions_options: directionsOptions,
+        date_time: dateTime
+     });
 
       return serviceUrl + '/route?json=' +
               params + '&api_key=' + this._accessToken;
@@ -350,8 +364,8 @@
     }
   });
 
-  L.Routing.mapzen = function(accessToken, transitmode, options) {
-    return new L.Routing.Mapzen(accessToken, transitmode, options);
+  L.Routing.mapzen = function(accessToken, options) {
+    return new L.Routing.Mapzen(accessToken, options);
   };
 
   module.exports = L.Routing.Mapzen;
