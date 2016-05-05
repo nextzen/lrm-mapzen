@@ -5,7 +5,8 @@
 
 	L.Routing = L.Routing || {};
 
-	L.Routing.Line = L.LayerGroup.extend({
+
+	L.Routing.MapzenLine = L.LayerGroup.extend({
 		includes: L.Mixin.Events,
 
 		options: {
@@ -50,6 +51,7 @@
 		},
 
 		addTo: function(map) {
+			console.log('this line!');
 			map.addLayer(this);
 			return this;
 		},
@@ -143,8 +145,8 @@
 		}
 	});
 
-	L.Routing.line = function(route, options) {
-		return new L.Routing.Line(route, options);
+	L.Routing.mapzenLine = function(route, options) {
+		return new L.Routing.MapzenLine(route, options);
 	};
 
 	module.exports = L.Routing;

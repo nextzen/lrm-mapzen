@@ -6,7 +6,7 @@
   L.Routing = L.Routing || {};
 
   //L.extend(L.Routing, require('./L.Routing.Localization'));
-  L.Routing.Mapzen.Formatter = L.Class.extend({
+  L.Routing.MapzenFormatter = L.Class.extend({
     options: {
       units: 'metric',
       unitNames: {
@@ -149,6 +149,7 @@
           return 'kFerryEnter';
         case 29:
           return 'kFerryExit';
+        // lrm-mapzen unifies transit commands and give them same icons
         case 30:
         case 31: //'kTransitTransfer'
         case 32: //'kTransitRemainOn'
@@ -169,5 +170,9 @@
     }
   });
 
- // module.exports = L.Routing;
+  L.Routing.mapzenFormatter = function() {
+    return new L.Routing.MapzenFormatter();
+  };
+
+  module.exports = L.Routing;
 })();

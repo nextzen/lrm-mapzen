@@ -50,8 +50,8 @@ function getNextTuesday () {
   return today.toISOString().split('T')[0];
 }
 
-
 var control = L.Routing.control({
+  routeLine: function (route, options) { return L.Routing.mapzenLine(route, options); },
   waypoints: [
     L.latLng(37.752, -122.418),
     L.latLng(37.779, -122.391)
@@ -60,7 +60,7 @@ var control = L.Routing.control({
   geocoder: L.Control.Geocoder.mapzen('search-RH8pVLv'),
   reverseWaypoints: true,
   router: L.Routing.mapzen('valhalla-PVA4Y8g', demo),
-  formatter: new L.Routing.Mapzen.Formatter(),
+  formatter: new L.Routing.mapzenFormatter(),
   summaryTemplate:'<div class="start">{name}</div><div class="info {costing}">{distance}, {time}</div>'
 }).addTo(map);
 

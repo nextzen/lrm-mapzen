@@ -33,7 +33,7 @@ var map = L.map('map');
 L.Routing.control({
   // [...] See MapzenTurn-by-Turn API documentation for other options
   router: L.Routing.mapzen('valhalla-xxxxxx', {costing:'auto'}),
-  formatter: new L.Routing.Mapzen.Formatter()
+  formatter: new L.Routing.mapzenFormatter()
 }).addTo(map);
 ```
 
@@ -51,7 +51,7 @@ L.Routing.control({
       }
     }
   }),
-  formatter: new L.Routing.Mapzen.Formatter(),
+  formatter: new L.Routing.mapzenFormatter(),
 }).addTo(map);
 ```
 
@@ -60,13 +60,16 @@ With the`multimodal` costing mode, you can set costing options for preferences f
 ```js
 L.Routing.control({
   router: L.Routing.mapzen('valhalla-xxxxxx', {
+    // you need to pass mapzenLine as routeLine to router to see subroutes of transit routing.
+    // you can skip routeLine if you don't want to use subroutes.
+    routeLine: function (route, options) { return L.Routing.mapzenLine(route, options); },
     costing: "multimodal",
     date_time: {
       type: 1, 
       value: "2016-05-10T08:00"
     }
   }),
-  formatter: new L.Routing.Mapzen.Formatter(),
+  formatter: new L.Routing.mapzenFormatter(),
 }).addTo(map);
 ```
 
@@ -91,7 +94,7 @@ var map = L.map('map');
 
 L.Routing.control({
   router: L.Routing.mapzen('valhalla-xxxxxx', {costing:'auto'}),
-  formatter: new L.Routing.Mapzen.Formatter()
+  formatter: new L.Routing.mapzenFormatter()
 }).addTo(map);
 ```
 

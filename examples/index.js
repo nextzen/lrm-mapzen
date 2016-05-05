@@ -26,7 +26,6 @@ function hasWebGL() {
   }
 }
 
-
 var control = L.Routing.control({
   waypoints: [
     L.latLng(37.752, -122.418),
@@ -36,7 +35,7 @@ var control = L.Routing.control({
   geocoder: L.Control.Geocoder.mapzen('search-RH8pVLv'),
   reverseWaypoints: true,
   router: L.Routing.mapzen('valhalla-PVA4Y8g', {costing: 'auto'}),
-  formatter: new L.Routing.Mapzen.Formatter(),
+  formatter: new L.Routing.mapzenFormatter(),
   summaryTemplate:'<div class="start">{name}</div><div class="info {costing}">{distance}, {time}</div>'
 }).addTo(map);
 
