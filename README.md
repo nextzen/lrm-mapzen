@@ -10,7 +10,7 @@ With lrm-mapzen, Mapzen Turn-by-Turn is substituted for the default routing serv
 
 Follow along with [this tutorial](https://mapzen.com/documentation/turn-by-turn/add-routing-to-a-map/) to build a map with lrm-mapzen.
 
-[Download lrm-mapzen](https://mapzen.com/resources/lrm-valhalla-0.0.9.zip) and insert a reference to the JavaScript file into your page right after the line where it loads Leaflet Routing Machine:
+[Download lrm-mapzen](http://mapzen.com/resources/lrm-mapzen.zip) and insert a reference to the JavaScript file into your page right after the line where it loads Leaflet Routing Machine:
 
 ```html
 [...]
