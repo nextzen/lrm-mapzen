@@ -795,7 +795,6 @@ if (typeof module !== undefined) module.exports = polyline;
 		},
 
 		addTo: function(map) {
-			console.log('this line!');
 			map.addLayer(this);
 			return this;
 		},
