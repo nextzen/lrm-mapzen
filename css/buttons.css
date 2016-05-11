@@ -1,5 +1,5 @@
 .btn-auto {
-  background-image: url(./dist/modes.icons.svg);
+  background-image: url(../dist/modes.icons.svg);
   margin-left: -5px;
   display: block;
   min-width: 25px;
@@ -9,7 +9,7 @@
 }
 
 .btn-bicycle {
-  background-image: url(./dist/modes.icons.svg);
+  background-image: url(../dist/modes.icons.svg);
   margin-left: -5px;
   display: block;
   min-width: 25px;
@@ -19,7 +19,7 @@
 }
 
 .btn-pedestrian {
-  background-image: url(./dist/modes.icons.svg);
+  background-image: url(../dist/modes.icons.svg);
   margin-left: -5px;
   display: block;
   min-width: 25px;
@@ -29,7 +29,7 @@
 }
 
 .btn-multimodal {
-  background-image: url(./dist/modes.icons.svg);
+  background-image: url(../dist/modes.icons.svg);
   margin-left: -5px;
   display: block;
   min-width: 25px;
