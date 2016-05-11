@@ -8,6 +8,7 @@
   function HashControl() {
 
     var formatter = Formatter.init();
+    // calling search query as hash mainly because not to be confused with 'Search' (geocoder)
     hash = loc.search;
     hashData = formatter.parseHashToObj(hash);
 
