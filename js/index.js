@@ -114,8 +114,8 @@ control.on('routingstart', function() {
   for(var i in waypoints) {
     var latKeyName = 'point' + i + 'lat';
     var lngKeyName = 'point' + i + 'lng';
-    newHashData[latKeyName] = waypoints[i].latLng.lat;
-    newHashData[lngKeyName] = waypoints[i].latLng.lng;
+    newHashData[latKeyName] = parseFloat(waypoints[i].latLng.lat).toFixed(4);
+    newHashData[lngKeyName] = parseFloat(waypoints[i].latLng.lng).toFixed(4);
   }
   newHashData['mode'] = mode;
   hashControl.set(newHashData);
