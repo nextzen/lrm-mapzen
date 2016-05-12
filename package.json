@@ -2,7 +2,7 @@
   "name": "lrm-mapzen",
   "version": "1.0.1",
   "description": "Support for Turn By Turn by Mapzen in Leaflet Machine",
-  "main": "src/L.Routing.Mapzen.js",
+  "main": "dist/lrm-mapzen.min.js",
   "scripts": {
     "dist": "./scripts/dist.sh",
     "test": "echo \"Error: no test specified\" && exit 1"
