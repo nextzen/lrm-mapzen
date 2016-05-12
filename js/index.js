@@ -16,7 +16,6 @@ if (hasWebGL()) {
    }).addTo(map);
 }
 
-
 // detect webgl on browser for Tangram
 function hasWebGL() {
   try {
@@ -42,7 +41,7 @@ var routingData = {
 var hashVal = hashControl.read()
 if( hashVal !== null) {
   var wps = [];
-
+  console.log(hashVal);
   for(var key in hashVal) {
     if(key.startsWith('point')) {
       var idx = parseInt(key.charAt(5));
@@ -107,7 +106,7 @@ L.easyButton('btn-multimodal', function(btn, map){
 
 // change hash value whenever new routing starts
 // you can ignore this part if you are not planning to setup search query for your page
-control.on('routingstart', function() {
+control.on('routingstart', function () {
   var waypoints = control.getWaypoints();
   var mode = control.getRouter().options.costing;
   var newHashData = {}
@@ -119,4 +118,9 @@ control.on('routingstart', function() {
   }
   newHashData['mode'] = mode;
   hashControl.set(newHashData);
+})
+
+// to show where waypoints are even if there is no routing data
+control.on('routingerror', function () {
+  map.fitBounds(routingData.waypoints);
 })

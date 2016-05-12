@@ -8,16 +8,16 @@
   function HashControl() {
 
     var formatter = Formatter.init();
-    // calling search query as hash mainly because not to be confused with 'Search' (geocoder)
     hash = loc.search;
     hashData = formatter.parseHashToObj(hash);
 
     this.set = function (dataObj) {
       var hashString = formatter.formatToHash(dataObj);
-      history.replaceState({}, null, '?'+hashString);
+      console.log(hashString);
+      history.replaceState({}, null, '#'+hashString);
     },
     this.read = function () {
-      hash = loc.search;
+      hash = loc.hash;
       hashData = formatter.parseHashToObj(hash);
       return hashData;
     },
@@ -44,7 +44,7 @@
       if (this.isEmpty(rawHash)) {
         return null;
       } else {
-        var hashVal = rawHash.replace('?','');
+        var hashVal = rawHash.replace('#','');
         var valArrs = hashVal.split('&');
 
         for(var val in valArrs) {
