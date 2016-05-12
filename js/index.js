@@ -122,5 +122,9 @@ control.on('routingstart', function () {
 
 // to show where waypoints are even if there is no routing data
 control.on('routingerror', function () {
-  map.fitBounds(routingData.waypoints);
+  var waypoints = control.getWaypoints();
+  map.fitBounds([
+    waypoints[0].latLng,
+    waypoints[waypoints.length-1].latLng
+  ]);
 })
