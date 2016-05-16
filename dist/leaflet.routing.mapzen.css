@@ -268,29 +268,23 @@ html,body{
 
 .leaflet-routing-collapse-btn {
     position: absolute;
-    top: 0;
+    top: 2px;
     right: 6px;
-    font-size: 24px;
     color: #ccc;
-    font-weight: bold;
-}
-
-.leaflet-routing-collapse-btn:after {
-    content: '\00d7';
+    width: 23px;
+    height: 23px;
+    background-image: url('cancel.svg');
+    background-repeat: no-repeat;
+    border: 2px solid #000;
+    cursor: pointer;
 }
 
 .leaflet-routing-container-hide .leaflet-routing-collapse-btn {
-    position: relative;
-    left: 4px;
-    top: 4px;
     display: block;
-    width: 26px;
-    height: 23px;
-    background-image: url('routing-icon.png');
-}
-
-.leaflet-routing-container-hide .leaflet-routing-collapse-btn:after {
-    content: none;
+    left: 2px;
+    top: 2px;
+    background-image: url('routing-list.svg');
+    background-repeat: no-repeat;
 }
 
 .leaflet-top .leaflet-routing-container.leaflet-routing-container-hide {

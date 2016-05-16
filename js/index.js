@@ -41,7 +41,6 @@ var routingData = {
 var hashVal = hashControl.read()
 if( hashVal !== null) {
   var wps = [];
-  console.log(hashVal);
   for(var key in hashVal) {
     if(key.startsWith('point')) {
       var idx = parseInt(key.charAt(5));
@@ -67,7 +66,6 @@ if( hashVal !== null) {
   })
 }
 
-
 var control = L.Routing.control({
   routeLine: function (route, options) { return L.Routing.mapzenLine(route, options); },
   waypoints: routingData.waypoints,
@@ -75,6 +73,8 @@ var control = L.Routing.control({
   geocoder: L.Control.Geocoder.mapzen('search-RH8pVLv'),
   reverseWaypoints: true,
   router: L.Routing.mapzen('valhalla-PVA4Y8g', {costing: routingData.costing}),
+  collapsible: true,
+  show: (map.getSize().x > 768)? true: false,
   formatter: new L.Routing.mapzenFormatter(),
   summaryTemplate:'<div class="start">{name}</div><div class="info {costing}">{distance}, {time}</div>'
 }).addTo(map);
