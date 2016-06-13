@@ -1,8 +1,9 @@
+[![npm version](https://img.shields.io/npm/v/lrm-mapzen.svg?style=flat-square)](https://www.npmjs.com/package/lrm-mapzen)
 # Add support for Mapzen Turn-by-Turn routing in Leaflet Routing Machine
 
-Mapzen Turn-by-Turn is an open-source routing service with dynamic run-time costing that lets you integrate automobile, bicycle, pedestrian, or multimodal navigation into a web or mobile application. 
+Mapzen Turn-by-Turn is an open-source routing service with dynamic run-time costing that lets you integrate automobile, bicycle, pedestrian, or multimodal navigation into a web or mobile application.
 
-Use this plug-in to create a Leaflet map that has a route line between map locations (also known as waypoints), a text narrative of maneuvers to perform on the route, distances along your route and estimated travel times, and the ability to drag the route start and endpoints to get a different path. 
+Use this plug-in to create a Leaflet map that has a route line between map locations (also known as waypoints), a text narrative of maneuvers to perform on the route, distances along your route and estimated travel times, and the ability to drag the route start and endpoints to get a different path.
 
 With lrm-mapzen, Mapzen Turn-by-Turn is substituted for the default routing service used in Leaflet Routing Machine. You need to install the lrm-mapzen plug-in and obtain an API key from [mapzen.com/developers](http://mapzen.com/developers).
 
@@ -65,7 +66,7 @@ L.Routing.control({
     routeLine: function (route, options) { return L.Routing.mapzenLine(route, options); },
     costing: "multimodal",
     date_time: {
-      type: 1, 
+      type: 1,
       value: "2016-05-10T08:00"
     }
   }),
