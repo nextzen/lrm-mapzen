@@ -96,10 +96,11 @@
 
       for(var i = 0; i < response.trip.legs.length; i++){
         var coord = polyline.decode(response.trip.legs[i].shape, 6);
+        var coordGeoJson = polyline.toGeoJSON(response.trip.legs[i].shape, 6);
 
-        for(var k = 0; k < coord.length; k++){
-          coordinates.push(coord[k]);
-        }
+        // for(var k = 0; k < coord.length; k++){
+        //   coordinates.push(coord[k]);
+        // }
 
         for(var j =0; j < response.trip.legs[i].maneuvers.length; j++){
           var res = response.trip.legs[i].maneuvers[j];
@@ -122,7 +123,8 @@
         name: this._trimLocationKey(inputWaypoints[0].latLng) + " , " + this._trimLocationKey(inputWaypoints[1].latLng) ,
         unit: response.trip.units,
         costing: routeOptions.costing,
-        coordinates: coordinates,
+        coordinates: coord,
+        geojsonCoords: coordGeoJson,
         subRoutes: subRoutes,
         instructions: insts,//response.route_instructions ? this._convertInstructions(response.route_instructions) : [],
         summary: response.trip.summary ? this._convertSummary(response.trip.summary) : [],

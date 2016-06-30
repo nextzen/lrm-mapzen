@@ -27,7 +27,7 @@
   "dependencies": {
     "corslite": "0.0.6",
     "leaflet": "^0.7.3",
-    "polyline": "0.0.3"
+    "polyline": "0.2.0"
   },
   "browserify-shim": {
     "leaflet": "global:L"

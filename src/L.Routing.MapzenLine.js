@@ -11,9 +11,7 @@
 
 		options: {
 			styles: [
-				{color: 'black', opacity: 0.15, weight: 9},
-				{color: 'white', opacity: 0.8, weight: 6},
-				{color: 'red', opacity: 1, weight: 2}
+				{color: 'black', opacity: 0.01, weight: 9}
 			],
 			missingRouteStyles: [
 				{color: 'black', opacity: 0.15, weight: 7},
@@ -52,6 +50,32 @@
 
 		addTo: function(map) {
 			map.addLayer(this);
+			var scene = layer.scene;
+			if (scene.initialized) {
+				console.log('yay')
+				console.log(this._route.geojsonCoords)
+
+				var route = {};
+				route.type = "FeatureCollection";
+				route.features = [];
+				route.features.push({
+					type: "Feature",
+					properties: {},
+					geometry: this._route.geojsonCoords})
+				var routeObj = {
+					"routelayer": route
+				}
+				var realObjToPass = JSON.stringify(routeObj);
+				console.log(routeObj);
+				var f = [];
+				f.push(this._route.geojsonCoords)
+				scene.setDataSource('routes', {
+					type: 'GeoJSON',
+					data: routeObj
+				});
+			//scene.updateConfig();
+			//scene.rebuild();
+			}
 			return this;
 		},
 		getBounds: function() {

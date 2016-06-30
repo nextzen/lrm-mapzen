@@ -1,0 +1,12 @@
+import: https://cdn.rawgit.com/tangrams/refill-style/gh-pages/refill-style.yaml
+
+layers:
+  routelayer:
+    data: { source: routes }
+    draw:
+      polygons:
+        color: '#fff'
+      lines:
+        color: '#f00'
+        order: 300000
+        width: 10px

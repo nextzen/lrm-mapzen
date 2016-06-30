@@ -5,13 +5,46 @@
     <title>Leaflet Turn By Turn By Mapzen Example</title>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/leaflet/0.7.7/leaflet.css" />
     <link rel="stylesheet" href="../dist/leaflet.routing.mapzen.css" />
+    <link rel="stylesheet" href="https://rawgit.com/CliffCloud/Leaflet.EasyButton/master/src/easy-button.css" />
 </head>
 <body>
     <div id="map"></div>
     <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/leaflet/0.7.7/leaflet.js"></script>
-    <script src="https://mapzen.com/tangram/0.7/tangram.min.js"></script>
+    <script src="https://mapzen.com/tangram/tangram.debug.js"></script>
+    <script>
+    var map = L.map('map', {
+        center: [40.74429, -73.99035],
+        zoom: 15,
+    });
+    window.map = map;
+
+    if (hasWebGL()) {
+      // use Tangram to draw tiles when there is WebGL available on the browser
+      window.layer = layer = Tangram.leafletLayer({
+        scene: 'scene.yaml',
+        attribution: '<a href="https://mapzen.com/tangram" target="_blank">Tangram</a> | &copy; OSM contributors | <a href="https://mapzen.com/" target="_blank">Mapzen</a>'
+      });
+      layer.addTo(map);
+    } else {
+      // Use normal OSM tiles instead of Tangram when there is no webgl available
+      L.tileLayer('http://{s}.tile.osm.org/{z}/{x}/{y}.png', {
+         attribution: '&copy; <a href="http://osm.org/copyright">OpenStreetMap</a> contributors'
+       }).addTo(map);
+    }
+    // detect webgl on browser for Tangram
+    function hasWebGL() {
+      try {
+        var canvas = document.createElement('canvas');
+        return !!(window.WebGLRenderingContext && (canvas.getContext('webgl') || canvas.getContext('experimental-webgl')));
+      } catch (x) {
+        return false;
+      }
+    }
+
+    </script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/leaflet-routing-machine/3.0.0/leaflet-routing-machine.min.js"></script>
     <script src="../dist/lrm-mapzen.js"></script>
+    <script src="https://rawgit.com/CliffCloud/Leaflet.EasyButton/master/src/easy-button.js"></script>
     <script src="Control.Geocoder.js"></script>
     <script src="transit.js"></script>
 </body>
