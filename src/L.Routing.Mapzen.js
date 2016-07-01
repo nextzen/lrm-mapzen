@@ -96,11 +96,8 @@
 
       for(var i = 0; i < response.trip.legs.length; i++){
         var coord = polyline.decode(response.trip.legs[i].shape, 6);
+        // Passing geojson for Tangram data source
         var coordGeoJson = polyline.toGeoJSON(response.trip.legs[i].shape, 6);
-
-        // for(var k = 0; k < coord.length; k++){
-        //   coordinates.push(coord[k]);
-        // }
 
         for(var j =0; j < response.trip.legs[i].maneuvers.length; j++){
           var res = response.trip.legs[i].maneuvers[j];

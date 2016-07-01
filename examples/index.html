@@ -5,9 +5,45 @@
     <title>Leaflet Turn By Turn By Mapzen Example</title>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/leaflet/0.7.7/leaflet.css" />
     <link rel="stylesheet" href="../dist/leaflet.routing.mapzen.css" />
+    <style>
+      .gradient {
+        fill: url(#Capa_1);
+      }
+        #stop1 {
+          animation: change-color1 1s linear infinite alternate;
+        }
+        #stop2 {
+          animation: change-color2 1s linear infinite alternate;
+        }
+        @keyframes change-color1 {
+          0% {stop-color: red;}
+          100% {stop-color: gold;}
+        }
+        @keyframes change-color2 {
+          0% {stop-color: gold;}
+          100% {stop-color: red;}
+        }
+    </style>
 </head>
 <body>
     <div id="map"></div>
+<!--     <svg width="660" height="220">
+      <defs>
+        <linearGradient id="linear" x1="0%" y1="0%" x2="100%" y2="0%" spreadMethod="pad">
+          <stop id="stop1" offset="0%"/>
+          <stop id="stop2" offset="100%"/>
+        </linearGradient>
+      </defs>
+    </svg> -->
+
+<!-- Generator: Adobe Illustrator 16.0.0, SVG Export Plug-In . SVG Version: 6.00 Build 0)  -->
+    <svg width="497.812px" height="497.812px" viewBox="0 0 497.812 497.812">
+        <def >
+            <path id="Capa_1" d="M203.656,312.906l117.032,117.031l-67.906,67.875L3.875,248.906L252.781,0l67.906,67.875L203.625,184.938l290.282-0.031
+                l0.031,127.969L203.656,312.906z"/>
+        </def>
+    </svg>
+
     <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/leaflet/0.7.7/leaflet.js"></script>
     <script src="https://mapzen.com/tangram/0.7/tangram.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/leaflet-routing-machine/3.0.0/leaflet-routing-machine.min.js"></script>

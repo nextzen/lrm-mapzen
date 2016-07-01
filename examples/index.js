@@ -36,6 +36,11 @@ var control = L.Routing.control({
   reverseWaypoints: true,
   router: L.Routing.mapzen('valhalla-PVA4Y8g', {costing: 'auto'}),
   formatter: new L.Routing.mapzenFormatter(),
+  lineOptions: {
+    styles: [
+    { color: 'white', opacity: 0.8, weight: 10 },
+    { className: 'gradient' }]
+  },
   summaryTemplate:'<div class="start">{name}</div><div class="info {costing}">{distance}, {time}</div>'
 }).addTo(map);
 
