@@ -348,8 +348,10 @@ if (typeof module === 'object' && module.exports) {
 
       for(var i = 0; i < response.trip.legs.length; i++){
         var coord = polyline.decode(response.trip.legs[i].shape, 6);
-        // Passing geojson for Tangram data source
-        var coordGeoJson = polyline.toGeoJSON(response.trip.legs[i].shape, 6);
+
+        for(var k = 0; k < coord.length; k++){
+          coordinates.push(coord[k]);
+        }
 
         for(var j =0; j < response.trip.legs[i].maneuvers.length; j++){
           var res = response.trip.legs[i].maneuvers[j];
@@ -372,8 +374,7 @@ if (typeof module === 'object' && module.exports) {
         name: this._trimLocationKey(inputWaypoints[0].latLng) + " , " + this._trimLocationKey(inputWaypoints[1].latLng) ,
         unit: response.trip.units,
         costing: routeOptions.costing,
-        coordinates: coord,
-        geojsonCoords: coordGeoJson,
+        coordinates: coordinates,
         subRoutes: subRoutes,
         instructions: insts,//response.route_instructions ? this._convertInstructions(response.route_instructions) : [],
         summary: response.trip.summary ? this._convertSummary(response.trip.summary) : [],
@@ -855,42 +856,14 @@ if (typeof module === 'object' && module.exports) {
 			 	this.options.styles,
 			 	this.options.addWaypoints);
 			}
-			// make current style transparent if Tangram options is true
-			if (options.useTangram) this.options.styles = [{ color: 'white', opacity: 0.01, weight: 9 }]
 		},
 
 		addTo: function(map) {
 			map.addLayer(this);
-			console.log(this.options);
-			if(this.options.useTangram) this._addRouteSourceToTangram();
 			return this;
 		},
-
 		getBounds: function() {
 			return L.latLngBounds(this._route.coordinates);
-		},
-
-		_addRouteSourceToTangram: function() {
-			var scene = TangramLayer.layer.scene;
-			if (scene.initialized) {
-				var route = {};
-				route.type = "FeatureCollection";
-				route.features = [];
-				route.features.push({
-					type: "Feature",
-					properties: {},
-					geometry: this._route.geojsonCoords})
-				var routeObj = {
-					"routelayer": route
-				}
-				var realObjToPass = JSON.stringify(routeObj);
-				var f = [];
-				f.push(this._route.geojsonCoords)
-				scene.setDataSource('routes', {
-					type: 'GeoJSON',
-					data: routeObj
-				});
-			}
 		},
 
 		_findWaypointIndices: function() {

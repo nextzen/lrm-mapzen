@@ -48,42 +48,14 @@
 			 	this.options.styles,
 			 	this.options.addWaypoints);
 			}
-			// make current style transparent if Tangram options is true
-			if (options.useTangram) this.options.styles = [{ color: 'white', opacity: 0.01, weight: 9 }]
 		},
 
 		addTo: function(map) {
 			map.addLayer(this);
-			console.log(this.options);
-			if(this.options.useTangram) this._addRouteSourceToTangram();
 			return this;
 		},
-
 		getBounds: function() {
 			return L.latLngBounds(this._route.coordinates);
-		},
-
-		_addRouteSourceToTangram: function() {
-			var scene = TangramLayer.layer.scene;
-			if (scene.initialized) {
-				var route = {};
-				route.type = "FeatureCollection";
-				route.features = [];
-				route.features.push({
-					type: "Feature",
-					properties: {},
-					geometry: this._route.geojsonCoords})
-				var routeObj = {
-					"routelayer": route
-				}
-				var realObjToPass = JSON.stringify(routeObj);
-				var f = [];
-				f.push(this._route.geojsonCoords)
-				scene.setDataSource('routes', {
-					type: 'GeoJSON',
-					data: routeObj
-				});
-			}
 		},
 
 		_findWaypointIndices: function() {
