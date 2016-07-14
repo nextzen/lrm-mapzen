@@ -170,8 +170,8 @@
     }
   });
 
-  L.Routing.mapzenFormatter = function() {
-    return new L.Routing.MapzenFormatter();
+  L.Routing.mapzenFormatter = function(options) {
+    return new L.Routing.MapzenFormatter(options);
   };
 
   module.exports = L.Routing;
