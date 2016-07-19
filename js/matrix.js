@@ -1,33 +1,8 @@
-var map = L.map('map');
+var map = L.Mapzen.map('map', {
+  scene: L.Mapzen.HouseStyles.Zinc
+})
 
 var hashControl = new HashControl();
-
-if (hasWebGL()) {
-  // use Tangram to draw tiles when there is WebGL available on the browser
-  var layer = Tangram.leafletLayer({
-    scene: 'https://cdn.rawgit.com/tangrams/refill-style/gh-pages/refill-style.yaml',
-    attribution: '<a href="https://mapzen.com/tangram" target="_blank">Tangram</a> | &copy; OSM contributors | <a href="https://mapzen.com/" target="_blank">Mapzen</a>'
-  });
-  layer.addTo(map);
-} else {
-  // Use normal OSM tiles instead of Tangram when there is no webgl available
-  L.tileLayer('http://{s}.tile.osm.org/{z}/{x}/{y}.png', {
-     attribution: '&copy; <a href="http://osm.org/copyright">OpenStreetMap</a> contributors'
-   }).addTo(map);
-}
-
-
-// detect webgl on browser for Tangram
-function hasWebGL() {
-  try {
-    var canvas = document.createElement('canvas');
-    return !!(window.WebGLRenderingContext && (canvas.getContext('webgl') || canvas.getContext('experimental-webgl')));
-  } catch (x) {
-    return false;
-  }
-}
-
-
 
 var routingData = {
   waypoints: [
@@ -36,8 +11,6 @@ var routingData = {
   ],
   costing: 'auto'
 }
-
-
 
 // read searchquery and set up hash if there is none
 // you can ignore this part if you are not planning to setup search query for your page
