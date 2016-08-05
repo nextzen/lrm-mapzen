@@ -90,7 +90,7 @@ html,body{
 .info::before{
     -webkit-background-size: 72px 18px;
     background-size: 72px 18px;
-    background-image:url('modes.icons.svg');
+    background-image:url('lrm-mapzen-modes.svg');
     margin: 0;
     content: '';
     display: inline-block;
@@ -109,7 +109,7 @@ html,body{
     -webkit-background-size: 684px 18px;
     background-size: 684px 18px;
     background-repeat: no-repeat;
-    background-image:url('leaflet.routing.icons.svg');
+    background-image:url('lrm-mapzen-icons.svg');
     margin: 0;
     content: '';
     display: inline-block;

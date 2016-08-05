@@ -94,12 +94,18 @@ function corslite(url, callback, cors) {
 if (typeof module !== 'undefined') module.exports = corslite;
 
 },{}],2:[function(require,module,exports){
-var polyline = {};
+'use strict';
 
-// Based off of [the offical Google document](https://developers.google.com/maps/documentation/utilities/polylinealgorithm)
-//
-// Some parts from [this implementation](http://facstaff.unca.edu/mcmcclur/GoogleMaps/EncodePolyline/PolylineEncoder.js)
-// by [Mark McClure](http://facstaff.unca.edu/mcmcclur/)
+/**
+ * Based off of [the offical Google document](https://developers.google.com/maps/documentation/utilities/polylinealgorithm)
+ *
+ * Some parts from [this implementation](http://facstaff.unca.edu/mcmcclur/GoogleMaps/EncodePolyline/PolylineEncoder.js)
+ * by [Mark McClure](http://facstaff.unca.edu/mcmcclur/)
+ *
+ * @module polyline
+ */
+
+var polyline = {};
 
 function encode(coordinate, factor) {
     coordinate = Math.round(coordinate * factor);
@@ -116,8 +122,17 @@ function encode(coordinate, factor) {
     return output;
 }
 
-// This is adapted from the implementation in Project-OSRM
-// https://github.com/DennisOSRM/Project-OSRM-Web/blob/master/WebContent/routing/OSRM.RoutingGeometry.js
+/**
+ * Decodes to a [latitude, longitude] coordinates array.
+ *
+ * This is adapted from the implementation in Project-OSRM.
+ *
+ * @param {String} str
+ * @param {Number} precision
+ * @returns {Array}
+ *
+ * @see https://github.com/Project-OSRM/osrm-frontend/blob/master/WebContent/routing/OSRM.RoutingGeometry.js
+ */
 polyline.decode = function(str, precision) {
     var index = 0,
         lat = 0,
@@ -167,8 +182,15 @@ polyline.decode = function(str, precision) {
     return coordinates;
 };
 
+/**
+ * Encodes the given [latitude, longitude] coordinates array.
+ *
+ * @param {Array.<Array.<Number>>} coordinates
+ * @param {Number} precision
+ * @returns {String}
+ */
 polyline.encode = function(coordinates, precision) {
-    if (!coordinates.length) return '';
+    if (!coordinates.length) { return ''; }
 
     var factor = Math.pow(10, precision || 5),
         output = encode(coordinates[0][0], factor) + encode(coordinates[0][1], factor);
@@ -182,7 +204,49 @@ polyline.encode = function(coordinates, precision) {
     return output;
 };
 
-if (typeof module !== undefined) module.exports = polyline;
+function flipped(coords) {
+    var flipped = [];
+    for (var i = 0; i < coords.length; i++) {
+        flipped.push(coords[i].slice().reverse());
+    }
+    return flipped;
+}
+
+/**
+ * Encodes a GeoJSON LineString feature/geometry.
+ *
+ * @param {Object} geojson
+ * @param {Number} precision
+ * @returns {String}
+ */
+polyline.fromGeoJSON = function(geojson, precision) {
+    if (geojson && geojson.type === 'Feature') {
+        geojson = geojson.geometry;
+    }
+    if (!geojson || geojson.type !== 'LineString') {
+        throw new Error('Input must be a GeoJSON LineString');
+    }
+    return polyline.encode(flipped(geojson.coordinates), precision);
+};
+
+/**
+ * Decodes to a GeoJSON LineString geometry.
+ *
+ * @param {String} str
+ * @param {Number} precision
+ * @returns {Object}
+ */
+polyline.toGeoJSON = function(str, precision) {
+    var coords = polyline.decode(str, precision);
+    return {
+        type: 'LineString',
+        coordinates: flipped(coords)
+    };
+};
+
+if (typeof module === 'object' && module.exports) {
+    module.exports = polyline;
+}
 
 },{}],3:[function(require,module,exports){
 (function (global){
@@ -733,8 +797,8 @@ if (typeof module !== undefined) module.exports = polyline;
     }
   });
 
-  L.Routing.mapzenFormatter = function() {
-    return new L.Routing.MapzenFormatter();
+  L.Routing.mapzenFormatter = function(options) {
+    return new L.Routing.MapzenFormatter(options);
   };
 
   module.exports = L.Routing;

@@ -7,9 +7,10 @@ mkdir -p dist
 browserify -t browserify-shim src/* > dist/lrm-mapzen.js
 browserify -t uglifyify -t browserify-shim src/* | uglifyjs -c > dist/lrm-mapzen.min.js
 
-cp css/leaflet.routing.mapzen.css dist/leaflet.routing.mapzen.css
-cp css/leaflet.routing.icons.svg dist/leaflet.routing.icons.svg
-cp css/modes.icons.svg dist/modes.icons.svg
+cp css/leaflet.routing.mapzen.css dist/lrm-mapzen.css
+cp css/lrm-mapzen-icons.svg dist/lrm-mapzen-icons.svg
+cp css/lrm-mapzen-modes.svg dist/lrm-mapzen-modes.svg
+cp css/lrm-mapzen-icons.png dist/lrm-mapzen-icons.png
 cp css/routing-icon.png dist/routing-icon.png
 
 echo Done.
