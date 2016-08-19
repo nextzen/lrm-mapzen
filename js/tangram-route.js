@@ -63,57 +63,11 @@ map.on('tangramloaded', function (e) {
       type: 'GeoJSON',
       data: routeObj
     });
-    console.log("scene after process")
-    console.log(scene);
+    scene.requestRedraw();
     return L.Routing.mapzenLine(route, options);
   }
-
+  scene.requestRedraw();
 });
-
-
-// scene.subscribe({
-//   view_complete: function () {
-
-//     if (!tangramLoaded) {
-
-//       control.options.routeLine = function(route, options) {
-//         // Make SVG Line (almost) transparent
-//         // So that Tangram layer takes visual priority
-//         options.styles = {
-//           styles: [{ color: 'white', opacity: 0.01, weight: 9 }]
-//         };
-
-//         var coordinatesGeojson= {
-//           type: 'LineString',
-//           coordinates: flipped(route.coordinates)
-//         };
-
-//         var routeSource = {};
-//         routeSource.type = "FeatureCollection";
-//         routeSource.features = [];
-//         routeSource.features.push({
-//           type: "Feature",
-//           properties: {},
-//           geometry: coordinatesGeojson
-//         });
-
-//         var routeObj = {
-//           "routelayer": routeSource
-//         }
-
-//         scene.setDataSource('routes', {
-//           type: 'GeoJSON',
-//           data: routeObj
-//         });
-
-//         return L.Routing.mapzenLine(route, options);
-//       }
-//       control.route();
-//       tangramLoaded = true;
-//     }
-//   }
-// });
-
 
 function flipped(coords) {
   var flipped = [];
