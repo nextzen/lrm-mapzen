@@ -1,5 +1,8 @@
-var map = TangramLayer.map;
-var scene = TangramLayer.layer.scene;
+var map = L.Mapzen.map('map', {
+  scene: './js/route-scene.yaml'
+})
+
+
 
 var demo = {
   costing: 'auto'
@@ -26,51 +29,45 @@ var control = L.Routing.control({
 
 L.Routing.errorControl(control).addTo(map);
 
-scene.subscribe({
-  view_complete: function () {
 
-    console.log('view complete');
+map.on('tangramloaded', function (e) {
+  var layer = e.tangramLayer;
+  var scene = e.tangramLayer.scene;
 
-    if (!tangramLoaded) {
+  control.options.routeLine = function(route, options) {
+    // Make SVG Line (almost) transparent
+    // So that Tangram layer takes visual priority
+    options.styles = {
+      styles: [{ color: 'white', opacity: 0.01, weight: 9 }]
+    };
 
-      control.options.routeLine = function(route, options) {
-        // Make SVG Line (almost) transparent
-        // So that Tangram layer takes visual priority
-        options.styles = {
-          styles: [{ color: 'white', opacity: 0.01, weight: 9 }]
-        };
+    var coordinatesGeojson= {
+      type: 'LineString',
+      coordinates: flipped(route.coordinates)
+    };
 
-        var coordinatesGeojson= {
-          type: 'LineString',
-          coordinates: flipped(route.coordinates)
-        };
+    var routeSource = {};
+    routeSource.type = "FeatureCollection";
+    routeSource.features = [];
+    routeSource.features.push({
+      type: "Feature",
+      properties: {},
+      geometry: coordinatesGeojson
+    });
 
-        var routeSource = {};
-        routeSource.type = "FeatureCollection";
-        routeSource.features = [];
-        routeSource.features.push({
-          type: "Feature",
-          properties: {},
-          geometry: coordinatesGeojson
-        });
-
-        var routeObj = {
-          "routelayer": routeSource
-        }
-
-        scene.setDataSource('routes', {
-          type: 'GeoJSON',
-          data: routeObj
-        });
-
-        return L.Routing.mapzenLine(route, options);
-      }
-      control.route();
-      tangramLoaded = true;
+    var routeObj = {
+      "routelayer": routeSource
     }
-  }
-});
 
+    scene.setDataSource('routes', {
+      type: 'GeoJSON',
+      data: routeObj
+    });
+    scene.requestRedraw();
+    return L.Routing.mapzenLine(route, options);
+  }
+  scene.requestRedraw();
+});
 
 function flipped(coords) {
   var flipped = [];
