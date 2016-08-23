@@ -66,7 +66,7 @@ map.on('tangramloaded', function (e) {
     scene.requestRedraw();
     return L.Routing.mapzenLine(route, options);
   }
-  scene.requestRedraw();
+  control.route();
 });
 
 function flipped(coords) {
