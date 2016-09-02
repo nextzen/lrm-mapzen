@@ -30,6 +30,24 @@ var control = L.Routing.control({
 L.Routing.errorControl(control).addTo(map);
 
 
+
+// Adding easy button for UI
+
+L.easyButton('btn-auto', function(btn, map){
+  control.getRouter().options.costing = 'auto';
+  control.route();
+}).addTo(map);
+
+L.easyButton('btn-bicycle', function(btn, map){
+  control.getRouter().options.costing = 'bicycle';
+  control.route();
+}).addTo(map);
+
+L.easyButton('btn-pedestrian', function(btn, map){
+  control.getRouter().options.costing = 'pedestrian';
+  control.route();
+}).addTo(map);
+
 map.on('tangramloaded', function (e) {
   var layer = e.tangramLayer;
   var scene = e.tangramLayer.scene;

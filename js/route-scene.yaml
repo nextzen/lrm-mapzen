@@ -1,4 +1,4 @@
-import: https://cdn.rawgit.com/tangrams/refill-style/gh-pages/refill-style.yaml
+import: https://mapzen.com/carto/refill-style/3/refill-style.yaml
 
 styles:
   ants:
