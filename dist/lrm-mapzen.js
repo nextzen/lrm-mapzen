@@ -349,6 +349,9 @@ if (typeof module === 'object' && module.exports) {
       for(var i = 0; i < response.trip.legs.length; i++){
         var coord = polyline.decode(response.trip.legs[i].shape, 6);
 
+        // These are all coordinates for routing
+        console.log(coord);
+        // push the coordinate in order
         for(var k = 0; k < coord.length; k++){
           coordinates.push(coord[k]);
         }
@@ -356,12 +359,12 @@ if (typeof module === 'object' && module.exports) {
         for(var j =0; j < response.trip.legs[i].maneuvers.length; j++){
           var res = response.trip.legs[i].maneuvers[j];
           res.distance = response.trip.legs[i].maneuvers[j]["length"];
+          // Passing the indexs number each maneuver starts
           res.index = shapeIndex + response.trip.legs[i].maneuvers[j]["begin_shape_index"];
           insts.push(res);
         }
 
         if(routeOptions.costing === 'multimodal') insts = this._unifyTransitManeuver(insts);
-
         shapeIndex += response.trip.legs[i].maneuvers[response.trip.legs[i].maneuvers.length-1]["begin_shape_index"];
       }
 
