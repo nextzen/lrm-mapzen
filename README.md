@@ -26,14 +26,16 @@ Also, include the stylesheet. This can replace the default `leaflet-routing-mach
 <link rel="stylesheet" href="leaflet.routing.mapzen.css">
 ```
 
-Insert your [Mapzen Turn-by-Turn API key](https://mapzen.com/developers) for the placeholder text (valhalla-xxxxxx) and a routing options object to at least include the costing mode (`auto`, `bicycle`, `pedestrian`, or `multimodal`). Note that no additional options are needed for `formatter`.
+Insert your [Mapzen API key](https://mapzen.com/developers) for the placeholder text (mapzen-xxxxxx) and a routing options object to at least include the costing mode (`auto`, `bicycle`, `pedestrian`, or `multimodal`). Note that no additional options are needed for `formatter`.
 
 ```js
 var map = L.map('map');
 
 L.Routing.control({
   // [...] See MapzenTurn-by-Turn API documentation for other options
-  router: L.Routing.mapzen('valhalla-xxxxxx', {costing:'auto'}),
+  router: L.Routing.mapzen('mapzen-xxxxxx', {
+    costing:'auto'
+  }),
   formatter: new L.Routing.mapzenFormatter()
 }).addTo(map);
 ```
@@ -42,7 +44,7 @@ If you want to include additional costing options to help define the the route a
 
 ```js
 L.Routing.control({
-  router: L.Routing.mapzen('valhalla-xxxxxx', {
+  router: L.Routing.mapzen('mapzen-xxxxxx', {
     costing: "bicycle",
     costing_options: {
       bicycle: {
@@ -60,7 +62,7 @@ With the`multimodal` costing mode, you can set costing options for preferences f
 
 ```js
 L.Routing.control({
-  router: L.Routing.mapzen('valhalla-xxxxxx', {
+  router: L.Routing.mapzen('mapzen-xxxxxx', {
     // you need to pass mapzenLine as routeLine to router to see subroutes of transit routing.
     // you can skip routeLine if you don't want to use subroutes.
     routeLine: function (route, options) { return L.Routing.mapzenLine(route, options); },
@@ -94,7 +96,7 @@ require('lrm-mapzen');
 var map = L.map('map');
 
 L.Routing.control({
-  router: L.Routing.mapzen('valhalla-xxxxxx', {costing:'auto'}),
+  router: L.Routing.mapzen('mapzen-xxxxxx', {costing:'auto'}),
   formatter: new L.Routing.mapzenFormatter()
 }).addTo(map);
 ```
@@ -104,7 +106,7 @@ For `router`, insert your [Mapzen Turn-by-Turn API key](https://mapzen.com/devel
 You can also change the route costing mode after the router is created. Say you had different transportation options on your map and wanted to change `costing` to `bicycle` when that button is clicked:
 
 ```js
-var rr = L.Routing.mapzen('valhalla-xxxxxx', {costing:'auto'});
+var rr = L.Routing.mapzen('mapzen-xxxxxx', {costing:'auto'});
 [...]
 bikeButton.onClick: function () {
   rr.route({costing: "bicycle"});
