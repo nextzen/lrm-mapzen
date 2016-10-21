@@ -98,7 +98,7 @@
         var coord = polyline.decode(response.trip.legs[i].shape, 6);
 
         for(var k = 0; k < coord.length; k++){
-          coordinates.push(coord[k]);
+          coordinates.push(L.latLng(coord[k][0], coord[k][1]));
         }
 
         for(var j =0; j < response.trip.legs[i].maneuvers.length; j++){
