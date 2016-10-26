@@ -1,12 +1,12 @@
 var map = L.Mapzen.map('map', {
-  scene: './js/route-scene.yaml'
-})
-
+  scene: L.Mapzen.BasemapStyles.Refill
+});
 
 
 var demo = {
   costing: 'auto'
 }
+
 var tangramLoaded = false;
 
 var control = L.Routing.control({
@@ -48,6 +48,39 @@ L.easyButton('btn-pedestrian', function(btn, map){
   control.route();
 }).addTo(map);
 
+
+// Tangram Style objects;
+
+var ants = {
+  "base": "lines",
+  "blend": "overlay",
+  "texcoords": true,
+  "animated": true,
+  "shaders": {
+    "blocks": {
+      "color": "color.a = step(.5,fract(u_time-v_texcoord.y*.5));"
+    }
+  }
+};
+
+var routeStyle =  {
+    "lines": {
+      "color": "#f66",
+      "order": 1000,
+      "width": "10px"
+    },
+    "ants": {
+      "color": [
+        0,
+        0.36,
+        0.6
+      ],
+      "order": 300000,
+      "width": "5px"
+    }
+};
+
+
 map.on('tangramloaded', function (e) {
   var layer = e.tangramLayer;
   var scene = e.tangramLayer.scene;
@@ -77,11 +110,16 @@ map.on('tangramloaded', function (e) {
       "routelayer": routeSource
     }
 
-    scene.setDataSource('routes', {
+    var routeSourceName = 'routes';
+
+    scene.config.styles.ants = ants;
+    scene.config.layers.routelayer = { 'data': { 'source': routeSourceName }, 'draw': routeStyle };
+
+    scene.setDataSource(routeSourceName, {
       type: 'GeoJSON',
       data: routeObj
     });
-    scene.requestRedraw();
+
     return L.Routing.mapzenLine(route, options);
   }
   control.route();
@@ -90,7 +128,10 @@ map.on('tangramloaded', function (e) {
 function flipped(coords) {
   var flipped = [];
   for (var i = 0; i < coords.length; i++) {
-    flipped.push(coords[i].slice().reverse());
+    var coord = [];
+    coord.push(coords[i].lng);
+    coord.push(coords[i].lat);
+    flipped.push(coord);
   }
   return flipped;
 }
