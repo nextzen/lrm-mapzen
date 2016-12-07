@@ -1,13 +1,11 @@
 (function() {
   'use strict';
 
-  var L = (typeof window !== "undefined" ? window.L : typeof global !== "undefined" ? global.L : null);
+  var L = require('leaflet');
   var corslite = require('corslite');
   var polyline = require('polyline');
 
-  L.Routing = L.Routing || {};
-
-  L.Routing.Mapzen = L.Class.extend({
+  module.exports = L.Class.extend({
     options: {
       timeout: 30 * 1000
     },
@@ -364,9 +362,4 @@
     }
   });
 
-  L.Routing.mapzen = function(accessToken, options) {
-    return new L.Routing.Mapzen(accessToken, options);
-  };
-
-  module.exports = L.Routing.Mapzen;
 })();

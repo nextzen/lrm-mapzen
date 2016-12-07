@@ -1,12 +1,10 @@
 (function() {
   'use strict';
 
-  var L = (typeof window !== "undefined" ? window.L : typeof global !== "undefined" ? global.L : null);
-
-  L.Routing = L.Routing || {};
+  var L = require('leaflet');
 
   //L.extend(L.Routing, require('./L.Routing.Localization'));
-  L.Routing.MapzenFormatter = L.Class.extend({
+  module.exports = L.Class.extend({
     options: {
       units: 'metric',
       unitNames: {
@@ -170,9 +168,4 @@
     }
   });
 
-  L.Routing.mapzenFormatter = function(options) {
-    return new L.Routing.MapzenFormatter(options);
-  };
-
-  module.exports = L.Routing;
 })();
