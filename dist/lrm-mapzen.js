@@ -250,16 +250,371 @@ if (typeof module === 'object' && module.exports) {
 
 },{}],3:[function(require,module,exports){
 (function (global){
+var L = (typeof window !== "undefined" ? window['L'] : typeof global !== "undefined" ? global['L'] : null);
+var MapzenRouter = require('./mapzenRouter');
+var MapzenLine = require('./mapzenLine');
+var MapzenFormatter = require('./mapzenFormatter');
+
+L.Routing = L.Routing || {};
+L.routing = L.routing || {};
+
+L.Routing.Mapzen = MapzenRouter;
+L.Routing.MapzenLine = MapzenLine;
+L.Routing.MapzenFormatter = MapzenFormatter;
+
+
+L.routing.mapzen = function(key, options) {
+  return new MapzenRouter(key, options);
+}
+
+L.routing.mapzenLine = function(route, options) {
+  return new MapzenLine(route, options);
+}
+
+L.routing.mapzenFormatter = function(options) {
+  return new MapzenFormatter(options);
+}
+
+// deperecate these parts later
+
+L.Routing.mapzen = L.routing.mapzen;
+L.Routing.mapzenLine = L.routing.mapzenLine;
+L.Routing.mapzenFormatter = L.routing.mapzenFormatter;
+}).call(this,typeof global !== "undefined" ? global : typeof self !== "undefined" ? self : typeof window !== "undefined" ? window : {})
+},{"./mapzenFormatter":4,"./mapzenLine":5,"./mapzenRouter":6}],4:[function(require,module,exports){
+(function (global){
 (function() {
   'use strict';
 
-  var L = (typeof window !== "undefined" ? window.L : typeof global !== "undefined" ? global.L : null);
+  var L = (typeof window !== "undefined" ? window['L'] : typeof global !== "undefined" ? global['L'] : null);
+
+  //L.extend(L.Routing, require('./L.Routing.Localization'));
+  module.exports = L.Class.extend({
+    options: {
+      units: 'metric',
+      unitNames: {
+        meters: 'm',
+        kilometers: 'km',
+        yards: 'yd',
+        miles: 'mi',
+        hours: 'h',
+        minutes: 'mín',
+        seconds: 's'
+      },
+      language: 'en',
+      roundingSensitivity: 1,
+      distanceTemplate: '{value} {unit}'
+    },
+
+    initialize: function(options) {
+      L.setOptions(this, options);
+    },
+
+    formatDistance: function(d /* Number (meters) */) {
+      var un = this.options.unitNames,
+          v,
+        data;
+      if (this.options.units === 'imperial') {
+        //valhalla returns distance in km
+        d  = d * 1000;
+        d = d / 1.609344;
+        if (d >= 1000) {
+          data = {
+            value: (this._round(d) / 1000),
+            unit: un.miles
+          };
+        } else {
+          data = {
+            value: this._round(d / 1.760),
+            unit: un.yards
+          };
+        }
+      } else {
+        v = d;
+        data = {
+          value: v >= 1 ? v: v*1000,
+          unit: v >= 1 ? un.kilometers : un.meters
+        };
+      }
+
+       return L.Util.template(this.options.distanceTemplate, data);
+    },
+
+    _round: function(d) {
+      var pow10 = Math.pow(10, (Math.floor(d / this.options.roundingSensitivity) + '').length - 1),
+        r = Math.floor(d / pow10),
+        p = (r > 5) ? pow10 : pow10 / 2;
+
+      return Math.round(d / p) * p;
+    },
+
+    formatTime: function(t /* Number (seconds) */) {
+      if (t > 86400) {
+        return Math.round(t / 3600) + ' h';
+      } else if (t > 3600) {
+        return Math.floor(t / 3600) + ' h ' +
+          Math.round((t % 3600) / 60) + ' min';
+      } else if (t > 300) {
+        return Math.round(t / 60) + ' min';
+      } else if (t > 60) {
+        return Math.floor(t / 60) + ' min' +
+          (t % 60 !== 0 ? ' ' + (t % 60) + ' s' : '');
+      } else {
+        return t + ' s';
+      }
+    },
+
+    formatInstruction: function(instr, i) {
+      // Valhalla returns instructions itself.
+      return instr.instruction;
+    },
+
+    getIconName: function(instr, i) {
+      // you can find all Valhalla's direction types at https://github.com/valhalla/odin/blob/master/proto/tripdirections.proto
+      switch (instr.type) {
+        case 0:
+          return 'kNone';
+        case 1:
+          return 'kStart';
+        case 2:
+          return 'kStartRight';
+        case 3:
+          return 'kStartLeft';
+        case 4:
+          return 'kDestination';
+        case 5:
+          return 'kDestinationRight';
+        case 6:
+          return 'kDestinationLeft';
+        case 7:
+          return 'kBecomes';
+        case 8:
+          return 'kContinue';
+        case 9:
+          return 'kSlightRight';
+        case 10:
+          return 'kRight';
+        case 11:
+          return 'kSharpRight';
+        case 12:
+          return 'kUturnRight';
+        case 13:
+          return 'kUturnLeft';
+        case 14:
+          return 'kSharpLeft';
+        case 15:
+          return 'kLeft';
+        case 16:
+          return 'kSlightLeft';
+        case 17:
+          return 'kRampStraight';
+        case 18:
+          return 'kRampRight';
+        case 19:
+          return 'kRampLeft';
+        case 20:
+          return 'kExitRight';
+        case 21:
+          return 'kExitLeft';
+        case 22:
+          return 'kStayStraight';
+        case 23:
+          return 'kStayRight';
+        case 24:
+          return 'kStayLeft';
+        case 25:
+          return 'kMerge';
+        case 26:
+          return 'kRoundaboutEnter';
+        case 27:
+          return 'kRoundaboutExit';
+        case 28:
+          return 'kFerryEnter';
+        case 29:
+          return 'kFerryExit';
+        // lrm-mapzen unifies transit commands and give them same icons
+        case 30:
+        case 31: //'kTransitTransfer'
+        case 32: //'kTransitRemainOn'
+        case 33: //'kTransitConnectionStart'
+        case 34: //'kTransitConnectionTransfer'
+        case 35: //'kTransitConnectionDestination'
+        case 36: //'kTransitConnectionDestination'
+          if (instr.edited_travel_type) return 'kTransit' + this._getCapitalizedName(instr.edited_travel_type);
+          else return 'kTransit';
+      }
+    },
+
+    _getInstructionTemplate: function(instr, i) {
+      return instr.instruction + " " +instr.length;
+    },
+    _getCapitalizedName: function(name) {
+      return name.charAt(0).toUpperCase() + name.slice(1);
+    }
+  });
+
+})();
+}).call(this,typeof global !== "undefined" ? global : typeof self !== "undefined" ? self : typeof window !== "undefined" ? window : {})
+},{}],5:[function(require,module,exports){
+(function (global){
+(function() {
+	'use strict';
+
+	var L = (typeof window !== "undefined" ? window['L'] : typeof global !== "undefined" ? global['L'] : null);
+
+	module.exports = L.LayerGroup.extend({
+		includes: L.Mixin.Events,
+
+		options: {
+			styles: [
+				{color: 'black', opacity: 0.15, weight: 9},
+				{color: 'white', opacity: 0.8, weight: 6},
+				{color: 'red', opacity: 1, weight: 2}
+			],
+			missingRouteStyles: [
+				{color: 'black', opacity: 0.15, weight: 7},
+				{color: 'white', opacity: 0.6, weight: 4},
+				{color: 'gray', opacity: 0.8, weight: 2, dashArray: '7,12'}
+			],
+			addWaypoints: true,
+			extendToWaypoints: true,
+			missingRouteTolerance: 10
+		},
+
+		initialize: function(route, options) {
+			L.setOptions(this, options);
+			L.LayerGroup.prototype.initialize.call(this, options);
+			this._route = route;
+
+			if (this.options.extendToWaypoints) {
+				this._extendToWaypoints();
+			}
+
+			if (route.subRoutes) {
+				for(var i = 0; i < route.subRoutes.length; i++) {
+					if(!route.subRoutes[i].styles) route.subRoutes[i].styles = this.options.styles;
+					this._addSegment(
+						route.subRoutes[i].coordinates,
+						route.subRoutes[i].styles,
+						this.options.addWaypoints);
+				}
+			} else {
+			 this._addSegment(
+			 	route.coordinates,
+			 	this.options.styles,
+			 	this.options.addWaypoints);
+			}
+		},
+
+		addTo: function(map) {
+			map.addLayer(this);
+			return this;
+		},
+		getBounds: function() {
+			return L.latLngBounds(this._route.coordinates);
+		},
+
+		_findWaypointIndices: function() {
+			var wps = this._route.inputWaypoints,
+			    indices = [],
+			    i;
+			for (i = 0; i < wps.length; i++) {
+				indices.push(this._findClosestRoutePoint(wps[i].latLng));
+			}
+
+			return indices;
+		},
+
+		_findClosestRoutePoint: function(latlng) {
+			var minDist = Number.MAX_VALUE,
+				minIndex,
+			    i,
+			    d;
+
+			for (i = this._route.coordinates.length - 1; i >= 0 ; i--) {
+				// TODO: maybe do this in pixel space instead?
+				d = latlng.distanceTo(this._route.coordinates[i]);
+				if (d < minDist) {
+					minIndex = i;
+					minDist = d;
+				}
+			}
+
+			return minIndex;
+		},
+
+		_extendToWaypoints: function() {
+			var wps = this._route.inputWaypoints,
+				wpIndices = this._getWaypointIndices(),
+			    i,
+			    wpLatLng,
+			    routeCoord;
+
+			for (i = 0; i < wps.length; i++) {
+				wpLatLng = wps[i].latLng;
+				routeCoord = L.latLng(this._route.coordinates[wpIndices[i]]);
+				if (wpLatLng.distanceTo(routeCoord) >
+					this.options.missingRouteTolerance) {
+					this._addSegment([wpLatLng, routeCoord],
+						this.options.missingRouteStyles);
+				}
+			}
+		},
+
+		_addSegment: function(coords, styles, mouselistener) {
+			var i,
+				pl;
+			for (i = 0; i < styles.length; i++) {
+				pl = L.polyline(coords, styles[i]);
+				this.addLayer(pl);
+				if (mouselistener) {
+					pl.on('mousedown', this._onLineTouched, this);
+				}
+			}
+		},
+
+		_findNearestWpBefore: function(i) {
+			var wpIndices = this._getWaypointIndices(),
+				j = wpIndices.length - 1;
+			while (j >= 0 && wpIndices[j] > i) {
+				j--;
+			}
+
+			return j;
+		},
+
+		_onLineTouched: function(e) {
+			var afterIndex = this._findNearestWpBefore(this._findClosestRoutePoint(e.latlng));
+			this.fire('linetouched', {
+				afterIndex: afterIndex,
+				latlng: e.latlng
+			});
+		},
+
+		_getWaypointIndices: function() {
+			if (!this._wpIndices) {
+				this._wpIndices = this._route.waypointIndices || this._findWaypointIndices();
+			}
+
+			return this._wpIndices;
+		}
+	});
+
+})();
+
+}).call(this,typeof global !== "undefined" ? global : typeof self !== "undefined" ? self : typeof window !== "undefined" ? window : {})
+},{}],6:[function(require,module,exports){
+(function (global){
+(function() {
+  'use strict';
+
+  var L = (typeof window !== "undefined" ? window['L'] : typeof global !== "undefined" ? global['L'] : null);
   var corslite = require('corslite');
   var polyline = require('polyline');
 
-  L.Routing = L.Routing || {};
+  var Waypoint = require('./waypoint');
 
-  L.Routing.Mapzen = L.Class.extend({
+  module.exports = L.Class.extend({
     options: {
       timeout: 30 * 1000
     },
@@ -299,11 +654,7 @@ if (typeof module === 'object' && module.exports) {
       // the request is being processed.
       for (i = 0; i < waypoints.length; i++) {
         wp = waypoints[i];
-        wps.push({
-          latLng: wp.latLng,
-          name: wp.name || "",
-          options: wp.options || {}
-        });
+        wps.push(new Waypoint(L.latLng(wp.latLng), wp.name || "", wp.options || {}))
       }
 
       corslite(url, L.bind(function(err, resp) {
@@ -509,7 +860,7 @@ if (typeof module === 'object' && module.exports) {
       var wps = [],
           i;
       for (i = 0; i < vias.length; i++) {
-        wps.push(L.Routing.waypoint(L.latLng([vias[i]["lat"],vias[i]["lon"]]),
+        wps.push(new Waypoint(L.latLng([vias[i]["lat"],vias[i]["lon"]]),
                                     "name",
                                     {}));
       }
@@ -616,349 +967,26 @@ if (typeof module === 'object' && module.exports) {
     }
   });
 
-  L.Routing.mapzen = function(accessToken, options) {
-    return new L.Routing.Mapzen(accessToken, options);
-  };
-
-  module.exports = L.Routing.Mapzen;
 })();
 
 }).call(this,typeof global !== "undefined" ? global : typeof self !== "undefined" ? self : typeof window !== "undefined" ? window : {})
-},{"corslite":1,"polyline":2}],4:[function(require,module,exports){
+},{"./waypoint":7,"corslite":1,"polyline":2}],7:[function(require,module,exports){
 (function (global){
 (function() {
   'use strict';
 
-  var L = (typeof window !== "undefined" ? window.L : typeof global !== "undefined" ? global.L : null);
+  var L = (typeof window !== "undefined" ? window['L'] : typeof global !== "undefined" ? global['L'] : null);
 
-  L.Routing = L.Routing || {};
-
-  //L.extend(L.Routing, require('./L.Routing.Localization'));
-  L.Routing.MapzenFormatter = L.Class.extend({
+  module.exports = L.Class.extend({
     options: {
-      units: 'metric',
-      unitNames: {
-        meters: 'm',
-        kilometers: 'km',
-        yards: 'yd',
-        miles: 'mi',
-        hours: 'h',
-        minutes: 'mín',
-        seconds: 's'
-      },
-      language: 'en',
-      roundingSensitivity: 1,
-      distanceTemplate: '{value} {unit}'
+      allowUTurn: false,
     },
-
-    initialize: function(options) {
-      L.setOptions(this, options);
-    },
-
-    formatDistance: function(d /* Number (meters) */) {
-      var un = this.options.unitNames,
-          v,
-        data;
-      if (this.options.units === 'imperial') {
-        //valhalla returns distance in km
-        d  = d * 1000;
-        d = d / 1.609344;
-        if (d >= 1000) {
-          data = {
-            value: (this._round(d) / 1000),
-            unit: un.miles
-          };
-        } else {
-          data = {
-            value: this._round(d / 1.760),
-            unit: un.yards
-          };
-        }
-      } else {
-        v = d;
-        data = {
-          value: v >= 1 ? v: v*1000,
-          unit: v >= 1 ? un.kilometers : un.meters
-        };
-      }
-
-       return L.Util.template(this.options.distanceTemplate, data);
-    },
-
-    _round: function(d) {
-      var pow10 = Math.pow(10, (Math.floor(d / this.options.roundingSensitivity) + '').length - 1),
-        r = Math.floor(d / pow10),
-        p = (r > 5) ? pow10 : pow10 / 2;
-
-      return Math.round(d / p) * p;
-    },
-
-    formatTime: function(t /* Number (seconds) */) {
-      if (t > 86400) {
-        return Math.round(t / 3600) + ' h';
-      } else if (t > 3600) {
-        return Math.floor(t / 3600) + ' h ' +
-          Math.round((t % 3600) / 60) + ' min';
-      } else if (t > 300) {
-        return Math.round(t / 60) + ' min';
-      } else if (t > 60) {
-        return Math.floor(t / 60) + ' min' +
-          (t % 60 !== 0 ? ' ' + (t % 60) + ' s' : '');
-      } else {
-        return t + ' s';
-      }
-    },
-
-    formatInstruction: function(instr, i) {
-      // Valhalla returns instructions itself.
-      return instr.instruction;
-    },
-
-    getIconName: function(instr, i) {
-      // you can find all Valhalla's direction types at https://github.com/valhalla/odin/blob/master/proto/tripdirections.proto
-      switch (instr.type) {
-        case 0:
-          return 'kNone';
-        case 1:
-          return 'kStart';
-        case 2:
-          return 'kStartRight';
-        case 3:
-          return 'kStartLeft';
-        case 4:
-          return 'kDestination';
-        case 5:
-          return 'kDestinationRight';
-        case 6:
-          return 'kDestinationLeft';
-        case 7:
-          return 'kBecomes';
-        case 8:
-          return 'kContinue';
-        case 9:
-          return 'kSlightRight';
-        case 10:
-          return 'kRight';
-        case 11:
-          return 'kSharpRight';
-        case 12:
-          return 'kUturnRight';
-        case 13:
-          return 'kUturnLeft';
-        case 14:
-          return 'kSharpLeft';
-        case 15:
-          return 'kLeft';
-        case 16:
-          return 'kSlightLeft';
-        case 17:
-          return 'kRampStraight';
-        case 18:
-          return 'kRampRight';
-        case 19:
-          return 'kRampLeft';
-        case 20:
-          return 'kExitRight';
-        case 21:
-          return 'kExitLeft';
-        case 22:
-          return 'kStayStraight';
-        case 23:
-          return 'kStayRight';
-        case 24:
-          return 'kStayLeft';
-        case 25:
-          return 'kMerge';
-        case 26:
-          return 'kRoundaboutEnter';
-        case 27:
-          return 'kRoundaboutExit';
-        case 28:
-          return 'kFerryEnter';
-        case 29:
-          return 'kFerryExit';
-        // lrm-mapzen unifies transit commands and give them same icons
-        case 30:
-        case 31: //'kTransitTransfer'
-        case 32: //'kTransitRemainOn'
-        case 33: //'kTransitConnectionStart'
-        case 34: //'kTransitConnectionTransfer'
-        case 35: //'kTransitConnectionDestination'
-        case 36: //'kTransitConnectionDestination'
-          if (instr.edited_travel_type) return 'kTransit' + this._getCapitalizedName(instr.edited_travel_type);
-          else return 'kTransit';
-      }
-    },
-
-    _getInstructionTemplate: function(instr, i) {
-      return instr.instruction + " " +instr.length;
-    },
-    _getCapitalizedName: function(name) {
-      return name.charAt(0).toUpperCase() + name.slice(1);
+    initialize: function(latLng, name, options) {
+      L.Util.setOptions(this, options);
+      this.latLng = L.latLng(latLng);
+      this.name = name;
     }
   });
-
-  L.Routing.mapzenFormatter = function(options) {
-    return new L.Routing.MapzenFormatter(options);
-  };
-
-  module.exports = L.Routing;
 })();
 }).call(this,typeof global !== "undefined" ? global : typeof self !== "undefined" ? self : typeof window !== "undefined" ? window : {})
-},{}],5:[function(require,module,exports){
-(function (global){
-(function() {
-	'use strict';
-
-	var L = (typeof window !== "undefined" ? window['L'] : typeof global !== "undefined" ? global['L'] : null);
-
-	L.Routing = L.Routing || {};
-
-
-	L.Routing.MapzenLine = L.LayerGroup.extend({
-		includes: L.Mixin.Events,
-
-		options: {
-			styles: [
-				{color: 'black', opacity: 0.15, weight: 9},
-				{color: 'white', opacity: 0.8, weight: 6},
-				{color: 'red', opacity: 1, weight: 2}
-			],
-			missingRouteStyles: [
-				{color: 'black', opacity: 0.15, weight: 7},
-				{color: 'white', opacity: 0.6, weight: 4},
-				{color: 'gray', opacity: 0.8, weight: 2, dashArray: '7,12'}
-			],
-			addWaypoints: true,
-			extendToWaypoints: true,
-			missingRouteTolerance: 10
-		},
-
-		initialize: function(route, options) {
-			L.setOptions(this, options);
-			L.LayerGroup.prototype.initialize.call(this, options);
-			this._route = route;
-
-			if (this.options.extendToWaypoints) {
-				this._extendToWaypoints();
-			}
-
-			if (route.subRoutes) {
-				for(var i = 0; i < route.subRoutes.length; i++) {
-					if(!route.subRoutes[i].styles) route.subRoutes[i].styles = this.options.styles;
-					this._addSegment(
-						route.subRoutes[i].coordinates,
-						route.subRoutes[i].styles,
-						this.options.addWaypoints);
-				}
-			} else {
-			 this._addSegment(
-			 	route.coordinates,
-			 	this.options.styles,
-			 	this.options.addWaypoints);
-			}
-		},
-
-		addTo: function(map) {
-			map.addLayer(this);
-			return this;
-		},
-		getBounds: function() {
-			return L.latLngBounds(this._route.coordinates);
-		},
-
-		_findWaypointIndices: function() {
-			var wps = this._route.inputWaypoints,
-			    indices = [],
-			    i;
-			for (i = 0; i < wps.length; i++) {
-				indices.push(this._findClosestRoutePoint(wps[i].latLng));
-			}
-
-			return indices;
-		},
-
-		_findClosestRoutePoint: function(latlng) {
-			var minDist = Number.MAX_VALUE,
-				minIndex,
-			    i,
-			    d;
-
-			for (i = this._route.coordinates.length - 1; i >= 0 ; i--) {
-				// TODO: maybe do this in pixel space instead?
-				d = latlng.distanceTo(this._route.coordinates[i]);
-				if (d < minDist) {
-					minIndex = i;
-					minDist = d;
-				}
-			}
-
-			return minIndex;
-		},
-
-		_extendToWaypoints: function() {
-			var wps = this._route.inputWaypoints,
-				wpIndices = this._getWaypointIndices(),
-			    i,
-			    wpLatLng,
-			    routeCoord;
-
-			for (i = 0; i < wps.length; i++) {
-				wpLatLng = wps[i].latLng;
-				routeCoord = L.latLng(this._route.coordinates[wpIndices[i]]);
-				if (wpLatLng.distanceTo(routeCoord) >
-					this.options.missingRouteTolerance) {
-					this._addSegment([wpLatLng, routeCoord],
-						this.options.missingRouteStyles);
-				}
-			}
-		},
-
-		_addSegment: function(coords, styles, mouselistener) {
-			var i,
-				pl;
-			for (i = 0; i < styles.length; i++) {
-				pl = L.polyline(coords, styles[i]);
-				this.addLayer(pl);
-				if (mouselistener) {
-					pl.on('mousedown', this._onLineTouched, this);
-				}
-			}
-		},
-
-		_findNearestWpBefore: function(i) {
-			var wpIndices = this._getWaypointIndices(),
-				j = wpIndices.length - 1;
-			while (j >= 0 && wpIndices[j] > i) {
-				j--;
-			}
-
-			return j;
-		},
-
-		_onLineTouched: function(e) {
-			var afterIndex = this._findNearestWpBefore(this._findClosestRoutePoint(e.latlng));
-			this.fire('linetouched', {
-				afterIndex: afterIndex,
-				latlng: e.latlng
-			});
-		},
-
-		_getWaypointIndices: function() {
-			if (!this._wpIndices) {
-				this._wpIndices = this._route.waypointIndices || this._findWaypointIndices();
-			}
-
-			return this._wpIndices;
-		}
-	});
-
-	L.Routing.mapzenLine = function(route, options) {
-		return new L.Routing.MapzenLine(route, options);
-	};
-
-	module.exports = L.Routing;
-})();
-
-}).call(this,typeof global !== "undefined" ? global : typeof self !== "undefined" ? self : typeof window !== "undefined" ? window : {})
-},{}]},{},[3,4,5]);
+},{}]},{},[3,4,5,6,7]);
