@@ -3,10 +3,7 @@
 
 	var L = require('leaflet');
 
-	L.Routing = L.Routing || {};
-
-
-	L.Routing.MapzenLine = L.LayerGroup.extend({
+	module.exports = L.LayerGroup.extend({
 		includes: L.Mixin.Events,
 
 		options: {
@@ -144,9 +141,4 @@
 		}
 	});
 
-	L.Routing.mapzenLine = function(route, options) {
-		return new L.Routing.MapzenLine(route, options);
-	};
-
-	module.exports = L.Routing;
 })();

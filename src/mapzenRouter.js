@@ -1,13 +1,13 @@
 (function() {
   'use strict';
 
-  var L = (typeof window !== "undefined" ? window.L : typeof global !== "undefined" ? global.L : null);
+  var L = require('leaflet');
   var corslite = require('corslite');
   var polyline = require('polyline');
 
-  L.Routing = L.Routing || {};
+  var Waypoint = require('./waypoint');
 
-  L.Routing.Mapzen = L.Class.extend({
+  module.exports = L.Class.extend({
     options: {
       timeout: 30 * 1000
     },
@@ -47,11 +47,7 @@
       // the request is being processed.
       for (i = 0; i < waypoints.length; i++) {
         wp = waypoints[i];
-        wps.push({
-          latLng: wp.latLng,
-          name: wp.name || "",
-          options: wp.options || {}
-        });
+        wps.push(new Waypoint(L.latLng(wp.latLng), wp.name || "", wp.options || {}))
       }
 
       corslite(url, L.bind(function(err, resp) {
@@ -257,7 +253,7 @@
       var wps = [],
           i;
       for (i = 0; i < vias.length; i++) {
-        wps.push(L.Routing.waypoint(L.latLng([vias[i]["lat"],vias[i]["lon"]]),
+        wps.push(new Waypoint(L.latLng([vias[i]["lat"],vias[i]["lon"]]),
                                     "name",
                                     {}));
       }
@@ -364,9 +360,4 @@
     }
   });
 
-  L.Routing.mapzen = function(accessToken, options) {
-    return new L.Routing.Mapzen(accessToken, options);
-  };
-
-  module.exports = L.Routing.Mapzen;
 })();
