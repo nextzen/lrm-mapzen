@@ -1,3 +1,4 @@
+L.Mapzen.apiKey ='vector-tiles-nccaBBc';
 var map = L.Mapzen.map('map', {
   scene: L.Mapzen.BasemapStyles.Refill
 });

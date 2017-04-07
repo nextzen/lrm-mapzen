@@ -1,3 +1,4 @@
+L.Mapzen.apiKey ='vector-tiles-nccaBBc';
 var map = L.Mapzen.map('map', {
   scene: L.Mapzen.BasemapStyles.Refill
 });
@@ -43,8 +44,13 @@ if( hashVal !== null) {
   })
 }
 
+var bounds;
+
 var control = L.Routing.control({
-  routeLine: function (route, options) { return L.Routing.mapzenLine(route, options); },
+  routeLine: function (route, options) {
+    var mapzenRouteLine = L.Routing.mapzenLine(route, options);
+    return mapzenRouteLine;
+  },
   waypoints: routingData.waypoints,
   // You can get your own Mapzen turn-by-turn & search API key from the Mapzen developer portal (https://mapzen.com/developers/)
   geocoder: L.Control.Geocoder.mapzen('search-RH8pVLv'),
