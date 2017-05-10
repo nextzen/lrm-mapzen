@@ -14,10 +14,12 @@
     "turn by turn",
     "mapzen"
   ],
-  "contributors": [{
-    "name": "Kristen Diluca",
-    "github": "https://github.com/kdiluca"
-  }],
+  "contributors": [
+    {
+      "name": "Kristen Diluca",
+      "github": "https://github.com/kdiluca"
+    }
+  ],
   "author": "Hanbyul Jo <hanbyul@mapzen.com>",
   "license": "MIT",
   "repository": {
