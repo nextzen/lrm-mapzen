@@ -1,6 +1,6 @@
 {
   "name": "lrm-mapzen",
-  "version": "1.1.10",
+  "version": "1.1.11",
   "description": "Support for Turn By Turn by Mapzen in Leaflet Machine",
   "main": "src/index.js",
   "scripts": {
@@ -31,7 +31,7 @@
     "url": "https://github.com/mapzen/lrm-mapzen/issues"
   },
   "dependencies": {
-    "polyline": "0.2.0",
+    "@mapbox/polyline": "0.2.0",
     "@mapbox/corslite": "0.0.7"
   },
   "browserify-shim": {
