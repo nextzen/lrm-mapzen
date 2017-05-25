@@ -8,14 +8,13 @@
 
 		options: {
 			styles: [
-				{color: 'black', opacity: 0.15, weight: 9},
-				{color: 'white', opacity: 0.8, weight: 6},
-				{color: 'red', opacity: 1, weight: 2}
+				{color: 'white', opacity: 0.8, weight: 8},
+				{color: '#06a6d4', opacity: 1, weight: 6}
 			],
 			missingRouteStyles: [
-				{color: 'black', opacity: 0.15, weight: 7},
-				{color: 'white', opacity: 0.6, weight: 4},
-				{color: 'gray', opacity: 0.8, weight: 2, dashArray: '7,12'}
+				{color: 'black', opacity: 0.15, weight: 8},
+				{color: 'white', opacity: 0.6, weight: 6},
+				{color: 'gray', opacity: 0.8, weight: 4, dashArray: '7,12'}
 			],
 			addWaypoints: true,
 			extendToWaypoints: true,

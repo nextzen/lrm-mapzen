@@ -225,13 +225,12 @@
           lineColor = paddedHex.toString(16).substring(1, 7);
 
       var polylineColor = [
-              // Color of outline depending on luminance against background.
-              (is_light ? {color: '#000', opacity: 0.4, weight: 10}
-                        : {color: '#fff', opacity: 0.8, weight: 10}),
-
-              // Color of the polyline subset.
-              {color: '#'+lineColor.toUpperCase(), opacity: 1, weight: 6}
-            ]
+            // Color of outline depending on luminance against background.
+            (is_light ? {color: '#000', opacity: 0.8, weight: 8}
+                      : {color: '#fff', opacity: 0.8, weight: 8}),
+            // Color of the polyline subset.
+            {color: '#'+lineColor.toUpperCase(), opacity: 1, weight: 6}
+          ];
 
       return polylineColor;
    },
