@@ -1,0 +1,130 @@
+/* Control geocoder and wrapper */
+
+.leaflet-routing-collapsible .leaflet-routing-geocoders {
+    margin-top: 20px;
+}
+
+.leaflet-routing-geocoders {
+    padding: 6px;
+    margin-top: 2px;
+    margin-bottom: 6px;
+    border-bottom: 1px solid #ccc;
+    max-height: 320px;
+    overflow-y: auto;
+    transition: all 0.2s ease;
+}
+
+.leaflet-routing-geocoder {
+    padding: 3px 0;
+    position: relative;
+}
+.leaflet-routing-geocoder:first-child {
+    padding-top: 0;
+}
+
+.leaflet-routing-geocoders input {
+    width: 100%;
+    height: 38px;
+    font-size: 14px;
+    padding: 4px 30px 4px 4px;
+    box-sizing: border-box;
+    border-radius: 5px;
+    border: 1px solid #ccc;
+}
+.leaflet-routing-geocoder:first-child .leaflet-routing-remove-waypoint {
+    position: absolute;
+    right: 6px;
+    top: 0;
+    background-color: transparent;
+    width: 15px;
+}
+
+.leaflet-routing-remove-waypoint {
+    position: absolute;
+    right: 6px;
+    top: 4px;
+    background-color: transparent;
+    width: 15px;
+}
+
+.leaflet-routing-remove-waypoint:hover {
+  color: black;
+}
+
+.leaflet-routing-remove-waypoint:after {
+  font-size: 24px;
+  content: "\00d7";
+  cursor: pointer;
+  background: transparent;
+}
+
+.leaflet-routing-geocoders button {
+  font: bold 18px 'Lucida Console', Monaco, monospace;
+  border: 1px solid #ccc;
+  border-radius: 5px;
+  background-color: white;
+  margin: 0;
+  margin-right: 3px;
+  margin-top: 3px;
+  float: left;
+  width: 20%;
+  cursor: pointer;
+  transition: background-color 0.2s ease;
+}
+
+.leaflet-routing-add-waypoint:after {
+  content: '+';
+}
+
+.leaflet-routing-reverse-waypoints:after {
+  font-weight: normal;
+  content: '\21c5';
+}
+
+.leaflet-routing-geocoders button:hover {
+  background-color: #eee;
+}
+
+.leaflet-routing-geocoder-result {
+  font: 12px/1.5 "Helvetica Neue", Arial, Helvetica, sans-serif;
+  position: absolute;
+  max-height: 0;
+  overflow: hidden;
+  transition: all 0.5s ease;
+  z-index: 1000; /* Arbitrary, but try to be above "most" things. */
+}
+
+.leaflet-routing-geocoder-result table {
+  width: 100%;
+  border: 1px solid #ccc;
+  font-size: 14px;
+  border-radius: 0 0 4px 4px;
+  background-color: white;
+  cursor: pointer;
+}
+
+.leaflet-routing-geocoder-result table td {
+  padding: 6px 3px;
+
+}
+
+.leaflet-routing-geocoder-result table tr:not(:last-child) td {
+  border-bottom: 1px solid #ccc;
+}
+
+.leaflet-routing-geocoder-selected, .leaflet-routing-geocoder-result tr:hover {
+  background-color: #eee;
+}
+
+.leaflet-routing-geocoder-result-open {
+  max-height: 800px;
+}
+
+.leaflet-routing-geocoder-no-results {
+  font-style: italic;
+  color: #888;
+}
+
+.leaflet-control-container .leaflet-routing-container-hide .leaflet-routing-geocoders {
+  display: none;
+}

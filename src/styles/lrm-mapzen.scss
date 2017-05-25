@@ -1,0 +1,56 @@
+/*
+    Oroginally written by Per Liedman for Leaflet Routing Machine : https://github.com/perliedman/leaflet-routing-machine ,
+    Several classes were re-written by Hanbyul Jo for Valhalla plugin for Leaflet Routing Machine : https://github.com/mapzen/lrm-mapzen
+*/
+
+@import './components/geocoders';
+@import './components/itinereary';
+@import './components/errorControl';
+@import './components/collapseButton';
+
+.leaflet-routing-container {
+  width: 320px;
+  box-sizing: border-box;
+  background-color: white;
+  padding-top: 4px;
+  font-size: 14px;
+  transition: all 0.2s ease;
+}
+
+.leaflet-control-container .leaflet-routing-container-hide {
+  width: 32px;
+  height: 32px;
+}
+
+.leaflet-routing-container h2 {
+  font-size: 16px;
+}
+
+.leaflet-routing-container h3 {
+  font-size: 14px;
+  font-weight: normal;
+}
+
+
+.leaflet-top .leaflet-routing-container.leaflet-routing-container-hide {
+  margin-top: 10px !important;
+}
+.leaflet-right .leaflet-routing-container.leaflet-routing-container-hide {
+  margin-right: 10px !important;
+}
+.leaflet-bottom .leaflet-routing-container.leaflet-routing-container-hide {
+  margin-bottom: 10px !important;
+}
+.leaflet-left .leaflet-routing-container.leaflet-routing-container-hide {
+  margin-left: 10px !important;
+}
+
+
+@media only screen and (max-width: 640px) {
+  .leaflet-routing-container {
+    margin: 0 !important;
+    padding: 0 !important;
+    width: 100%;
+    height: 100%;
+  }
+}
