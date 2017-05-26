@@ -1,8 +1,9 @@
 L.Mapzen.apiKey ='vector-tiles-nccaBBc';
 var map = L.Mapzen.map('map', {
-  scene: L.Mapzen.BasemapStyles.Refill
+  tangramOptions: {
+    scene: L.Mapzen.BasemapStyles.Refill
+  }
 });
-
 var hashControl = new HashControl();
 
 var routingData = {
@@ -49,8 +50,6 @@ var bounds;
 var control = L.Routing.control({
   routeLine: function (route, options) {
     var mapzenRouteLine = L.Routing.mapzenLine(route, options);
-    bounds = mapzenRouteLine.getBounds();
-    console.log(bounds);
     return mapzenRouteLine;
   },
   waypoints: routingData.waypoints,

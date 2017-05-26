@@ -5,15 +5,27 @@
     <title>Leaflet Turn By Turn By Mapzen Example</title>
     <link rel="stylesheet" href="https://mapzen.com/js/mapzen.css"/>
     <link rel="stylesheet" href="https://rawgit.com/CliffCloud/Leaflet.EasyButton/master/src/easy-button.css" />
-    <link rel="stylesheet" href="./dist/lrm-mapzen.css" />
+    <link rel="stylesheet" href="https://unpkg.com/lrm-mapzen/dist/lrm-mapzen.css"></script>
     <link rel="stylesheet" href="./css/buttons.css" />
+    <style>
+        html, body {
+          width: 100%;
+          height: 100%;
+          padding: 0;
+          margin: 0;
+        }
+        #map {
+          width: 100%;
+          height: 100%;
+        }
+    </style>
 </head>
 <body>
     <div id="map"></div>
     <script src="https://mapzen.com/js/mapzen.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/leaflet-routing-machine/3.2.4/leaflet-routing-machine.min.js"></script>
     <script src="https://rawgit.com/CliffCloud/Leaflet.EasyButton/master/src/easy-button.js"></script>
-    <script src="./dist/lrm-mapzen.js"></script>
+    <script src="https://unpkg.com/lrm-mapzen/dist/lrm-mapzen.js"></script>
     <script src="./js/Control.Geocoder.js"></script>
     <script src="./js/tangram-route.js"></script>
 </body>

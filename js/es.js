@@ -1,9 +1,9 @@
 L.Mapzen.apiKey ='vector-tiles-nccaBBc';
 var map = L.Mapzen.map('map', {
-  scene: L.Mapzen.BasemapStyles.Refill
+  tangramOptions: {
+    scene: L.Mapzen.BasemapStyles.Refill
+  }
 });
-
-
 var routingData = {
   waypoints: [
     L.latLng(37.752, -122.418),

@@ -1,7 +1,9 @@
+L.Mapzen.apiKey ='vector-tiles-nccaBBc';
 var map = L.Mapzen.map('map', {
-  scene: L.Mapzen.HouseStyles.Zinc
-})
-
+  tangramOptions: {
+    scene: L.Mapzen.BasemapStyles.Refill
+  }
+});
 var hashControl = new HashControl();
 
 var routingData = {
