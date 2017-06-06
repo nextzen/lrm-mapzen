@@ -2,8 +2,8 @@
   'use strict';
 
   var L = require('leaflet');
-  var corslite = require('corslite');
-  var polyline = require('polyline');
+  var corslite = require('@mapbox/corslite');
+  var polyline = require('@mapbox/polyline');
 
   var Waypoint = require('./waypoint');
 
