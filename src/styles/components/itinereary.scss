@@ -68,7 +68,7 @@
   background-color: #888;
 }
 
-.info::before{
+.route-info::before{
   -webkit-background-size: 72px 18px;
   background-size: 72px 18px;
   /* Using png here to shorten datauri */
@@ -83,14 +83,14 @@
   margin: 0 6px 0 3px;
 }
 
-.info {
+.route-info {
   font-weight: bold;
 }
 
-.info.auto::before{ background-position: 0px 0;}
-.info.bicycle::before{ background-position: -18px 0;}
-.info.multimodal::before{ background-position: -36px 0;}
-.info.pedestrian::before{ background-position: -54px 0;}
+.route-info.auto::before{ background-position: 0px 0;}
+.route-info.bicycle::before{ background-position: -18px 0;}
+.route-info.multimodal::before{ background-position: -36px 0;}
+.route-info.pedestrian::before{ background-position: -54px 0;}
 
 .leaflet-routing-icon {
   -webkit-background-size: 684px 18px;

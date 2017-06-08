@@ -20,7 +20,7 @@ var control = L.routing.control({
   reverseWaypoints: true,
   router: L.Routing.mapzen('valhalla-PVA4Y8g', {costing: 'auto'}),
   formatter: new L.Routing.mapzenFormatter(),
-  summaryTemplate:'<div class="info {costing}">{distance}, {time}</div>'
+  summaryTemplate:'<div class="route-info {costing}">{distance}, {time}</div>'
 }).addTo(map);
 
 L.Routing.errorControl(control).addTo(map);
