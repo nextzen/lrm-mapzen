@@ -879,11 +879,6 @@ L.Routing.mapzenFormatter = L.routing.mapzenFormatter;
           locationKey,
           hint;
 
-      var costing = options.costing;
-      var costingOptions = options.costing_options;
-      var directionsOptions = options.directions_options;
-      var dateTime = options.date_time;
-
       for (var i = 0; i < waypoints.length; i++) {
         var loc;
         locationKey = this._locationKey(waypoints[i].latLng).split(',');
@@ -903,13 +898,8 @@ L.Routing.mapzenFormatter = L.routing.mapzenFormatter;
         locs.push(loc);
       }
 
-      var params = JSON.stringify({
-        locations: locs,
-        costing: costing,
-        costing_options: costingOptions,
-        directions_options: directionsOptions,
-        date_time: dateTime
-     });
+      var paramsToPass = L.extend(options, { locations: locs });
+      var params = JSON.stringify(paramsToPass);
 
       return serviceUrl + '/route?json=' +
               params + '&api_key=' + this._accessToken;
