@@ -31,6 +31,12 @@ var map = L.Mapzen.map('map', {
   }
 });
 
+map.setView([37.752, -122.418], 13);
+
+L.Mapzen.hash({
+  map: map
+});
+
 var locator = L.Mapzen.locator();
 locator.addTo(map);
 
@@ -45,7 +51,7 @@ var control = L.routing.control({
   router: L.Routing.mapzen('valhalla-PVA4Y8g', demo),
   formatter: L.Routing.mapzenFormatter(),
   routeLine: function (route, options) { return L.Routing.mapzenLine(route, options); },
-  summaryTemplate:'<div class="info {costing}">{distance}, {time}</div>'
+  summaryTemplate:'<div class="route-info {costing}">{distance}, {time}</div>'
 }).addTo(map);
 
 L.Routing.errorControl(control).addTo(map);
