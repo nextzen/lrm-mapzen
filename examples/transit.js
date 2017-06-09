@@ -1,5 +1,4 @@
-
- var demo = {
+var demo = {
   costing: 'multimodal',
   date_time: {
     type: 1, //depart at
@@ -31,16 +30,10 @@ var map = L.Mapzen.map('map', {
   }
 });
 
-map.setView([37.752, -122.418], 13);
-
-L.Mapzen.hash({
-  map: map
-});
-
 var locator = L.Mapzen.locator();
 locator.addTo(map);
 
-var control = L.routing.control({
+var control = L.Routing.control({
   waypoints: [
     L.latLng(37.752, -122.418),
     L.latLng(37.779, -122.391)
@@ -54,4 +47,6 @@ var control = L.routing.control({
   summaryTemplate:'<div class="route-info {costing}">{distance}, {time}</div>'
 }).addTo(map);
 
-L.Routing.errorControl(control).addTo(map);
+L.Mapzen.hash({
+  map: map
+})
