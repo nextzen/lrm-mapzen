@@ -6,6 +6,8 @@
   module.exports = L.Class.extend({
     options: {
       allowUTurn: false,
+      original_index: null,
+      type: null
     },
     initialize: function(latLng, name, options) {
       L.Util.setOptions(this, options);
