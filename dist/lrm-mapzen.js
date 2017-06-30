@@ -622,11 +622,19 @@ L.Routing.mapzenFormatter = L.routing.mapzenFormatter;
 
   module.exports = L.Class.extend({
     options: {
-      timeout: 30 * 1000
+      serviceUrl: 'https://valhalla.mapzen.com/route?',
+      timeout: 30 * 1000,
+      routeOptions: {}
     },
 
     initialize: function(accessToken, options) {
       L.Util.setOptions(this, options);
+
+      for (var key in options) {
+        if (key !== 'serviceUrl' || key !== 'timeout') {
+          this.options.routeOptions[key] = options[key];
+        }
+      }
       this._accessToken = accessToken;
       this._hints = {
         locations: {}
@@ -636,14 +644,12 @@ L.Routing.mapzenFormatter = L.routing.mapzenFormatter;
     route: function(waypoints, callback, context, options) {
       var timedOut = false,
         wps = [],
-        routeOptions = {},
         url,
         timer,
         wp,
         i;
 
-      routeOptions = this.options || {};
-      //waypoints = options.waypoints || waypoints;
+      var routeOptions = L.extend(this.options.routeOptions, options);
 
       url = this.buildRouteUrl(waypoints, routeOptions);
 
@@ -874,7 +880,12 @@ L.Routing.mapzenFormatter = L.routing.mapzenFormatter;
     },
     ///mapzen example
     buildRouteUrl: function(waypoints, options) {
-      var serviceUrl = 'https://valhalla.mapzen.com';
+
+      // var serviceUrl = ;
+      // var a = this.options;
+      // console.log(a);
+      // console.log(service)
+
       var locs = [],
           locationKey,
           hint;
@@ -882,13 +893,13 @@ L.Routing.mapzenFormatter = L.routing.mapzenFormatter;
       for (var i = 0; i < waypoints.length; i++) {
         var loc;
         locationKey = this._locationKey(waypoints[i].latLng).split(',');
-        if(i === 0 || i === waypoints.length-1){
+        if (i === 0 || i === waypoints.length-1) {
           loc = {
             lat: parseFloat(locationKey[0]),
             lon: parseFloat(locationKey[1]),
             type: "break"
           }
-        }else{
+        } else {
           loc = {
             lat: parseFloat(locationKey[0]),
             lon: parseFloat(locationKey[1]),
@@ -898,10 +909,11 @@ L.Routing.mapzenFormatter = L.routing.mapzenFormatter;
         locs.push(loc);
       }
 
+      console.log(options);
       var paramsToPass = L.extend(options, { locations: locs });
       var params = JSON.stringify(paramsToPass);
 
-      return serviceUrl + '/route?json=' +
+      return this.options.serviceUrl + 'json=' +
               params + '&api_key=' + this._accessToken;
     },
 
