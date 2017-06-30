@@ -60,7 +60,7 @@ var control = L.Routing.control({
   collapsible: true,
   show: (map.getSize().x > 768)? true: false,
   formatter: new L.Routing.mapzenFormatter(),
-  summaryTemplate:'<div class="start">{name}</div><div class="info {costing}">{distance}, {time}</div>'
+  summaryTemplate:'<div class="start">{name}</div><div class="route-info {costing}">{distance}, {time}</div>'
 }).addTo(map);
 
 L.Routing.errorControl(control).addTo(map);
