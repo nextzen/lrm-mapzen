@@ -258,9 +258,15 @@
       var wps = [],
           i;
       for (i = 0; i < vias.length; i++) {
+        var etcInfo = {};
+        for (var key in vias[i]) {
+          if(key !== 'lat' || key !== 'lon') {
+            etcInfo[key] = vias[key];
+          }
+        }
         wps.push(new Waypoint(L.latLng([vias[i]["lat"],vias[i]["lon"]]),
                                     "name",
-                                    {}));
+                                    etcInfo));
       }
 
       return wps;
