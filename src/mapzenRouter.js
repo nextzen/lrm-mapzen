@@ -259,7 +259,7 @@
           lon: waypoints[i].latLng.lng,
         }
         for (var key in waypoints[i].options) {
-          loc[key] = waypoints[i].options[key];
+          if (waypoints[i].options[key]) loc[key] = waypoints[i].options[key];
         }
         locs.push(loc);
       }
