@@ -11,16 +11,20 @@
     options: {
       serviceUrl: 'https://valhalla.mapzen.com/route?',
       timeout: 30 * 1000,
-      routeOptions: {}
+      routingOptions: {}
     },
 
     initialize: function(accessToken, options) {
       L.Util.setOptions(this, options);
+      // There is currently no way to differentiate the options for Leaflet Routing Machine itself from options for route call
+      // So we resort the options here
+      // In future, lrm-mapzen will consider exposing routingOptions object to users
       for (var key in options) {
         if (key !== 'serviceUrl' || key !== 'timeout') {
-          this.options.routeOptions[key] = options[key];
+          this.options.routingOptions[key] = options[key];
         }
       }
+
       this._accessToken = accessToken;
     },
 
@@ -32,9 +36,9 @@
         wp,
         i;
 
-      var routeOptions = L.extend(this.options.routeOptions, options);
+      var routingOptions = L.extend(this.options.routingOptions, options);
 
-      url = this.buildRouteUrl(waypoints, routeOptions);
+      url = this.buildRouteUrl(waypoints, routingOptions);
 
       timer = setTimeout(function() {
                 timedOut = true;
@@ -54,12 +58,11 @@
 
       corslite(url, L.bind(function(err, resp) {
         var data;
-
         clearTimeout(timer);
         if (!timedOut) {
           if (!err) {
             data = JSON.parse(resp.responseText);
-            this._routeDone(data, wps, routeOptions, callback, context);
+            this._routeDone(data, wps, routingOptions, callback, context);
           } else {
             console.log("Error : " + err.response);
             callback.call(context || callback, {
@@ -73,7 +76,7 @@
       return this;
     },
 
-    _routeDone: function(response, inputWaypoints, routeOptions, callback, context) {
+    _routeDone: function(response, inputWaypoints, routingOptions, callback, context) {
 
       var coordinates,
           alts,
@@ -106,19 +109,19 @@
           insts.push(res);
         }
 
-        if(routeOptions.costing === 'multimodal') insts = this._unifyTransitManeuver(insts);
+        if(routingOptions.costing === 'multimodal') insts = this._unifyTransitManeuver(insts);
 
         shapeIndex += response.trip.legs[i].maneuvers[response.trip.legs[i].maneuvers.length-1]["begin_shape_index"];
       }
 
       outputWaypoints = this._toWaypoints(inputWaypoints, response.trip.locations);
       var subRoutes;
-      if (routeOptions.costing == 'multimodal') subRoutes = this._getSubRoutes(response.trip.legs)
+      if (routingOptions.costing == 'multimodal') subRoutes = this._getSubRoutes(response.trip.legs)
 
       alts = [{
         name: this._trimLocationKey(inputWaypoints[0].latLng) + " , " + this._trimLocationKey(inputWaypoints[inputWaypoints.length-1].latLng) ,
         unit: response.trip.units,
-        costing: routeOptions.costing,
+        costing: routingOptions.costing,
         coordinates: coordinates,
         subRoutes: subRoutes,
         instructions: insts,//response.route_instructions ? this._convertInstructions(response.route_instructions) : [],
@@ -248,9 +251,8 @@
       }
       return wps;
     },
-    ///mapzen example
-    buildRouteUrl: function(waypoints, options) {
 
+    buildRouteUrl: function(waypoints, options) {
       var locs = [];
 
       for (var i = 0; i < waypoints.length; i++) {
