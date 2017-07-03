@@ -14,9 +14,7 @@
       street: null,
       way_id: null,
       minimum_reachability: null,
-      radius: null,
-      // READ ONLY
-      original_index: null // Optimized Routing returns original_index after resorting input waypoints.
+      radius: null
     },
     initialize: function(latLng, name, options) {
       L.Util.setOptions(this, options);
