@@ -748,6 +748,7 @@ L.Routing.mapzenWaypoint = L.routing.mapzenWaypoint;
         summary: response.trip.summary ? this._convertSummary(response.trip.summary) : [],
         inputWaypoints: inputWaypoints,
         outputWaypoints: outputWaypoints,
+        actualWaypoints: outputWaypoints, // DEPRECATE THIS on v2.0
         waypointIndices: this._clampIndices([0,response.trip.legs[0].maneuvers.length], coordinates)
       }];
 
