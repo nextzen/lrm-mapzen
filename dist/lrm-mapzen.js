@@ -630,8 +630,7 @@ L.Routing.mapzenWaypoint = L.routing.mapzenWaypoint;
   module.exports = L.Class.extend({
     options: {
       serviceUrl: 'https://valhalla.mapzen.com/route?',
-      timeout: 30 * 1000,
-      routingOptions: {}
+      timeout: 30 * 1000
     },
 
     initialize: function(accessToken, options) {
@@ -639,12 +638,12 @@ L.Routing.mapzenWaypoint = L.routing.mapzenWaypoint;
       // There is currently no way to differentiate the options for Leaflet Routing Machine itself from options for route call
       // So we resort the options here
       // In future, lrm-mapzen will consider exposing routingOptions object to users
+      this.options.routingOptions = {};
       for (var key in options) {
         if (key !== 'serviceUrl' || key !== 'timeout') {
           this.options.routingOptions[key] = options[key];
         }
       }
-
       this._accessToken = accessToken;
     },
 
@@ -655,11 +654,9 @@ L.Routing.mapzenWaypoint = L.routing.mapzenWaypoint;
         timer,
         wp,
         i;
-
       var routingOptions = L.extend(this.options.routingOptions, options);
 
       url = this.buildRouteUrl(waypoints, routingOptions);
-
       timer = setTimeout(function() {
                 timedOut = true;
                 callback.call(context || callback, {
