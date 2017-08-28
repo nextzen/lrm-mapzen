@@ -4,7 +4,10 @@
 	var L = require('leaflet');
 
 	module.exports = L.LayerGroup.extend({
-		includes: L.Mixin.Events,
+	  // L.Evented is only present in Leaflet v1+
+	  // L.Mixin.Events is legacy; was deprecated in Leaflet v1 and started
+	  // logging deprecation warnings in console in v1.1
+	  includes: L.Evented ? L.Evented.prototype : L.Mixin.Events,
 
 		options: {
 			styles: [
