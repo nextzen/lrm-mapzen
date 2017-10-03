@@ -1,14 +1,6 @@
-L.Mapzen.apiKey = 'search-RH8pVLv';
+var map = L.map('map');
 
-var map = L.Mapzen.map('map', {
-  tangramOptions: {
-    scene: L.Mapzen.BasemapStyles.Zinc
-  }
-
-});
-
-var locator = L.Mapzen.locator();
-locator.addTo(map);
+L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png').addTo(map);
 
 var control = L.Routing.control({
   waypoints: [
@@ -28,7 +20,5 @@ var control = L.Routing.control({
   formatter: new L.Routing.mapzenFormatter(),
   summaryTemplate:'<div class="route-info {costing}">{distance}, {time}</div>'
 }).addTo(map);
-
-
 
 L.Routing.errorControl(control).addTo(map);

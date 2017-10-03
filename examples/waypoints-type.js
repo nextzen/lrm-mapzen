@@ -1,14 +1,6 @@
-L.Mapzen.apiKey = 'search-RH8pVLv';
+var map = L.map('map');
 
-var map = L.Mapzen.map('map', {
-  tangramOptions: {
-    scene: L.Mapzen.BasemapStyles.Zinc
-  }
-
-});
-
-var locator = L.Mapzen.locator();
-locator.addTo(map);
+L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png').addTo(map);
 
 var control = L.Routing.control({
   waypoints: [
