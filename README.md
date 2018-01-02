@@ -1,3 +1,5 @@
+# Mapzen is shutting down its services including Turn-by-turn. Read more at https://mapzen.com/blog/shutdown/
+
 [![npm version](https://img.shields.io/npm/v/lrm-mapzen.svg?style=flat-square)](https://www.npmjs.com/package/lrm-mapzen)
 # Add support for Mapzen Turn-by-Turn routing in Leaflet Routing Machine
 
