@@ -35,5 +35,3 @@ L.Routing.mapzen = L.routing.mapzen;
 L.Routing.mapzenLine = L.routing.mapzenLine;
 L.Routing.mapzenFormatter = L.routing.mapzenFormatter;
 L.Routing.mapzenWaypoint = L.routing.mapzenWaypoint;
-
-console.warn('Mapzen is shutting down its services including Turn-by-turn. Read more at https://mapzen.com/blog/shutdown');

@@ -24,6 +24,14 @@
           this.options.routingOptions[key] = options[key];
         }
       }
+
+      // Deprecation warnings for Mapzen hosted service.
+      // Make sure people aware of Mapzen hosted services are going down.
+      var mapzenHostedServiceUrl = 'https://valhalla.mapzen.com';
+      if (this.options.serviceUrl.indexOf(mapzenHostedServiceUrl)) {
+        console.warn('Mapzen is shutting down its services including Turn-by-turn. Read more at https://mapzen.com/blog/shutdown');
+      }
+
       this._accessToken = accessToken;
     },
 
