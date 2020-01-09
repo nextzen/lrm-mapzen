@@ -42,7 +42,7 @@ L.Routing.control({
 }).addTo(map);
 ```
 
-If you want to include additional costing options to help define the the route and estimated time along the path, you can pass a costing option object as one of router parameters. You can also include options for directions in order to change the language, distance units or narrative guidance production. See the [Mapzen Turn-by-Turn API documentation](https://mapzen.com/documentation/turn-by-turn/api-reference/) for more information on the available options.
+If you want to include additional costing options to help define the route and estimated time along the path, you can pass a costing option object as one of router parameters. You can also include options for directions in order to change the language, distance units or narrative guidance production. See the [Mapzen Turn-by-Turn API documentation](https://mapzen.com/documentation/turn-by-turn/api-reference/) for more information on the available options.
 
 ```js
 L.Routing.control({
